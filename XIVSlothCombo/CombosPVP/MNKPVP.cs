@@ -37,8 +37,6 @@
                 PressurePoint = 3172;
         }
 
-        public static bool CanBurst = false;
-
         internal class MNKBurstMode : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MNKBurstMode;
@@ -49,11 +47,7 @@
                 {
                     //uint globalAction = PVPCommon.ExecutePVPGlobal.ExecuteGlobal(actionID);
 
-                    if (GetRemainingCharges(RisingPhoenix) == 2 && IsOnCooldown(SixSidedStar) && 
-                        (lastComboMove is not Demolish) && !TargetHasEffectAny(All.Debuffs.Resilience))
-                        CanBurst = true;
-
-                    if (!TargetHasEffectAny(PVPCommon.Buffs.Guard) || (lastComboMove is Demolish && JustUsed(Enlightenment)))
+                    if (!TargetHasEffectAny(PVPCommon.Buffs.Guard))
                     {
                         //var payloads = new List<Payload>()
                         //{
@@ -68,17 +62,17 @@
 
                         if (CanWeave(actionID))
                         {
-                            if (lastComboMove is PhantomRush && JustUsed(Enlightenment) && CanBurst)
+                            if (JustUsed(Enlightenment))
                                 return OriginalHook(Meteordrive);
 
                             if (InMeleeRange())
                             {
-                                if (IsOffCooldown(SixSidedStar) && !TargetHasEffectAny(All.Debuffs.Resilience) && (lastComboMove is not Demolish or PhantomRush))
+                                if (IsOffCooldown(SixSidedStar) && !TargetHasEffectAny(All.Debuffs.Resilience) && 
+                                    (lastComboMove is not Demolish or PhantomRush) && !HasEffect(Buffs.FireResonance))
                                     return OriginalHook(SixSidedStar);
 
-                                if (((GetRemainingCharges(RisingPhoenix) == 2 && lastComboMove is Demolish) ||
-                                    (lastComboMove is PhantomRush && IsEnlightenmentOffCooldown() && JustUsedCharge(RisingPhoenix))) && 
-                                    !HasEffect(Buffs.FireResonance) && CanBurst)
+                                if (GetRemainingCharges(RisingPhoenix) > 0 && !HasEffect(Buffs.FireResonance) &&
+                                    ((lastComboMove is Demolish && !IsEnlightenmentOffCooldown()) || IsEnlightenmentOffCooldown()))
                                     return OriginalHook(RisingPhoenix);
                             }
 
@@ -106,9 +100,6 @@
                             GetRemainingCharges(ThunderClap) > 0 && lastComboMove is not Demolish)
                             return OriginalHook(ThunderClap);
                     }
-
-                    if (GetRemainingCharges(RisingPhoenix) == 0)
-                        CanBurst = false;
                 }
 
                 return actionID;
