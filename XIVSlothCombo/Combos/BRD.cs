@@ -546,8 +546,8 @@ namespace XIVSlothComboPlugin.Combos
                         return All.HeadGraze;
                     }
 
-                    var isEnemyHealthHigh = IsEnabled(CustomComboPreset.BRD_Simple_NoWaste) ?
-                        EnemyHealthPercentage() > Service.Configuration.GetCustomIntValue(Config.NoWasteHPPercentage) : true;
+                    var isEnemyHealthHigh = IsEnabled(CustomComboPreset.BardSimpleNoWasteMode) ?
+                        GetTargetHPPercent() > Service.Configuration.GetCustomIntValue(Config.NoWasteHPPercentage) : true;
 
                     if (IsEnabled(CustomComboPreset.BRD_Simple_Song) && isEnemyHealthHigh)
                     {
