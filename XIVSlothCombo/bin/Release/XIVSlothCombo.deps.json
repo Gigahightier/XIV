@@ -1,0 +1,43 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "XIVSlothCombo/3.0.16.0": {
+        "dependencies": {
+          "DalamudPackager": "2.1.6",
+          "ILRepack": "2.0.18"
+        },
+        "runtime": {
+          "XIVSlothCombo.dll": {}
+        }
+      },
+      "DalamudPackager/2.1.6": {},
+      "ILRepack/2.0.18": {}
+    }
+  },
+  "libraries": {
+    "XIVSlothCombo/3.0.16.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "DalamudPackager/2.1.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JGgpGP2FMM5Vt4utyDD+xV2+XXfo3Rb3VgJ4FnvzkWlvn4JG/bBILo6mDubWCPjDGqT0n6dF1JRG0r5ygLv/ng==",
+      "path": "dalamudpackager/2.1.6",
+      "hashPath": "dalamudpackager.2.1.6.nupkg.sha512"
+    },
+    "ILRepack/2.0.18": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-sR5Aj3JLDbA8JwESfWYfigSz5k1oNSHPN434W1LX8sboWJYEOSQP/KkvZGmJKPgajzSUKkl2jDar3LPZiMFU4Q==",
+      "path": "ilrepack/2.0.18",
+      "hashPath": "ilrepack.2.0.18.nupkg.sha512"
+    }
+  }
+}

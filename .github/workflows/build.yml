@@ -9,10 +9,10 @@ on:
     - main
 
 env:
-  PUBLIC_NAME: XIVComboSecret
-  SOLUTION_NAME: XIVComboSecret
-  INTERNAL_NAME: XIVComboSecret
-  RELEASE_DIR: XIVComboSecret\bin\Release\XIVComboSecret
+  PUBLIC_NAME: XIVSlothCombo
+  SOLUTION_NAME: XIVSlothCombo
+  INTERNAL_NAME: XIVSlothCombo
+  RELEASE_DIR: XIVSlothCombo\bin\Release\XIVSlothCombo
   PERSONAL_PLUGIN_REPO: deferential/XIV
   PR_PLUGIN_REPO: deferential/XIV
 
