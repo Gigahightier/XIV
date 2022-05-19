@@ -83,65 +83,60 @@ namespace XIVSlothComboPlugin
         #endregion
         // ====================================================================================
         #region GLOBAL FEATURES
-        //Tank Features
-        [CustomComboInfo("Global Tank Features", "Features and options involving shared role actions for Tanks.\nCollapsing this category does NOT disable the features inside.", ADV.JobID)]
-        AllTankFeatures = 100099,
 
-            #region Global Tank Features
+        #region Global Tank Features
+        [CustomComboInfo("Global Tank Features", "Features and options involving shared role actions for Tanks.\nCollapsing this category does NOT disable the features inside.", ADV.JobID)]
+        ALL_Tank_Menu = 100099,
+
             [ReplaceSkill(All.LowBlow, PLD.ShieldBash)]
-            [ParentCombo(AllTankFeatures)]
+            [ParentCombo(ALL_Tank_Menu)]
             [CustomComboInfo("Tank: Interrupt Feature", "Replaces Low Blow (Stun) with Interject (Interrupt) when the target can be interrupted.\nPLDs can slot Shield Bash to have the feature to work with Shield Bash.", ADV.JobID)]
             ALL_Tank_Interrupt = 100000,
 
-            [ParentCombo(AllTankFeatures)]
+            [ParentCombo(ALL_Tank_Menu)]
             [CustomComboInfo("Tank: Double Reprisal Protection", "Prevents the use of Reprisal when target already has the effect by replacing it with Stone.", ADV.JobID)]
             ALL_Tank_Reprisal = 100001,
             #endregion
 
-        //Healer Features
+        #region Global Healer Features
         [CustomComboInfo("Global Healer Features", "Features and options involving shared role actions for Healers.\nCollapsing this category does NOT disable the features inside.", ADV.JobID)]
-        AllHealerFeatures = 100098,
+        ALL_Healer_Menu = 100098,
 
-            #region Global Healer Features
             [ReplaceSkill(AST.Ascend, WHM.Raise, SCH.Resurrection, SGE.Egeiro)]
             [ConflictingCombos(AstrologianAscendFeature, SCH_RaiseFeature, SGE_RaiseFeature, WHMRaiseFeature)]
-            [ParentCombo(AllHealerFeatures)]
+            [ParentCombo(ALL_Healer_Menu)]
             [CustomComboInfo("Healer: Raise Feature", "Changes the class' Raise Ability into Swiftcast.", ADV.JobID)]
             ALL_Healer_Raise = 100010,
             #endregion
 
-        //Magical Ranged Features
+        #region Global Magical Ranged Features
         [CustomComboInfo("Global Magical Ranged Features", "Features and options involving shared role actions for Magical Ranged DPS.\nCollapsing this category does NOT disable the features inside.", ADV.JobID)]
-        AllCasterFeatures = 100097,
+        ALL_Caster_Menu = 100097,
 
-            #region Global Magical Ranged Features
-            [ParentCombo(AllCasterFeatures)]
+            [ParentCombo(ALL_Caster_Menu)]
             [CustomComboInfo("Magical Ranged DPS: Double Addle Protection", "Prevents the use of Addle when target already has the effect by replacing it with Fell Cleave.", ADV.JobID)]
             ALL_Caster_Addle = 100020,
 
-        //            [ConflictingCombos(SummonerRaiseFeature, RedMageSwiftVerraise)]
             [ConflictingCombos(SummonerRaiseFeature, RDM_Verraise)]
-            [ParentCombo(AllCasterFeatures)]
+            [ParentCombo(ALL_Caster_Menu)]
             [CustomComboInfo("Magical Ranged DPS: Raise Feature", "Changes the class' Raise Ability into Swiftcast or Dualcast in the case of RDM.", ADV.JobID)]
             ALL_Caster_Raise = 100021,
             #endregion
 
-        //Melee Features
+        #region Global Melee Features
         [CustomComboInfo("Global Melee DPS Features", "Features and options involving shared role actions for Melee DPS.\nCollapsing this category does NOT disable the features inside.", ADV.JobID)]
-        AllMeleeFeatures = 100096,
+        ALL_Melee_Menu = 100096,
 
-            #region Global Melee Features
-            [ParentCombo(AllMeleeFeatures)]
+            [ParentCombo(ALL_Melee_Menu)]
             [CustomComboInfo("Melee DPS: Double Feint Protection", "Prevents the use of Feint when target already has the effect by replacing it with Fire.", ADV.JobID)]
             ALL_Melee_Feint = 100030,
             #endregion
 
-        //Ranged Physical Features
+        #region Global Ranged Physical Features
         [CustomComboInfo("Global Physical Ranged Features", "Features and options involving shared role actions for Physical Ranged DPS.\nCollapsing this category does NOT disable the features inside.", ADV.JobID)]
-        AllRangedPhysicalFeatures = 100095,
+        ALL_Ranged_Menu = 100095,
 
-            #region Global Ranged Physical Features 
-            [ParentCombo(AllRangedPhysicalFeatures)]
+            [ParentCombo(ALL_Ranged_Menu)]
             [CustomComboInfo("Physical Ranged DPS: Double Mitigation Protection", "Prevents the use of Tactician/Troubadour/Shield Samba when target already has one of those three effects by replacing it with Stardiver.", ADV.JobID)]
             ALL_Ranged_Mitigation = 100040,
             #endregion
@@ -149,7 +144,6 @@ namespace XIVSlothComboPlugin
         //Non-gameplay Features
         //[CustomComboInfo("Output Combat Log", "Outputs your performed actions to the chat.", ADV.JobID)]
         //AllOutputCombatLog = 100094,
-
 
         #endregion
         // ====================================================================================
@@ -288,113 +282,113 @@ namespace XIVSlothComboPlugin
         #region BLACK MAGE
 
         [ReplaceSkill(BLM.Scathe)]
-        [ConflictingCombos(BlackSimpleFeature)]
-        [CustomComboInfo("Scathe Feature", "Replaces Scathe with Fire 4 or Blizzard 4 depending on Astral Fire/Umbral Ice.", BLM.JobID, 2, "BrainLess Mage", "One button, BAYBEE!")]
-        BlackEnochianFeature = 2000,
+        [ConflictingCombos(BLM_SimpleMode)]
+        [CustomComboInfo("Scathe Feature", "Replaces Scathe with Fire 4 or Blizzard 4 depending on Astral Fire/Umbral Ice.", BLM.JobID, 2, "", "")]
+        BLM_Enochian = 2000,
 
         [ReplaceSkill(BLM.Transpose)]
-        [CustomComboInfo("Umbral Soul/Transpose Feature", "Replaces Transpose with Umbral Soul when Umbral Soul is available.", BLM.JobID, 0, "Eh? Huh?", "Just does BLM things. Probably.")]
-        BlackManaFeature = 2001,
+        [CustomComboInfo("Umbral Soul/Transpose Feature", "Replaces Transpose with Umbral Soul when Umbral Soul is available.", BLM.JobID, 0, "", "")]
+        BLM_Mana = 2001,
 
         [ReplaceSkill(BLM.LeyLines)]
-        [CustomComboInfo("Between the Ley Lines Feature", "Replaces Ley Lines with Between the Ley Lines when Ley Lines is active.", BLM.JobID, 0, "BLT Sandwich feature", "Look between, and you shall find")]
-        BlackLeyLinesFeature = 2002,
+        [CustomComboInfo("Between the Ley Lines Feature", "Replaces Ley Lines with Between the Ley Lines when Ley Lines is active.", BLM.JobID, 0, "", "")]
+        BLM_LeyLines = 2002,
 
         [ReplaceSkill(BLM.Blizzard, BLM.Freeze)]
-        [CustomComboInfo("Blizzard 1/2/3 Feature", "Replaces Blizzard 1 with Blizzard 3 when out of Umbral Ice. Replaces Freeze with Blizzard 2 when synced.", BLM.JobID, 0, "Chilly boi", "Chill out, for real. It's sleepy sloth time")]
-        BlackBlizzardFeature = 2003,
+        [CustomComboInfo("Blizzard 1/2/3 Feature", "Replaces Blizzard 1 with Blizzard 3 when out of Umbral Ice. Replaces Freeze with Blizzard 2 when synced.", BLM.JobID, 0, "", "")]
+        BLM_Blizzard = 2003,
 
         [ReplaceSkill(BLM.Scathe)]
-        [ConflictingCombos(BlackEnochianFeature, BlackSimpleFeature)]
-        [CustomComboInfo("Xenoglossy Feature", "Replaces Scathe with Xenoglossy when available.", BLM.JobID, 0, "Glossy paint", "So shiny, so glossy...")]
-        BlackScatheFeature = 2004,
+        [ConflictingCombos(BLM_Enochian, BLM_SimpleMode)]
+        [CustomComboInfo("Xenoglossy Feature", "Replaces Scathe with Xenoglossy when available.", BLM.JobID, 0, "", "")]
+        BLM_ScatheXeno = 2004,
 
         [ReplaceSkill(BLM.Fire)]
-        [CustomComboInfo("Fire 1/3 Feature", "Replaces Fire 1 with Fire 3 outside of Astral Fire or when Firestarter proc is up.", BLM.JobID, 0, "Burna boi", "It's getting hot in here...")]
-        BlackFire13Feature = 2005,
+        [CustomComboInfo("Fire 1/3 Feature", "Replaces Fire 1 with Fire 3 outside of Astral Fire or when Firestarter proc is up.", BLM.JobID, 0, "", "")]
+        BLM_Fire_1to3 = 2005,
 
         [ReplaceSkill(BLM.Scathe)]
-        [ParentCombo(BlackEnochianFeature)]
-        [CustomComboInfo("Thundercloud Option", "Replaces Scathe with Thunder 1/3 when the debuff isn't present or expiring and Thundercloud is available.", BLM.JobID, 0, "Plug Socket Mode", "Forks at the ready!")]
-        BlackThunderFeature = 2006,
+        [ParentCombo(BLM_Enochian)]
+        [CustomComboInfo("Thundercloud Option", "Replaces Scathe with Thunder 1/3 when the debuff isn't present or expiring and Thundercloud is available.", BLM.JobID, 0, "", "")]
+        BLM_Thunder = 2006,
 
         [ReplaceSkill(BLM.Fire4)]
-        [ParentCombo(BlackEnochianFeature)]
-        [CustomComboInfo("Despair Option", "Replaces Fire 4 with Despair when below 2400 MP.", BLM.JobID, 0, "My MP!", "The horror! The despair!")]
-        BlackDespairFeature = 2007,
+        [ParentCombo(BLM_Enochian)]
+        [CustomComboInfo("Despair Option", "Replaces Fire 4 with Despair when below 2400 MP.", BLM.JobID, 0, "", "")]
+        BLM_Despair = 2007,
 
         [ReplaceSkill(BLM.Flare)]
-        [CustomComboInfo("Simple AoE Feature", "Replaces Flare with a full one button rotation.", BLM.JobID, -1, "Dungeon Tesla Mode", "Asleep at the wheel? We've got you!")]
-        BlackAoEComboFeature = 2008,
+        [CustomComboInfo("Simple AoE Feature", "Replaces Flare with a full one button rotation.", BLM.JobID, -1, "", "")]
+        BLM_AoE_SimpleMode = 2008,
 
         [ReplaceSkill(BLM.Scathe)]
-        [ParentCombo(BlackEnochianFeature)]
+        [ParentCombo(BLM_Enochian)]
         [CustomComboInfo("Aspect Swap Option", "Replaces Scathe with Blizzard 3 when at 0 MP in Astral Fire or with Fire 3 when at 10000 MP in Umbral Ice with 3 Umbral Hearts.", BLM.JobID, 0, "", "")]
-        BlackAspectSwapFeature = 2010,
+        BLM_AspectSwap = 2010,
 
         [ReplaceSkill(BLM.Scathe)]
-        [ParentCombo(BlackThunderFeature)]
-        [CustomComboInfo("Thunder 1/3 Option", "Replaces Scathe with Thunder 1/3 when the debuff isn't present or expiring.", BLM.JobID, 0, "Bzzt", "Shocking!")]
-        BlackThunderUptimeFeature = 2011,
+        [ParentCombo(BLM_Thunder)]
+        [CustomComboInfo("Thunder 1/3 Option", "Replaces Scathe with Thunder 1/3 when the debuff isn't present or expiring.", BLM.JobID, 0, "", "")]
+        BLM_ThunderUptime = 2011,
 
         [ReplaceSkill(BLM.Scathe)]
-        [ConflictingCombos(BlackEnochianFeature, BlackScatheFeature, BlackSimpleTransposeFeature, BlackSimpleParadoxFeature)]
+        [ConflictingCombos(BLM_Enochian, BLM_ScatheXeno, BLM_Simple_Transpose, BLM_Paradox)]
         [CustomComboInfo("Simple BLM Feature", "Replaces Scathe with a full one button rotation.", BLM.JobID, -3, "", "")]
-        BlackSimpleFeature = 2012,
+        BLM_SimpleMode = 2012,
 
-        [ParentCombo(BlackSimpleFeature)]
-        [CustomComboInfo("CDs Option", "Adds Manafont, Sharpcast, Amplifier onto the Simple BLM feature.", BLM.JobID, 0, "", "!")]
-        BlackSimpleBuffsFeature = 2013,
+        [ParentCombo(BLM_SimpleMode)]
+        [CustomComboInfo("CDs Option", "Adds Manafont, Sharpcast, Amplifier onto the Simple BLM feature.", BLM.JobID, 0, "", "")]
+        BLM_Simple_Buffs = 2013,
 
-        [ParentCombo(BlackSimpleFeature)]
-        [CustomComboInfo("Ley Lines Option", "Adds Ley Lines onto the Simple BLM feature.", BLM.JobID, 0, "", "!")]
-        BlackSimpleBuffsLeylinesFeature = 2014,
+        [ParentCombo(BLM_SimpleMode)]
+        [CustomComboInfo("Ley Lines Option", "Adds Ley Lines onto the Simple BLM feature.", BLM.JobID, 0, "", "")]
+        BLM_Simple_BuffsLeyLines = 2014,
 
-        [ParentCombo(BlackSimpleFeature)]
-        [CustomComboInfo("Triplecast / Swiftcast Option", "Adds Triplecast/Swiftcast onto the Simple BLM feature.", BLM.JobID, 0, "", "!")]
-        BlackSimpleCastsFeature = 2015,
+        [ParentCombo(BLM_SimpleMode)]
+        [CustomComboInfo("Triplecast / Swiftcast Option", "Adds Triplecast/Swiftcast onto the Simple BLM feature.", BLM.JobID, 0, "", "")]
+        BLM_Simple_Casts = 2015,
 
-        [ParentCombo(BlackSimpleCastsFeature)]
-        [CustomComboInfo("Pool Triplecast / Swiftcast Option", "Keep one triplecast usage and swiftcast for movement in the Simple BLM feature.", BLM.JobID, 0, "", "!")]
-        BlackSimpleCastPoolingFeature = 2016,
+        [ParentCombo(BLM_Simple_Casts)]
+        [CustomComboInfo("Pool Triplecast / Swiftcast Option", "Keep one triplecast usage and swiftcast for movement in the Simple BLM feature.", BLM.JobID, 0, "", "")]
+        BLM_Simple_CastPooling = 2016,
 
-        [ParentCombo(BlackSimpleFeature)]
-        [CustomComboInfo("Pool Xenoglossy Option", "Keep one xenoglossy usage for movement in the Simple BLM feature.", BLM.JobID, 0, "", "!")]
-        BlackSimplePoolingFeature = 2017,
+        [ParentCombo(BLM_SimpleMode)]
+        [CustomComboInfo("Pool Xenoglossy Option", "Keep one xenoglossy usage for movement in the Simple BLM feature.", BLM.JobID, 0, "", "")]
+        BLM_Simple_XenoPooling = 2017,
 
-        [ParentCombo(BlackSimpleFeature)]
+        [ParentCombo(BLM_SimpleMode)]
         [CustomComboInfo("Fire 3 Opener", "Adds the Fire 3 Opener to Simple BLM.", BLM.JobID, 0, "", "")]
-        BlackSimpleOpenerFeature = 2018,
+        BLM_Simple_Opener = 2018,
 
-        [ParentCombo(BlackSimpleOpenerFeature)]
+        [ParentCombo(BLM_Simple_Opener)]
         [CustomComboInfo("Fire 3 Opener - 1 Triplecast", "Modifies the Simple Fire 3 Opener to only use 1 Triplecast.", BLM.JobID, 0, "", "")]
-        BlackSimpleAltOpenerFeature = 2019,
+        BLM_Simple_OpenerAlternate = 2019,
 
-        [ParentCombo(BlackAoEComboFeature)]
+        [ParentCombo(BLM_AoE_SimpleMode)]
         [CustomComboInfo("Foul / Manafont Flare Option", "Adds Foul when available during Astral Fire. Weaves Manafont after Foul for additional Flare", BLM.JobID, 0, "", "")]
-        BlackAoEFoulOption = 2020,
+        BLM_AoE_Simple_Foul = 2020,
 
         [ReplaceSkill(BLM.Scathe)]
-        [ConflictingCombos(BlackEnochianFeature, BlackScatheFeature, BlackSimpleFeature, BlackSimpleParadoxFeature)]
+        [ConflictingCombos(BLM_Enochian, BLM_ScatheXeno, BLM_SimpleMode, BLM_Paradox)]
         [CustomComboInfo("Advanced BLM Feature", "Replaces Scathe with a full one button rotation that uses Transpose. Requires level 90.", BLM.JobID, -2, "", "")]
-        BlackSimpleTransposeFeature = 2021,
+        BLM_Simple_Transpose = 2021,
 
-        [ParentCombo(BlackSimpleTransposeFeature)]
+        [ParentCombo(BLM_Simple_Transpose)]
         [CustomComboInfo("Pool Triplecast Option", "Keep one triplecast usage for movement in the Advanced BLM feature.", BLM.JobID, 0, "", "")]
-        BlackSimpleTransposePoolingFeature = 2022,
+        BLM_Simple_TransposePooling = 2022,
 
         [ReplaceSkill(BLM.Scathe)]
-        [ConflictingCombos(BlackEnochianFeature, BlackScatheFeature, BlackSimpleFeature, BlackSimpleTransposeFeature)]
+        [ConflictingCombos(BLM_Enochian, BLM_ScatheXeno, BLM_SimpleMode, BLM_Simple_Transpose)]
         [CustomComboInfo("Paradox BLM Feature", "Replaces Scathe with a full one button rotation that has minimal casts (~9-13%% less damage than Simple BLM). Requires level 90.", BLM.JobID, -2, "", "")]
-        BlackSimpleParadoxFeature = 2023,
+        BLM_Paradox = 2023,
 
-        [ParentCombo(BlackSimpleTransposeFeature)]
+        [ParentCombo(BLM_Simple_Transpose)]
         [CustomComboInfo("Ley Lines Option", "Adds Ley Lines onto the Advanced BLM feature.", BLM.JobID, 0, "", "")]
-        BlackSimpleTransposeLeyLinesFeature = 2024,
+        BLM_Simple_TransposeLeyLines = 2024,
 
-        [ParentCombo(BlackSimpleParadoxFeature)]
+        [ParentCombo(BLM_Paradox)]
         [CustomComboInfo("Ley Lines Option", "Adds Ley Lines onto the Paradox BLM feature.", BLM.JobID, 0, "", "")]
-        BlackSimpleParadoxLeyLinesFeature = 2025,
+        BLM_ParadoxLeyLines = 2025,
 
         #endregion
         // ====================================================================================
@@ -807,125 +801,125 @@ namespace XIVSlothComboPlugin
         // ====================================================================================
         #region DARK KNIGHT
 
-        [ParentCombo(DarkSouleaterCombo)]
-        [CustomComboInfo("Buffs on Main Combo", "Collection of Buffs to add to Main Combo", DRK.JobID)]
-        DarkMainComboBuffsGroup = 5098,
+        [ParentCombo(DRK_SouleaterCombo)]
+        [CustomComboInfo("Buffs on Main Combo", "Collection of Buffs to add to Main Combo", DRK.JobID, 0, "", "")]
+        DRK_MainComboBuffs_Group = 5098,
 
-        [ConflictingCombos(DarkoGCDFeature)]
-        [ParentCombo(DarkSouleaterCombo)]
-        [CustomComboInfo("CDs on Main Combo", "Collection of CDs to add to Main Combo", DRK.JobID)]
-        DarkMainComboCDsGroup = 5099,
-
-        [ReplaceSkill(DRK.Souleater)]
-        [CustomComboInfo("Souleater Combo", "Replace Souleater with its combo chain. \nIf all sub options are selected will turn into a full one button rotation (Simple Dark Knight)", DRK.JobID, 0, "Fetch me their souls!", "Heheheheheh")]
-        DarkSouleaterCombo = 5000,
-
-        [ReplaceSkill(DRK.StalwartSoul)]
-        [CustomComboInfo("Stalwart Soul Combo", "Replace Stalwart Soul with its combo chain.", DRK.JobID, 0, "", "Ugly name for an ugly job")]
-        DarkStalwartSoulCombo = 5001,
+        [ConflictingCombos(DRK_oGCD)]
+        [ParentCombo(DRK_SouleaterCombo)]
+        [CustomComboInfo("CDs on Main Combo", "Collection of CDs to add to Main Combo", DRK.JobID, 0, "", "")]
+        DRK_MainComboCDs_Group = 5099,
 
         [ReplaceSkill(DRK.Souleater)]
-        [ParentCombo(DarkMainComboBuffsGroup)]
-        [CustomComboInfo("Delirium Feature", "Replace Souleater and Stalwart Soul with Bloodspiller and Quietus when Delirium is active.", DRK.JobID, 0, "", "Delirium is what you have if you choose to play DRK.\nDoc's words, not mine")]
-        DeliriumFeature = 5002,
+        [CustomComboInfo("Souleater Combo", "Replace Souleater with its combo chain. \nIf all sub options are selected will turn into a full one button rotation (Simple Dark Knight)", DRK.JobID, 0, "", "")]
+        DRK_SouleaterCombo = 5000,
 
         [ReplaceSkill(DRK.StalwartSoul)]
-        [ParentCombo(DarkStalwartSoulCombo)]
-        [CustomComboInfo("Dark Knight Gauge Overcap Feature", "Replace AoE combo with gauge spender if you are about to overcap.", DRK.JobID, 0, "", "Hey big spenderrrrr")]
-        DRKOvercapFeature = 5003,
+        [CustomComboInfo("Stalwart Soul Combo", "Replace Stalwart Soul with its combo chain.", DRK.JobID, 0, "", "")]
+        DRK_StalwartSoulCombo = 5001,
 
-        [ParentCombo(DarkMainComboCDsGroup)]
-        [CustomComboInfo("Living Shadow Feature", "Living Shadow will now be on main combo if its not on CD and you have gauge for it.", DRK.JobID, 0, "", "Trick everyone into thinking a party member is standing where they shouldn't be!")]
-        DRKLivingShadowFeature = 5004,
+        [ReplaceSkill(DRK.Souleater)]
+        [ParentCombo(DRK_MainComboBuffs_Group)]
+        [CustomComboInfo("Delirium Feature", "Replace Souleater and Stalwart Soul with Bloodspiller and Quietus when Delirium is active.", DRK.JobID, 0, "", "")]
+        DRK_Delirium = 5002,
 
-        [ParentCombo(DarkSouleaterCombo)]
-        [CustomComboInfo("EoS Overcap Feature", "Uses EoS if you are above 8.5k mana or Darkside is about to expire (10sec or less)", DRK.JobID, 0, "Something about mana", "You're basically a black mage! Well done!")]
-        DarkManaOvercapFeature = 5005,
+        [ReplaceSkill(DRK.StalwartSoul)]
+        [ParentCombo(DRK_StalwartSoulCombo)]
+        [CustomComboInfo("Dark Knight Gauge Overcap Feature", "Replace AoE combo with gauge spender if you are about to overcap.", DRK.JobID, 0, "", "")]
+        DRK_Overcap = 5003,
+
+        [ParentCombo(DRK_MainComboCDs_Group)]
+        [CustomComboInfo("Living Shadow Feature", "Living Shadow will now be on main combo if its not on CD and you have gauge for it.", DRK.JobID, 0, "", "")]
+        DRK_LivingShadow = 5004,
+
+        [ParentCombo(DRK_SouleaterCombo)]
+        [CustomComboInfo("EoS Overcap Feature", "Uses EoS if you are above 8.5k mana or Darkside is about to expire (10sec or less)", DRK.JobID, 0, "", "")]
+        DRK_ManaOvercap = 5005,
 
         [ReplaceSkill(DRK.CarveAndSpit, DRK.AbyssalDrain)]
-        [ConflictingCombos(DarkMainComboCDsGroup)]
-        [CustomComboInfo("oGCD Feature", "Adds Living Shadow > Salted Earth > Carve And Spit > Salt And Darkness to Carve And Spit and Abysal Drain", DRK.JobID, 0, "", "Just does your whole job for you, really")]
-        DarkoGCDFeature = 5006,
+        [ConflictingCombos(DRK_MainComboCDs_Group)]
+        [CustomComboInfo("oGCD Feature", "Adds Living Shadow > Salted Earth > Carve And Spit > Salt And Darkness to Carve And Spit and Abysal Drain", DRK.JobID, 0, "", "")]
+        DRK_oGCD = 5006,
 
-        [ParentCombo(DarkoGCDFeature)]
-        [CustomComboInfo("Shadowbringer oGCD Feature", "Adds Shadowbringer to oGCD Feature ", DRK.JobID, 0, "", "Wasn't this last expansion?")]
-        DarkShadowbringeroGCDFeature = 5007,
+        [ParentCombo(DRK_oGCD)]
+        [CustomComboInfo("Shadowbringer oGCD Feature", "Adds Shadowbringer to oGCD Feature ", DRK.JobID, 0, "", "")]
+        DRK_Shadowbringer_oGCD = 5007,
 
-        [ParentCombo(DarkMainComboCDsGroup)]
-        [CustomComboInfo("Plunge Feature", "Adds Plunge onto main combo whenever its available and Darkside is up.", DRK.JobID, 0, "", "Take the plunge. All the way!")]
-        DarkPlungeFeature = 5008,
+        [ParentCombo(DRK_MainComboCDs_Group)]
+        [CustomComboInfo("Plunge Feature", "Adds Plunge onto main combo whenever its available and Darkside is up.", DRK.JobID, 0, "", "")]
+        DRK_Plunge = 5008,
 
-        [ParentCombo(DeliriumFeature)]
-        [CustomComboInfo("Delayed Delirium Feature", "Delays Bloodspiller by 2 GCDs when Delirium is used during even windows, uses it regularly during odd windows. Useful for feeding into raid buffs at level 90.", DRK.JobID, 0)]
-        DelayedDeliriumFeatureOption = 5010,
+        [ParentCombo(DRK_Delirium)]
+        [CustomComboInfo("Delayed Delirium Feature", "Delays Bloodspiller by 2 GCDs when Delirium is used during even windows, uses it regularly during odd windows. Useful for feeding into raid buffs at level 90.", DRK.JobID, 0, "", "")]
+        DRK_DelayedDelirium = 5010,
 
-        [ParentCombo(DarkSouleaterCombo)]
-        [CustomComboInfo("Unmend Uptime Feature", "Replace Souleater Combo Feature with Unmend when you are out of range.", DRK.JobID, 0, "Ranged DPS job now, duh", "Stubby little arms, huh")]
-        DarkRangedUptimeFeature = 5011,
+        [ParentCombo(DRK_SouleaterCombo)]
+        [CustomComboInfo("Unmend Uptime Feature", "Replace Souleater Combo Feature with Unmend when you are out of range.", DRK.JobID, 0, "", "")]
+        DRK_RangedUptime = 5011,
 
-        [ParentCombo(DarkStalwartSoulCombo)]
-        [CustomComboInfo("Abyssal Drain Feature", "Adds abyssal drain to the AoE Combo when you fall below 60 percent hp.", DRK.JobID, 0, "", "Even the un-cool kids got heals these days")]
-        DRKStalwartabyssalDrainFeature = 5013,
+        [ParentCombo(DRK_StalwartSoulCombo)]
+        [CustomComboInfo("Abyssal Drain Feature", "Adds abyssal drain to the AoE Combo when you fall below 60 percent hp.", DRK.JobID, 0, "", "")]
+        DRK_AoE_AbyssalDrain = 5013,
 
-        [ParentCombo(DarkStalwartSoulCombo)]
-        [CustomComboInfo("AoE Shadowbringer Feature", "Adds Shadowbringer to the AoE Combo.", DRK.JobID, 0, "", "Wasn't this last expansion?")]
-        DRKStalwartShadowbringerFeature = 5014,
+        [ParentCombo(DRK_StalwartSoulCombo)]
+        [CustomComboInfo("AoE Shadowbringer Feature", "Adds Shadowbringer to the AoE Combo.", DRK.JobID, 0, "", "")]
+        DRK_AoE_Shadowbringer = 5014,
 
-        [ParentCombo(DarkStalwartSoulCombo)]
-        [CustomComboInfo("FoS Overcap Feature", "Uses FoS if you are above 8.5k mana or Darkside is about to expire (10sec or less)", DRK.JobID, 0, "Something about mana", "You're basically a black mage! Well done!")]
-        DarkManaOvercapAoEFeature = 5015,
+        [ParentCombo(DRK_StalwartSoulCombo)]
+        [CustomComboInfo("FoS Overcap Feature", "Uses FoS if you are above 8.5k mana or Darkside is about to expire (10sec or less)", DRK.JobID, 0, "", "")]
+        DRK_AoE_ManaOvercap = 5015,
 
-        [ParentCombo(DarkSouleaterCombo)]
-        [CustomComboInfo("Blood Gauge Overcap Feature", "Adds Bloodspiller onto main combo when at 80 blood gauge or higher", DRK.JobID, 0, "", "Take the plunge. Or, just dip your toes in. Whatever.")]
-        DarkBloodGaugeOvercapFeature = 5016,
+        [ParentCombo(DRK_SouleaterCombo)]
+        [CustomComboInfo("Blood Gauge Overcap Feature", "Adds Bloodspiller onto main combo when at 80 blood gauge or higher", DRK.JobID, 0, "", "")]
+        DRK_BloodGaugeOvercap = 5016,
 
-        [ParentCombo(DarkMainComboCDsGroup)]
-        [CustomComboInfo("Shadowbringer Feature", "Adds Shadowbringer on Main Combo while Darkside is up. Will use all stacks on CD.", DRK.JobID, 0)]
-        DarkShBFeature = 5019,
+        [ParentCombo(DRK_MainComboCDs_Group)]
+        [CustomComboInfo("Shadowbringer Feature", "Adds Shadowbringer on Main Combo while Darkside is up. Will use all stacks on CD.", DRK.JobID, 0, "", "")]
+        DRK_Shadowbringer = 5019,
 
-        [ParentCombo(DarkManaOvercapFeature)]
-        [CustomComboInfo("EoS Burst Option", "Uses EoS until chosen MP limit is reached during even minute window bursts.", DRK.JobID, 0)]
-        DarkEoSPoolOption = 5020,
+        [ParentCombo(DRK_ManaOvercap)]
+        [CustomComboInfo("EoS Burst Option", "Uses EoS until chosen MP limit is reached during even minute window bursts.", DRK.JobID, 0, "", "")]
+        DRK_EoSPooling = 5020,
 
-        [ParentCombo(DarkShBFeature)]
-        [CustomComboInfo("Shadowbringer Burst Option", "Pools Shadowbringer to use during even minute window bursts.", DRK.JobID, 0)]
-        DarkBurstShBOption = 5021,
+        [ParentCombo(DRK_Shadowbringer)]
+        [CustomComboInfo("Shadowbringer Burst Option", "Pools Shadowbringer to use during even minute window bursts.", DRK.JobID, 0, "", "")]
+        DRK_ShadowbringerBurst = 5021,
 
-        [ParentCombo(DarkMainComboCDsGroup)]
-        [CustomComboInfo("Carve and Spit Feature", "Adds Carve and Spit on Main Combo while Darkside is up.", DRK.JobID, 0)]
-        DarkCnSFeature = 5022,
+        [ParentCombo(DRK_MainComboCDs_Group)]
+        [CustomComboInfo("Carve and Spit Feature", "Adds Carve and Spit on Main Combo while Darkside is up.", DRK.JobID, 0, "", "")]
+        DRK_CarveAndSpit = 5022,
 
-        [ParentCombo(DarkPlungeFeature)]
-        [CustomComboInfo("Melee Plunge Option", "Uses Plunge when under Darkside and in the target ring (1 yalm).\nWill use as many stacks as selected in the above slider.", DRK.JobID, 0)]
-        DarkMeleePlungeOption = 5023,
+        [ParentCombo(DRK_Plunge)]
+        [CustomComboInfo("Melee Plunge Option", "Uses Plunge when under Darkside and in the target ring (1 yalm).\nWill use as many stacks as selected in the above slider.", DRK.JobID, 0, "", "")]
+        DRK_MeleePlunge = 5023,
 
-        [ParentCombo(DarkMainComboCDsGroup)]
-        [CustomComboInfo("Salted Earth Feature", "Adds Salted Earth on Main Combo while Darkside is up, will use Salt and Darkness if unlocked.", DRK.JobID, 0)]
-        DarkSaltedEarthFeature = 5024,
+        [ParentCombo(DRK_MainComboCDs_Group)]
+        [CustomComboInfo("Salted Earth Feature", "Adds Salted Earth on Main Combo while Darkside is up, will use Salt and Darkness if unlocked.", DRK.JobID, 0, "", "")]
+        DRK_SaltedEarth = 5024,
 
-        [ParentCombo(DeliriumFeature)]
-        [CustomComboInfo("Delirium on CD", "Adds Delirium to Main Combo on CD and when Darkside is up. Will also spend 50 blood gauge if Delirium is nearly ready to protect from overcap.", DRK.JobID, 0)]
-        DarkDeliriumOnCD = 5025,
+        [ParentCombo(DRK_Delirium)]
+        [CustomComboInfo("Delirium on CD", "Adds Delirium to Main Combo on CD and when Darkside is up. Will also spend 50 blood gauge if Delirium is nearly ready to protect from overcap.", DRK.JobID, 0, "", "")]
+        DRK_DeliriumOnCD = 5025,
 
-        [ParentCombo(DarkMainComboBuffsGroup)]
-        [CustomComboInfo("Blood Weapon on CD", "Adds Blood Weapon to Main Combo on CD and when Darkside is up.", DRK.JobID, 0)]
-        DarkBloodWeaponOption = 5026,
+        [ParentCombo(DRK_MainComboBuffs_Group)]
+        [CustomComboInfo("Blood Weapon on CD", "Adds Blood Weapon to Main Combo on CD and when Darkside is up.", DRK.JobID, 0, "", "")]
+        DRK_BloodWeapon = 5026,
 
-        [ParentCombo(DarkStalwartSoulCombo)]
-        [CustomComboInfo("Blood Weapon Option", "Adds Blood Weapon to AOE Combo on CD and when Darkside is up.", DRK.JobID, 0)]
-        DarkBloodWeaponAOEOption = 5027,
+        [ParentCombo(DRK_StalwartSoulCombo)]
+        [CustomComboInfo("Blood Weapon Option", "Adds Blood Weapon to AOE Combo on CD and when Darkside is up.", DRK.JobID, 0, "", "")]
+        DRK_AoE_BloodWeapon = 5027,
 
-        [ParentCombo(DarkStalwartSoulCombo)]
-        [CustomComboInfo("Delirium Option", "Adds Deliriun to AOE Combo on CD and when Darkside is up.", DRK.JobID, 0)]
-        DarkDeliriumAOEOption = 5028,
+        [ParentCombo(DRK_StalwartSoulCombo)]
+        [CustomComboInfo("Delirium Option", "Adds Deliriun to AOE Combo on CD and when Darkside is up.", DRK.JobID, 0, "", "")]
+        DRK_AoE_Delirium = 5028,
 
-        [ParentCombo(DarkStalwartSoulCombo)]
-        [CustomComboInfo("Salted Earth Option", "Adds Salted Earth and Salt and Darkness to AOE on CD and when Darkside is up.", DRK.JobID, 0)]
-        DarkSaltedEarthAOEOption = 5029,
+        [ParentCombo(DRK_StalwartSoulCombo)]
+        [CustomComboInfo("Salted Earth Option", "Adds Salted Earth and Salt and Darkness to AOE on CD and when Darkside is up.", DRK.JobID, 0, "", "")]
+        DRK_AoE_SaltedEarth = 5029,
 
-        [ParentCombo(DarkStalwartSoulCombo)]
-        [CustomComboInfo("Living Shadow Option", "Adds Living Shadow to AOE on CD and when Darkside is up.", DRK.JobID, 0)]
-        DarkLivingShadowAOEOption = 5030,
+        [ParentCombo(DRK_StalwartSoulCombo)]
+        [CustomComboInfo("Living Shadow Option", "Adds Living Shadow to AOE on CD and when Darkside is up.", DRK.JobID, 0, "", "")]
+        DRK_AoE_LivingShadow = 5030,
         
 
         #endregion
@@ -933,191 +927,191 @@ namespace XIVSlothComboPlugin
         #region DRAGOON
 
         [ReplaceSkill(DRG.CoerthanTorment)]
-        [ConflictingCombos(DragoonSimpleAoE)]
+        [ConflictingCombos(DRG_AoE_SimpleMode)]
         [CustomComboInfo("Coerthan Torment Combo", "Replace Coerthan Torment with its combo chain.", DRG.JobID, 1, "", "")]
-        DragoonCoerthanTormentCombo = 6100,
+        DRG_CoerthanTormentCombo = 6100,
 
+        #region Chaos Thrust Combo
         [ReplaceSkill(DRG.ChaosThrust)]
-        [ConflictingCombos(DragoonSimple)]
+        [ConflictingCombos(DRG_SimpleMode)]
         [CustomComboInfo("Chaos Thrust Combo", "Replace Chaos Thrust with its combo chain.", DRG.JobID, 2, "", "")]
-        DragoonChaosThrustCombo = 6200,
+        DRG_ChaosThrustCombo = 6200,
 
-            #region Chaos Thrust Combo
-            [ParentCombo(DragoonChaosThrustCombo)]
+            [ParentCombo(DRG_ChaosThrustCombo)]
             [CustomComboInfo("Chaos Piercing Talon Uptime", "Replaces Chaos Thrust Combo with Piercing Talon when you are out of range.", DRG.JobID, 3, "", "")]
-            DragoonPiercingTalonChaosFeature = 6201,
+            DRG_RangedUptimeChaos = 6201,
             #endregion
 
+        #region Full Thrust Combo
         [ReplaceSkill(DRG.FullThrust)]
-        [ConflictingCombos(DragoonFullThrustComboPlus, DragoonSimple)]
+        [ConflictingCombos(DRG_FullThrustComboPlus, DRG_SimpleMode)]
         [CustomComboInfo("Full Thrust Combo", "Replace Full Thrust with its combo chain.", DRG.JobID, 4, "", "")]
-        DragoonFullThrustCombo = 6300,
+        DRG_FullThrustCombo = 6300,
 
-            #region Full Thrust Combo
-            [ParentCombo(DragoonFullThrustCombo)]
+            [ParentCombo(DRG_FullThrustCombo)]
             [CustomComboInfo("Full Piercing Talon Uptime", "Replaces Full Thrust Combo with Piercing Talon when you are out of range.", DRG.JobID, 5, "", "")]
-            DragoonPiercingTalonFullFeature = 6301,
-        #endregion
+            DRG_RangedUptimeFullThrust = 6301,
+            #endregion
 
+        #region Full Thrust Combo Plus
         [ReplaceSkill(DRG.FullThrust)]
-        [ConflictingCombos(DragoonFullThrustCombo, DragoonSimple)]
+        [ConflictingCombos(DRG_FullThrustCombo, DRG_SimpleMode)]
         [CustomComboInfo("Full Thrust Combo Plus", "Replace Full Thrust Plus Combo with its combo chain (Disembowel/Chaosthrust/life surge added).", DRG.JobID, 6, "", "")]
-        DragoonFullThrustComboPlus = 6400,
+        DRG_FullThrustComboPlus = 6400,
 
-            #region Full Thrust Combo Plus
-            [ParentCombo(DragoonFullThrustComboPlus)]
+            [ParentCombo(DRG_FullThrustComboPlus)]
             [CustomComboInfo("High Jump Plus Feature", "Includes High Jump in the rotation.", DRG.JobID, 7, "", "")]
-            DragoonHighJumpPlusFeature = 6401,
+            DRG_HighJumpPlus = 6401,
 
-            [ParentCombo(DragoonHighJumpPlusFeature)]
+            [ParentCombo(DRG_HighJumpPlus)]
             [CustomComboInfo("Mirage Plus Feature", "Includes Mirage in the rotation.", DRG.JobID, 8, "", "")]
-            DragoonMiragePlusFeature = 6402,
+            DRG_MiragePlus = 6402,
 
-            [ParentCombo(DragoonFullThrustComboPlus)]
+            [ParentCombo(DRG_FullThrustComboPlus)]
             [CustomComboInfo("Life Surge Plus Feature", "Includes Life Surge, while under proper buffs, onto proper GCDs, to the rotation.", DRG.JobID, 9, "", "")]
-            DragoonLifeSurgePlusFeature = 6404,
+            DRG_LifeSurgePlus = 6404,
 
-            [ParentCombo(DragoonFullThrustComboPlus)]
+            [ParentCombo(DRG_FullThrustComboPlus)]
             [CustomComboInfo("Plus Piercing Talon Uptime", "Replaces Full Thrust with Piercing Talon when you are out of range.", DRG.JobID, 10, "", "")]
-            DragoonPiercingTalonPlusFeature = 6403,
-        #endregion
+            DRG_RangedUptimePlus = 6403,
+            #endregion
 
+        #region Simple Dragoon
         [ReplaceSkill(DRG.FullThrust)]
-        [ConflictingCombos(DragoonFullThrustCombo, DragoonFullThrustComboPlus, DragoonChaosThrustCombo, DragoonFangThrustFeature, DragoonFangAndClawFeature)]
+        [ConflictingCombos(DRG_FullThrustCombo, DRG_FullThrustComboPlus, DRG_ChaosThrustCombo, DRG_FangThrust, DRG_FangAndClaw)]
         [CustomComboInfo("Simple Dragoon", "Replaces Full Thrust with the entire DRG combo chain. Conflicts with every non-AoE feature.", DRG.JobID, 11, "", "")]
-        DragoonSimple = 6500,
+        DRG_SimpleMode = 6500,
 
-            #region Simple Dragoon
-            [ParentCombo(DragoonSimple)]
+            [ParentCombo(DRG_SimpleMode)]
             [CustomComboInfo("Simple Opener", "Level 88+. Use True North on prepull to activate. Adds opener to the Simple Dragoon rotation. Not recommended for use in dungeons. OPTIONAL: USE REACTION OR MOACTION FOR OPTIMAL TARGETING.", DRG.JobID, 12, "", "")]
-            DragoonOpenerFeature = 6501,
+            DRG_Simple_Opener = 6501,
 
-            [ParentCombo(DragoonSimple)]
+            [ParentCombo(DRG_SimpleMode)]
             [CustomComboInfo("Wyrmwind Thrust Feature", "Includes Wyrmwind Thrust to the Simple Dragoon rotation.", DRG.JobID, 13, "", "")]
-            DragoonWyrmwindFeature = 6502,
+            DRG_Simple_Wyrmwind = 6502,
 
-            [ParentCombo(DragoonSimple)]
+            [ParentCombo(DRG_SimpleMode)]
             [CustomComboInfo("Geirskogul and Nastrond Feature", "Includes Geirskogul and Nastrond in the rotation.", DRG.JobID, 18, "", "")]
-            DragoonGeirskogulNastrondFeature = 6503,
+            DRG_Simple_GeirskogulNastrond = 6503,
 
-            [ConflictingCombos(DragoonLitanyDiveFeature, DragoonLanceDiveFeature, DragoonLifeLitanyDiveFeature)]
-            [ParentCombo(DragoonSimple)]
+            [ConflictingCombos(DRG_Simple_LitanyDives, DRG_Simple_LanceDives, DRG_Simple_LifeLitanyDives)]
+            [ParentCombo(DRG_SimpleMode)]
             [CustomComboInfo("Dives Feature", "Single Weave Friendly, but not optimal: Includes Spineshatter Dive, Dragonfire Dive and Stardiver in the rotation.", DRG.JobID, 14, "", "")]
-            DragoonDiveFeature = 6504,
+            DRG_Simple_Dives = 6504,
 
-            [ConflictingCombos(DragoonDiveFeature, DragoonLitanyDiveFeature, DragoonLifeLitanyDiveFeature)]
-            [ParentCombo(DragoonSimple)]
+            [ConflictingCombos(DRG_Simple_Dives, DRG_Simple_LitanyDives, DRG_Simple_LifeLitanyDives)]
+            [ParentCombo(DRG_SimpleMode)]
             [CustomComboInfo("Dives under Lance Charge Feature", "Single Weave Friendly: Includes Spineshatter Dive and Dragonfire Dive in the rotation, while under Lance Charge, and Stardiver while under Life of the Dragon.", DRG.JobID, 17, "", "")]
-            DragoonLanceDiveFeature = 6505,
+            DRG_Simple_LanceDives = 6505,
 
-            [ConflictingCombos(DragoonDiveFeature, DragoonLanceDiveFeature, DragoonLifeLitanyDiveFeature)]
-            [ParentCombo(DragoonSimple)]
+            [ConflictingCombos(DRG_Simple_Dives, DRG_Simple_LanceDives, DRG_Simple_LifeLitanyDives)]
+            [ParentCombo(DRG_SimpleMode)]
             [CustomComboInfo("Dives under Litany Feature", "Double Weaves Required: Includes Spineshatter Dive and Dragonfire Dive in the rotation, while under Battle Litany, and Stardiver while under Life of the Dragon.", DRG.JobID, 15, "", "")]
-            DragoonLitanyDiveFeature = 6506,
+            DRG_Simple_LitanyDives = 6506,
 
-            [ConflictingCombos(DragoonDiveFeature, DragoonLanceDiveFeature, DragoonLitanyDiveFeature)]
-            [ParentCombo(DragoonSimple)]
+            [ConflictingCombos(DRG_Simple_Dives, DRG_Simple_LanceDives, DRG_Simple_LitanyDives)]
+            [ParentCombo(DRG_SimpleMode)]
             [CustomComboInfo("Dives under Litany and Life of the Dragon Feature", "Double Weaves Required: Includes Spineshatter Dive and Dragonfire Dive in the rotation, while under Battle Litany and Life of the Dragon, and Stardiver while under Life of the Dragon.", DRG.JobID, 16, "", "")]
-            DragoonLifeLitanyDiveFeature = 6507,
+            DRG_Simple_LifeLitanyDives = 6507,
 
-            [ParentCombo(DragoonSimple)]
+            [ParentCombo(DRG_SimpleMode)]
             [CustomComboInfo("High Jump Feature", "Includes High Jump in the rotation.", DRG.JobID, 19, "", "")]
-            DragoonHighJumpFeature = 6508,
+            DRG_Simple_HighJump = 6508,
 
-            [ParentCombo(DragoonSimple)]
+            [ParentCombo(DRG_SimpleMode)]
             [CustomComboInfo("Mirage Feature", "Includes Mirage in the rotation.", DRG.JobID, 20, "", "")]
-            DragoonMirageFeature = 6509,
+            DRG_Simple_Mirage = 6509,
 
-            [ParentCombo(DragoonSimple)]
+            [ParentCombo(DRG_SimpleMode)]
             [CustomComboInfo("Lance Charge Feature", "Includes Lance Charge to the rotation.", DRG.JobID, 21, "", "")]
-            DragoonLanceFeature = 6510,
+            DRG_Simple_Lance = 6510,
 
-            [ParentCombo(DragoonSimple)]
+            [ParentCombo(DRG_SimpleMode)]
             [CustomComboInfo("Dragon Sight Feature", "Includes Dragon Sight to the rotation. OPTIONAL: USE REACTION OR MOACTION FOR OPTIMAL TARGETING.", DRG.JobID, 22, "", "")]
-            DragoonDragonSightFeature = 6511,
+            DRG_Simple_DragonSight = 6511,
 
-            [ParentCombo(DragoonSimple)]
+            [ParentCombo(DRG_SimpleMode)]
             [CustomComboInfo("Battle Litany Feature", "Includes Battle Litany to the rotation.", DRG.JobID, 23, "", "")]
-            DragoonLitanyFeature = 6514,
+            DRG_Simple_Litany = 6514,
 
-            [ParentCombo(DragoonSimple)]
+            [ParentCombo(DRG_SimpleMode)]
             [CustomComboInfo("Life Surge Feature", "Includes Life Surge, while under proper buffs, onto proper GCDs, to the rotation.", DRG.JobID, 24, "", "")]
-            DragoonLifeSurgeFeature = 6512,
+            DRG_Simple_LifeSurge = 6512,
 
-            [ParentCombo(DragoonSimple)]
+            [ParentCombo(DRG_SimpleMode)]
             [CustomComboInfo("Ranged Uptime Option", "Replaces Main Combo with Piercing Talon when you are out of melee range.\nNOT OPTIMAL.", DRG.JobID, 25, "", "")]
-            DRGSimpleRangedUptimeST = 6513,
-        #endregion
+            DRG_Simple_RangedUptime = 6513,
+            #endregion
 
+        #region Simple Dragoon AoE
         [ReplaceSkill(DRG.CoerthanTorment)]
-        [ConflictingCombos(DragoonCoerthanTormentCombo)]
+        [ConflictingCombos(DRG_CoerthanTormentCombo)]
         [CustomComboInfo("Simple Dragoon AoE", "One Button, many enemies hit.", DRG.JobID, 26, "", "")]
-        DragoonSimpleAoE = 6600,
+        DRG_AoE_SimpleMode = 6600,
 
-            #region Simple Dragoon AoE
-            [ParentCombo(DragoonSimpleAoE)]
+            [ParentCombo(DRG_AoE_SimpleMode)]
             [CustomComboInfo("Wyrmwind Thrust AoE Feature", "Includes Wyrmwind Thrust to the Simple Dragoon AoE rotation.", DRG.JobID, 27, "", "")]
-            DragoonAoEWyrmwindFeature = 6601,
+            DRG_AoE_Simple_WyrmwindFeature = 6601,
 
-            [ParentCombo(DragoonSimpleAoE)]
+            [ParentCombo(DRG_AoE_SimpleMode)]
             [CustomComboInfo("Geirskogul and Nastrond AoE Feature", "Includes Geirskogul and Nastrond in the AoE rotation.", DRG.JobID, 28, "", "")]
-            DragoonAoEGeirskogulNastrondFeature = 6602,
+            DRG_AoE_Simple_GeirskogulNastrond = 6602,
 
-            [ConflictingCombos(DragoonAoELitanyDiveFeature, DragoonAoELifeLitanyDiveFeature, DragoonAoELanceDiveFeature)]
-            [ParentCombo(DragoonSimpleAoE)]
+            [ConflictingCombos(DRG_AoE_Simple_LitanyDives, DRG_AoE_Simple_LifeLitanyDives, DRG_AoE_Simple_LanceDives)]
+            [ParentCombo(DRG_AoE_SimpleMode)]
             [CustomComboInfo("Dives AoE Feature", "Includes Spineshatter Dive, Dragonfire Dive and Stardiver in the AoE rotation.", DRG.JobID, 29, "", "")]
-            DragoonAoEDiveFeature = 6603,
+            DRG_AoE_Simple_Dives = 6603,
 
-            [ConflictingCombos(DragoonAoEDiveFeature, DragoonAoELitanyDiveFeature, DragoonAoELifeLitanyDiveFeature)]
-            [ParentCombo(DragoonSimpleAoE)]
+            [ConflictingCombos(DRG_AoE_Simple_Dives, DRG_AoE_Simple_LitanyDives, DRG_AoE_Simple_LifeLitanyDives)]
+            [ParentCombo(DRG_AoE_SimpleMode)]
             [CustomComboInfo("Dives under Lance Charge AoE Feature", "Single Weave Friendly: Includes Spineshatter Dive and Dragonfire Dive in the AoE rotation, while under Lance Charge, and Stardiver while under Life of the Dragon.", DRG.JobID, 30, "", "")]
-            DragoonAoELanceDiveFeature = 6604,
+            DRG_AoE_Simple_LanceDives = 6604,
 
-            [ConflictingCombos(DragoonAoEDiveFeature, DragoonAoELanceDiveFeature, DragoonAoELifeLitanyDiveFeature)]
-            [ParentCombo(DragoonSimpleAoE)]
+            [ConflictingCombos(DRG_AoE_Simple_Dives, DRG_AoE_Simple_LanceDives, DRG_AoE_Simple_LifeLitanyDives)]
+            [ParentCombo(DRG_AoE_SimpleMode)]
             [CustomComboInfo("Dives under Litany AoE Features", "Includes Spineshatter Dive and Dragonfire Dive in the AoE rotation, while under Battle Litany, and Stardiver while under Life of the Dragon.", DRG.JobID, 31, "", "")]
-            DragoonAoELitanyDiveFeature = 6605,
+            DRG_AoE_Simple_LitanyDives = 6605,
 
-            [ConflictingCombos(DragoonAoEDiveFeature, DragoonAoELanceDiveFeature, DragoonAoELitanyDiveFeature)]
-            [ParentCombo(DragoonSimpleAoE)]
+            [ConflictingCombos(DRG_AoE_Simple_Dives, DRG_AoE_Simple_LanceDives, DRG_AoE_Simple_LitanyDives)]
+            [ParentCombo(DRG_AoE_SimpleMode)]
             [CustomComboInfo("Dives under Litany and Life of the Dragon AoE Features", "Includes Spineshatter Dive and Dragonfire Dive in the AoE rotation, while under Battle Litany and Life of the Dragon, and Stardiver while under Life of the Dragon.", DRG.JobID, 32, "", "")]
-            DragoonAoELifeLitanyDiveFeature = 6606,
+            DRG_AoE_Simple_LifeLitanyDives = 6606,
 
-            [ParentCombo(DragoonSimpleAoE)]
+            [ParentCombo(DRG_AoE_SimpleMode)]
             [CustomComboInfo("High Jump AoE Feature", "Includes High Jump in the AoE rotation.", DRG.JobID, 33, "", "")]
-            DragoonAoEHighJumpFeature = 6607,
+            DRG_AoE_Simple_HighJump = 6607,
 
-            [ParentCombo(DragoonSimpleAoE)]
+            [ParentCombo(DRG_AoE_SimpleMode)]
             [CustomComboInfo("Mirage AoE Feature", "Includes Mirage in the AoE rotation.", DRG.JobID, 34, "", "")]
-            DragoonAoEMirageFeature = 6608,
+            DRG_AoE_Simple_Mirage = 6608,
 
-            [ParentCombo(DragoonSimpleAoE)]
+            [ParentCombo(DRG_AoE_SimpleMode)]
             [CustomComboInfo("Buffs AoE Feature", "Includes Lance Charge and Battle Litany to the AoE rotation.", DRG.JobID, 35, "", "")]
-            DragoonAoEBuffsFeature = 6609,
+            DRG_AoE_Simple_Buffs = 6609,
 
                 #region Buffs AoE Feature
-                [ParentCombo(DragoonAoEBuffsFeature)]
+                [ParentCombo(DRG_AoE_Simple_Buffs)]
                 [CustomComboInfo("Dragon Sight AoE Feature", "Includes Dragon Sight to the AoE rotation. OPTIONAL: USE REACTION OR MOACTION FOR OPTIMAL TARGETING.", DRG.JobID, 36, "", "")]
-                DragoonAoEDragonSightFeature = 6610,
+                DRG_AoE_Simple_DragonSight = 6610,
                 #endregion
 
-            [ParentCombo(DragoonSimpleAoE)]
+            [ParentCombo(DRG_AoE_SimpleMode)]
             [CustomComboInfo("Life Surge AoE Feature", "Includes Life Surge, while under proper buffs, onto proper GCDs, to the AoE rotation.", DRG.JobID, 37, "", "")]
-            DragoonAoELifeSurgeFeature = 6611,
+            DRG_AoE_Simple_LifeSurge = 6611,
 
-            [ParentCombo(DragoonSimpleAoE)]
+            [ParentCombo(DRG_AoE_SimpleMode)]
             [CustomComboInfo("Ranged Uptime Option", "Replaces Main AoE Combo with Piercing Talon when you are out of melee range.\nNOT OPTIMAL.", DRG.JobID, 40, "", "")]
-            DRGSimpleRangedUptimeAoE = 6612,
+            DRG_AoE_Simple_RangedUptime = 6612,
             #endregion
 
-        [ConflictingCombos(DragoonSimple)]
+        [ConflictingCombos(DRG_SimpleMode)]
         [CustomComboInfo("Wheeling Thrust/Fang and Claw Option", "When you have either Enhanced Fang and Claw or Wheeling Thrust, Chaos Thrust Combo becomes Wheeling Thrust and Full Thrust Combo becomes Fang and Claw. Requires Chaos Thrust Combo and Full Thrust Combo.", DRG.JobID, 38, "", "")]
-        DragoonFangThrustFeature = 6700,
+        DRG_FangThrust = 6700,
 
         [ReplaceSkill(DRG.FangAndClaw)]
-        [ConflictingCombos(DragoonSimple)]
+        [ConflictingCombos(DRG_SimpleMode)]
         [CustomComboInfo("Wheeling Thrust/Fang and Claw Feature", "Fang And Claw Becomes Wheeling Thrust when under Enhanced Wheeling Thrust Buff.", DRG.JobID, 39, "", "")]
-        DragoonFangAndClawFeature = 6701,
+        DRG_FangAndClaw = 6701,
 
         #endregion
         // ====================================================================================

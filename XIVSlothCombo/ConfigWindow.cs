@@ -761,11 +761,11 @@ namespace XIVSlothComboPlugin
             // ====================================================================================
             #region BLACK MAGE
 
-            if (preset == CustomComboPreset.BlackAoEFoulOption)
+            if (preset == CustomComboPreset.BLM_AoE_Simple_Foul)
             {
                 ConfigWindowFunctions.DrawSliderInt(0, 2, BLM.Config.BlmPolyglotsStored, "Number of Polyglot charges to store.\n(2 = Only use Polyglot with Manafont)");
             }
-            if (preset == CustomComboPreset.BlackSimpleFeature || preset == CustomComboPreset.BlackSimpleTransposeFeature)
+            if (preset == CustomComboPreset.BLM_SimpleMode || preset == CustomComboPreset.BLM_Simple_Transpose)
             {
                 ConfigWindowFunctions.DrawSliderFloat(3.0f, 8.0f, BLM.Config.BlmAstralFireRefresh, "Seconds before refreshing Astral Fire.\n(6s = Recommended)");
             }
@@ -852,9 +852,9 @@ namespace XIVSlothComboPlugin
             #endregion
             // ====================================================================================
             #region DARK KNIGHT
-            if (preset == CustomComboPreset.DarkEoSPoolOption && enabled)
+            if (preset == CustomComboPreset.DRK_EoSPooling && enabled)
                 ConfigWindowFunctions.DrawSliderInt(0, 3000, DRK.Config.DrkMPManagement, "How much MP to save (0 = Use All)", 150, SliderIncrements.Thousands);
-            if (preset == CustomComboPreset.DarkPlungeFeature && enabled)
+            if (preset == CustomComboPreset.DRK_Plunge && enabled)
                 ConfigWindowFunctions.DrawSliderInt(0, 1, DRK.Config.DrkKeepPlungeCharges, "How many charges to keep ready? (0 = Use All)", 75, SliderIncrements.Ones);
             #endregion
             // ====================================================================================
