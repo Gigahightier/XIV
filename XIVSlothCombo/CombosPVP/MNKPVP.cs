@@ -27,7 +27,8 @@
             public const ushort
                 WindResonance = 2007,
                 FireResonance = 3170,
-                EarthResonance = 3171;
+                EarthResonance = 3171,
+                Thunderclap = 3173;
         }
 
         public static class Debuffs
@@ -35,6 +36,8 @@
             public const ushort
                 PressurePoint = 3172;
         }
+
+        public static bool CanBurst = false;
 
         internal class MNKBurstMode : CustomCombo
         {
@@ -46,34 +49,74 @@
                 {
                     //uint globalAction = PVPCommon.ExecutePVPGlobal.ExecuteGlobal(actionID);
 
-                    if (!TargetHasEffectAny(PVPCommon.Buffs.Guard))
+                    if (GetRemainingCharges(RisingPhoenix) == 2 && IsOnCooldown(SixSidedStar) && 
+                        (lastComboMove is not Demolish) && !TargetHasEffectAny(All.Debuffs.Resilience))
+                        CanBurst = true;
+
+                    if (!TargetHasEffectAny(PVPCommon.Buffs.Guard) || (lastComboMove is Demolish && JustUsed(Enlightenment)))
                     {
-                        if (IsEnabled(CustomComboPreset.MNKRiddleOfEarthOption) && IsOffCooldown(RiddleOfEarth) && PlayerHealthPercentageHp() <= 95)
-                            return OriginalHook(RiddleOfEarth);
-                        if (IsEnabled(CustomComboPreset.MNKThunderClapOption) && !HasEffect(Buffs.WindResonance) && GetRemainingCharges(ThunderClap) > 0)
-                            return OriginalHook(ThunderClap);
+                        //var payloads = new List<Payload>()
+                        //{
+                        //    new TextPayload($"{GetResourceCost(Meteordrive).ToString()}")
+                        //};
+
+                        //Service.ChatGui.PrintChat(new XivChatEntry
+                        //{
+                        //    Message = new SeString(payloads),
+                        //    Type = XivChatType.Echo
+                        //});
 
                         if (CanWeave(actionID))
                         {
-                            if (IsOffCooldown(SixSidedStar))
-                                return OriginalHook(SixSidedStar);
-                            if (IsEnabled(CustomComboPreset.MNKRiddleOfEarthOption) && HasEffect(Buffs.EarthResonance) && GetBuffRemainingTime(Buffs.EarthResonance) < 6)
+                            if (lastComboMove is PhantomRush && JustUsed(Enlightenment) && CanBurst)
+                                return OriginalHook(Meteordrive);
+
+                            if (InMeleeRange())
+                            {
+                                if (IsOffCooldown(SixSidedStar) && !TargetHasEffectAny(All.Debuffs.Resilience) && (lastComboMove is not Demolish or PhantomRush))
+                                    return OriginalHook(SixSidedStar);
+
+                                if (((GetRemainingCharges(RisingPhoenix) == 2 && lastComboMove is Demolish) ||
+                                    (lastComboMove is PhantomRush && IsEnlightenmentOffCooldown() && JustUsedCharge(RisingPhoenix))) && 
+                                    !HasEffect(Buffs.FireResonance) && CanBurst)
+                                    return OriginalHook(RisingPhoenix);
+                            }
+
+                            if (IsEnabled(CustomComboPreset.MNKRiddleOfEarthOption) && HasEffect(Buffs.EarthResonance) && GetBuffRemainingTime(Buffs.EarthResonance) < 4)
                                 return OriginalHook(EarthsReply);
-                            if (GetRemainingCharges(RisingPhoenix) > 0 && !HasEffect(Buffs.FireResonance) && (lastComboMove is Demolish || IsOffCooldown(Enlightenment)))
-                                return OriginalHook(RisingPhoenix);
                         }
 
                         if (HasEffect(Buffs.FireResonance))
                         {
-                            if (lastComboMove is Demolish)
+                            if (lastComboMove is Demolish && IsEnlightenmentOffCooldown())
                                 return OriginalHook(PhantomRush);
-                            if (IsOffCooldown(Enlightenment))
+
+                            if (IsEnlightenmentOffCooldown())
                                 return OriginalHook(Enlightenment);
                         }
+
+                        if (IsEnabled(CustomComboPreset.MNKRiddleOfEarthOption) && IsOffCooldown(RiddleOfEarth) && PlayerHealthPercentageHp() <= 95)
+                            return OriginalHook(RiddleOfEarth);
+
+                        if (IsEnabled(CustomComboPreset.MNKThunderClapOption) && (!HasEffect(Buffs.WindResonance) || !HasEffect(Buffs.Thunderclap)) && 
+                            GetRemainingCharges(ThunderClap) > 1 && lastComboMove is not Demolish)
+                            return OriginalHook(ThunderClap);
+
+                        if (IsEnabled(CustomComboPreset.MNKThunderClapOption) && !HasEffect(Buffs.WindResonance) && 
+                            GetRemainingCharges(ThunderClap) > 0 && lastComboMove is not Demolish)
+                            return OriginalHook(ThunderClap);
                     }
+
+                    if (GetRemainingCharges(RisingPhoenix) == 0)
+                        CanBurst = false;
                 }
 
                 return actionID;
+            }
+            
+            private bool IsEnlightenmentOffCooldown()
+            {
+                return IsOffCooldown(Enlightenment) || GetCooldownRemainingTime(Enlightenment) < 1;
             }
         }
     }

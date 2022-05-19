@@ -381,6 +381,13 @@
             <param name="actionID">Action ID to check.</param>
             <returns>True or false.</returns>
         </member>
+        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.JustUsedCharge(System.UInt32)">
+            <summary>
+            Check if a charge was just used.
+            </summary>
+            <param name="actionID">Action ID to check.</param>
+            <returns>True or false.</returns>
+        </member>
         <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.HasCharges(System.UInt32)">
             <summary>
             Gets a value indicating whether an action has any available charges.

@@ -475,6 +475,14 @@ namespace XIVSlothComboPlugin.Combos
         public bool JustUsed(uint actionID)
            => IsOnCooldown(actionID) && GetCooldownRemainingTime(actionID) > (GetCooldown(actionID).CooldownTotal - 3);
 
+        /// <summary>
+        /// Check if a charge was just used.
+        /// </summary>
+        /// <param name="actionID">Action ID to check.</param>
+        /// <returns>True or false.</returns>
+        public bool JustUsedCharge(uint actionID)
+           => GetCooldown(actionID).ChargeCooldownRemaining < (GetCooldown(actionID).CooldownTotal);
+
 
         /// <summary>
         /// Gets a value indicating whether an action has any available charges.

@@ -55,7 +55,8 @@
                 Heavy = 14,
                 Addle = 1203,
                 Reprisal = 1193,
-                Feint = 1195;
+                Feint = 1195,
+                Resilience = 3248;
         }
 
         public static class Levels
