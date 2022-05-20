@@ -3165,7 +3165,7 @@ namespace XIVSlothComboPlugin
 
             [ParentCombo(MNKBurstMode)]
             [SecretCustomCombo]
-            [CustomComboInfo("Add Riddle of Earth", "Adds Riddle of Earth and Earth's Reply to the Burst Mode.", MNK.JobID)]
+            [CustomComboInfo("Add Riddle of Earth", "Adds Riddle of Earth and Earth's Reply to the Burst Mode when in combat.", MNK.JobID)]
             MNKRiddleOfEarthOption = 80102,
             #endregion
 
