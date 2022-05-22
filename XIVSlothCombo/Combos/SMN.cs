@@ -380,7 +380,7 @@ namespace XIVSlothComboPlugin.Combos
                         if (IsEnabled(CustomComboPreset.SummonerEgiAttacksFeature) && (gauge.IsGarudaAttuned || gauge.IsTitanAttuned || gauge.IsIfritAttuned))
                             return OriginalHook(Gemshine);
 
-                        if (IsEnabled(CustomComboPreset.SummonerEgiSummonsonMainFeature) && gauge.SummonTimerRemaining == 0 && IsOnCooldown(SummonPhoenix) && IsOnCooldown(SummonBahamut))
+                        if (IsEnabled(CustomComboPreset.EgisOnAOEFeature) && gauge.SummonTimerRemaining == 0 && IsOnCooldown(SummonPhoenix) && IsOnCooldown(SummonBahamut))
                         {
                             if (gauge.IsIfritReady && !gauge.IsTitanReady && !gauge.IsGarudaReady && level >= Levels.SummonRuby)
                                 return OriginalHook(SummonRuby);
@@ -430,13 +430,13 @@ namespace XIVSlothComboPlugin.Combos
                         if (CanSpellWeave(actionID))
                         {
                             // Searing Light
-                            if (IsEnabled(CustomComboPreset.SearingLightFeature) && IsNotEnabled(CustomComboPreset.SearingLightSTOnlyOption) && IsOffCooldown(SearingLight) && level >= Levels.SearingLight)
+                            if (IsEnabled(CustomComboPreset.SearingLightonRuinFeature) && IsOffCooldown(SearingLight) && level >= Levels.SearingLight)
                             {
                                 if (IsEnabled(CustomComboPreset.SummonerSearingLightBurstOption))
                                 {
-                                    if ((SummonerBurstPhase is 0 or 1 && OriginalHook(Tridisaster) == AstralFlare) ||
-                                        (SummonerBurstPhase == 2 && OriginalHook(Tridisaster) == BrandOfPurgatory) ||
-                                        (SummonerBurstPhase == 3 && OriginalHook(Tridisaster) is AstralFlare or BrandOfPurgatory) ||
+                                    if ((SummonerBurstPhase == 1 && OriginalHook(Ruin) == AstralFlare) ||
+                                        (SummonerBurstPhase == 2 && OriginalHook(Ruin) == BrandOfPurgatory) ||
+                                        (SummonerBurstPhase == 3 && OriginalHook(Ruin) is AstralFlare or BrandOfPurgatory) ||
                                         (SummonerBurstPhase == 4))
                                         return SearingLight;
                                 }
@@ -446,19 +446,19 @@ namespace XIVSlothComboPlugin.Combos
 
 
                             // ED & Fester
-                            if (IsEnabled(CustomComboPreset.SummonerESAOEFeature))
+                            if (IsEnabled(CustomComboPreset.SummonerEDMainComboFeature))
                             {
                                 if (gauge.HasAetherflowStacks)
                                 {
-                                    if (IsNotEnabled(CustomComboPreset.SummonerOGCDPoolFeature))
+                                    if (IsNotEnabled(CustomComboPreset.SummonerEDPoolonMainFeature))
                                         return Painflare;
-                                    if (IsEnabled(CustomComboPreset.SummonerOGCDPoolFeature) && IsNotEnabled(CustomComboPreset.SummonerSTPoolOnlyOption))
+                                    if (IsEnabled(CustomComboPreset.SummonerEDPoolonMainFeature))
                                     {
                                         if (level < Levels.SearingLight)
                                             return Painflare;
-                                        if ((SummonerBurstPhase is 0 or 1 && OriginalHook(Tridisaster) == AstralFlare) ||
-                                            (SummonerBurstPhase == 2 && OriginalHook(Tridisaster) == BrandOfPurgatory) ||
-                                            (SummonerBurstPhase == 3 && (GetCooldownRemainingTime(SearingLight) < 30 || GetCooldownRemainingTime(SearingLight) > 100) && OriginalHook(Tridisaster) is AstralFlare or BrandOfPurgatory) ||
+                                        if ((SummonerBurstPhase == 1 && OriginalHook(Ruin) == AstralImpulse) ||
+                                            (SummonerBurstPhase == 2 && OriginalHook(Ruin) == FountainOfFire) ||
+                                            (SummonerBurstPhase == 3 && (GetCooldownRemainingTime(SearingLight) < 30 || GetCooldownRemainingTime(SearingLight) > 100) && OriginalHook(Ruin) is AstralImpulse or FountainOfFire) ||
                                             (SummonerBurstPhase == 4 && HasEffectAny(Buffs.SearingLight) && !HasEffect(Buffs.TitansFavor)) ||
                                             IsNotEnabled(CustomComboPreset.SummonerPrimalBurstChoice))
                                             return Painflare;
@@ -511,7 +511,7 @@ namespace XIVSlothComboPlugin.Combos
                         if (IsEnabled(CustomComboPreset.SummonerSwiftcastEgiFeature) && level >= All.Levels.Swiftcast)
                         {
                             //Swiftcast Garuda Feature
-                            if (swiftcasePhase is 0 or 1 && level >= Levels.Slipstream && HasEffect(Buffs.GarudasFavor))
+                            if (swiftcasePhase == 1 && level >= Levels.Slipstream && HasEffect(Buffs.GarudasFavor))
                             {
                                 if (CanSpellWeave(actionID) && IsOffCooldown(All.Swiftcast) && gauge.IsGarudaAttuned)
                                     return All.Swiftcast;
@@ -571,7 +571,7 @@ namespace XIVSlothComboPlugin.Combos
                             if (gauge.IsIfritReady && !gauge.IsTitanReady && !gauge.IsGarudaReady && level >= Levels.SummonRuby)
                                 return OriginalHook(SummonRuby);
 
-                            if (summonerPrimalChoice is 0 or 1)
+                            if (summonerPrimalChoice == 1)
                             {
                                 if (gauge.IsTitanReady && level >= Levels.SummonTopaz)
                                     return OriginalHook(SummonTopaz);
