@@ -337,7 +337,7 @@ namespace XIVSlothComboPlugin.Combos
                             }
 
                             //Swiftcast Ifrit Feature (Conditions to allow for SpS Ruins to still be under the effect of Swiftcast)
-                            if (swiftcasePhase == 2 && level >= Levels.RubyRuin1)
+                            if (swiftcastPhase == 2 && level >= Levels.RubyRuin1)
                             {
                                 if (IsOffCooldown(All.Swiftcast) && gauge.IsIfritAttuned)
                                 {
