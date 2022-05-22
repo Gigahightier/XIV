@@ -47,7 +47,11 @@
                 {
                     //uint globalAction = PVPCommon.ExecutePVPGlobal.ExecuteGlobal(actionID);
 
-                    if (!TargetHasEffectAny(PVPCommon.Buffs.Guard))
+                    if (TargetHasEffectAny(SAMPvP.Buffs.Chiten))
+                        return OriginalHook(PVPCommon.Sprint);
+
+                    if (!TargetHasEffectAny(PVPCommon.Buffs.Guard) && !TargetHasEffectAny(SAMPvP.Buffs.Chiten) && !TargetHasEffectAny(PLDPvP.Buffs.HallowedGround) &&
+                        !TargetHasEffectAny(PLDPvP.Buffs.Phalanx))
                     {
                         //var payloads = new List<Payload>()
                         //{

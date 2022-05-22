@@ -25,7 +25,8 @@
         {
             public const ushort
                 Kaiten = 3201,
-                Midare = 3203;
+                Midare = 3203,
+                Chiten = 1240;
         }
 
         public static class Debuffs
