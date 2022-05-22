@@ -337,7 +337,7 @@ namespace XIVSlothComboPlugin.Combos
                             }
 
                             //Swiftcast Ifrit Feature (Conditions to allow for SpS Ruins to still be under the effect of Swiftcast)
-                            if (swiftcastPhase == 2)
+                            if (swiftcasePhase == 2 && level >= Levels.RubyRuin1)
                             {
                                 if (IsOffCooldown(All.Swiftcast) && gauge.IsIfritAttuned)
                                 {
@@ -363,7 +363,7 @@ namespace XIVSlothComboPlugin.Combos
                                 }
 
                                 //Swiftcast Ifrit Feature (Conditions to allow for SpS Ruins to still be under the effect of Swiftcast)
-                                if (gauge.IsIfritAttuned && IsOffCooldown(All.Swiftcast))
+                                if (level >= Levels.RubyRuin1 && gauge.IsIfritAttuned && IsOffCooldown(All.Swiftcast))
                                 {
                                     if (IsNotEnabled(CustomComboPreset.SummonerIfritUniqueFeature) ||
                                         (IsEnabled(CustomComboPreset.SummonerIfritUniqueFeature) && gauge.Attunement >= 1))
@@ -400,6 +400,33 @@ namespace XIVSlothComboPlugin.Combos
                                 if (gauge.IsTitanReady && level >= Levels.SummonTopaz)
                                     return OriginalHook(SummonTopaz);
                             }
+                        }
+                    }
+
+                    //Demi Features
+                    if (IsEnabled(CustomComboPreset.SummonerDemiSummonsFeature))
+                    {
+                        if (gauge.AttunmentTimerRemaining == 0 && gauge.SummonTimerRemaining == 0 && IsOffCooldown(OriginalHook(Aethercharge)) &&
+                            (level is >= Levels.Aethercharge and < Levels.Bahamut || //Pre Bahamut Phase
+                            gauge.IsBahamutReady && level >= Levels.Bahamut || //Bahamut Phase
+                            gauge.IsPhoenixReady && level >= Levels.Phoenix)) //Phoenix Phase
+                            return OriginalHook(Aethercharge);
+
+                        if (IsEnabled(CustomComboPreset.SummonerSingleTargetDemiFeature) && CanSpellWeave(actionID))
+                        {
+                            if (IsOffCooldown(OriginalHook(AstralFlow)) && 
+                                level >= Levels.AstralFlow && (level < Levels.Bahamut || lastComboMove is AstralImpulse))
+                                return OriginalHook(AstralFlow);
+
+                            if (IsOffCooldown(OriginalHook(EnkindleBahamut)) && 
+                                level >= Levels.Bahamut && lastComboMove is AstralImpulse or FountainOfFire)
+                                return OriginalHook(EnkindleBahamut);
+                        }
+
+                        if (IsEnabled(CustomComboPreset.SummonerSingleTargetRekindleOption))
+                        {
+                            if (IsOffCooldown(Rekindle) && lastComboMove is FountainOfFire)
+                                return OriginalHook(AstralFlow);
                         }
                     }
 

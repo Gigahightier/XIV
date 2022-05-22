@@ -2577,8 +2577,9 @@ namespace XIVSlothComboPlugin
         [ParentCombo(SummonerMainComboFeature)]
         [CustomComboInfo("Egi Summons combo Features", "Various options for egis.", SMN.JobID, 1)]
         EgisOnRuinFeature = 17015,
-        
-        [CustomComboInfo("Egi Summon order", "Sets the order you summon egis.", SMN.JobID, 2)]
+
+        [ParentCombo(EgisOnRuinFeature)]
+        [CustomComboInfo("Egi Summons on RuinI/II", "Adds Egi Summons to RuinI/II.\nChoose options below for order of Egis summoned.", SMN.JobID, 1)]
         SummonerEgiSummonsonMainFeature = 17016,
 
         [ParentCombo(SummonerAOEComboFeature)]
