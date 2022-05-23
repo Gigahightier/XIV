@@ -322,18 +322,19 @@
             <param name="effectID">Status effect ID.</param>
             <returns>A value indicating if the effect exists.</returns>
         </member>
-        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.TargetHasEffectAnyNoBurstPVP">
+        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.TargetHasEffectAnyNoBurstPVP(Dalamud.Game.ClientState.Objects.Types.GameObject)">
             <summary>
             Find if an effect on the target exists. Used to avoid bursting in PVP.
             The effect may be owned by anyone or unowned.
             </summary>
         </member>
-        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.FindTargetEffectAny(System.UInt16)">
+        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.FindTargetEffectAny(System.UInt16,Dalamud.Game.ClientState.Objects.Types.GameObject)">
             <summary>
             Finds an effect on the current target.
             The effect may be owned by anyone or unowned.
             </summary>
             <param name="effectID">Status effect ID.</param>
+            <param name="target">Target.</param>
             <returns>Status object or null.</returns>
         </member>
         <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.FindEffect(System.UInt16,Dalamud.Game.ClientState.Objects.Types.GameObject,System.Nullable{System.UInt32})">

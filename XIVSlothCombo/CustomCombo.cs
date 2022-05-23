@@ -412,22 +412,23 @@ namespace XIVSlothComboPlugin.Combos
         /// Find if an effect on the target exists. Used to avoid bursting in PVP.
         /// The effect may be owned by anyone or unowned.
         /// </summary>
-        public bool TargetHasEffectAnyNoBurstPVP()
-            => (FindTargetEffectAny(PVPCommon.Buffs.Guard) is not null ||
-               FindTargetEffectAny(SAMPvP.Buffs.Chiten) is not null ||
-               FindTargetEffectAny(PLDPvP.Buffs.HallowedGround) is not null ||
-               FindTargetEffectAny(PLDPvP.Buffs.Phalanx) is not null ||
-               FindTargetEffectAny(DRKPvP.Buffs.UndeadRedemption) is not null ||
-               FindTargetEffectAny(MNKPvP.Buffs.EarthResonance) is not null);
+        public bool TargetHasEffectAnyNoBurstPVP(GameObject? target = null)
+            => (FindTargetEffectAny(PVPCommon.Buffs.Guard, target) is not null ||
+               FindTargetEffectAny(SAMPvP.Buffs.Chiten, target) is not null ||
+               FindTargetEffectAny(PLDPvP.Buffs.HallowedGround, target) is not null ||
+               FindTargetEffectAny(PLDPvP.Buffs.Phalanx, target) is not null ||
+               FindTargetEffectAny(DRKPvP.Buffs.UndeadRedemption, target) is not null ||
+               FindTargetEffectAny(MNKPvP.Buffs.EarthResonance, target) is not null);
 
         /// <summary>
         /// Finds an effect on the current target.
         /// The effect may be owned by anyone or unowned.
         /// </summary>
         /// <param name="effectID">Status effect ID.</param>
+        /// <param name="target">Target.</param>
         /// <returns>Status object or null.</returns>
-        public Status? FindTargetEffectAny(ushort effectID)
-            => FindEffect(effectID, CurrentTarget, null);
+        public Status? FindTargetEffectAny(ushort effectID, GameObject? target = null)
+            => FindEffect(effectID, target ?? CurrentTarget, null);
 
         /// <summary>
         /// Finds an effect on the given object.

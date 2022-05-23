@@ -91,9 +91,9 @@ namespace XIVSlothComboPlugin.Combos
                         {
                             if (IsOffCooldown(Guardian))
                             {
-                                foreach (PartyMember? partyMember in GetPartyMembers().Where(partyMember => partyMember.ObjectId != LocalPlayer.ObjectId && partyMember.CurrentHP > 0 && partyMember.CurrentHP < partyMember.MaxHP))
-                                {
-                                    if (partyMember != null && partyMember.GameObject != null)
+                                foreach (PartyMember? partyMember in GetPartyMembers().Where(partyMember => partyMember.ObjectId != LocalPlayer.ObjectId && partyMember.CurrentHP > 0 && partyMember.CurrentHP < partyMember.MaxHP && !TargetHasEffectAnyNoBurstPVP(partyMember.GameObject)))
+                                {                                    
+                                    if (partyMember?.GameObject != null)
                                     {
                                         if (!partyMembersHP.ContainsKey(partyMember.GameObject))
                                         {
