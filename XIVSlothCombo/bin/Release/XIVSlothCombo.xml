@@ -495,13 +495,21 @@
             </summary>
             <returns>Current party list.</returns>
         </member>
+        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.GetPartyMemberWithLowestHP(System.Nullable{System.Int32},System.Boolean)">
+            <summary>
+            Gets party member with lowest health that is still alive.
+            </summary>
+            <param name="yalmDistanceX">Limit search to specific distance.</param>
+            <param name="inPvP">Apply additional restrictions based off pvp status.</param>
+            <returns></returns>
+        </member>
         <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.SetTarget(Dalamud.Game.ClientState.Objects.Types.GameObject)">
             <summary>
             Sets the player's target. 
             </summary>
             <param name="target">Target must be a game object that the player can normally click and target.</param>
         </member>
-        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.IsInRange(Dalamud.Game.ClientState.Objects.Types.GameObject,System.Int32)">
+        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.IsInRange(Dalamud.Game.ClientState.Objects.Types.GameObject,System.Nullable{System.Int32})">
             <summary>
             Checks if target is in appropriate range for targeting
             </summary>

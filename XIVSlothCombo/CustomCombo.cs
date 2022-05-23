@@ -705,6 +705,39 @@ namespace XIVSlothComboPlugin.Combos
         public PartyList GetPartyMembers() => Service.PartyList;
 
         /// <summary>
+        /// Gets party member with lowest health that is still alive.
+        /// </summary>
+        /// <param name="yalmDistanceX">Limit search to specific distance.</param>
+        /// <param name="inPvP">Apply additional restrictions based off pvp status.</param>
+        /// <returns></returns>
+        public PartyMember? GetPartyMemberWithLowestHP(int? yalmDistanceX = null, bool inPvP = false)
+        {
+            Dictionary<PartyMember, double> partyMembersHP = new();
+
+            foreach (PartyMember? partyMember in GetPartyMembers().Where(partyMember => partyMember.ObjectId != LocalPlayer.ObjectId && partyMember.CurrentHP > 0 && 
+                                                                         partyMember.CurrentHP < partyMember.MaxHP && (!inPvP || (inPvP && !TargetHasEffectAnyNoBurstPVP(partyMember.GameObject)))))
+            {
+                if (partyMember is not null && partyMember?.GameObject is not null)
+                {
+                    if (!partyMembersHP.ContainsKey(partyMember))
+                    {
+                        if (IsInRange(partyMember.GameObject, yalmDistanceX))
+                            partyMembersHP.Add(partyMember, partyMember.CurrentHP);
+                    }
+                    else
+                    {
+                        if (!IsInRange(partyMember.GameObject, yalmDistanceX))
+                            partyMembersHP.Remove(partyMember);
+                        else
+                            partyMembersHP[partyMember] = partyMember.CurrentHP;
+                    }
+                }
+            }
+
+            return partyMembersHP.OrderBy(partyMember => partyMember.Value).Select(partyMember => partyMember.Key).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Sets the player's target. 
         /// </summary>
         /// <param name="target">Target must be a game object that the player can normally click and target.</param>
@@ -717,7 +750,7 @@ namespace XIVSlothComboPlugin.Combos
         /// </summary>
         /// <param name="target">The target object to check</param>
         /// <param name="yalmDistanceX">The range distance to limit by</param>
-        public bool IsInRange(GameObject? target, int yalmDistanceX = 30)
+        public bool IsInRange(GameObject? target, int? yalmDistanceX = 30)
         {
             if (target == null) return false;
             if (target.YalmDistanceX >= yalmDistanceX) return false;

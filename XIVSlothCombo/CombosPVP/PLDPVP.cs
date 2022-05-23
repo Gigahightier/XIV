@@ -50,14 +50,10 @@ namespace XIVSlothComboPlugin.Combos
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.PLDBurstMode;
             
-            private Dictionary<GameObject, double> partyMembersHP = new();
             private GameObject? previousTarget = null;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
-                if (partyMembersHP.Count > 0)
-                    partyMembersHP = new Dictionary<GameObject, double>();
-
                 if (JustUsed(Guardian) && previousTarget is not null)
                 {
                     if (GetTargetHPPercent(previousTarget) > 0)
@@ -91,36 +87,13 @@ namespace XIVSlothComboPlugin.Combos
                         {
                             if (IsOffCooldown(Guardian))
                             {
-                                foreach (PartyMember? partyMember in GetPartyMembers().Where(partyMember => partyMember.ObjectId != LocalPlayer.ObjectId && partyMember.CurrentHP > 0 && partyMember.CurrentHP < partyMember.MaxHP && !TargetHasEffectAnyNoBurstPVP(partyMember.GameObject)))
-                                {                                    
-                                    if (partyMember?.GameObject != null)
-                                    {
-                                        if (!partyMembersHP.ContainsKey(partyMember.GameObject))
-                                        {
-                                            if (IsInRange(partyMember.GameObject, 21))
-                                                partyMembersHP.Add(partyMember.GameObject, GetTargetHPPercent(partyMember.GameObject));
-                                        }
-                                        else
-                                        {
-                                            if (!IsInRange(partyMember.GameObject, 21))
-                                                partyMembersHP.Remove(partyMember.GameObject);
-                                            else 
-                                                partyMembersHP[partyMember.GameObject] = GetTargetHPPercent(partyMember.GameObject);
-                                        }
-                                    }                                    
-                                }
+                                GameObject? partyMemberLowestHP = GetPartyMemberWithLowestHP(yalmDistanceX: 21, inPvP: true)?.GameObject;
 
-                                if (partyMembersHP.Count > 0)
+                                if (partyMemberLowestHP is not null)
                                 {
-                                    GameObject? partyMemberLowestHP = partyMembersHP.Where(partyMember => partyMember.Value > 0 && partyMember.Value < 100)
-                                                                                    .OrderBy(partyMember => partyMember.Value).Select(partyMember => partyMember.Key).FirstOrDefault();
-
-                                    if (partyMemberLowestHP is not null)
-                                    {
-                                        previousTarget = LocalPlayer.TargetObject;
-                                        TargetObject(partyMemberLowestHP);
-                                        return Guardian;
-                                    }                                                                           
+                                    previousTarget = LocalPlayer.TargetObject;
+                                    TargetObject(partyMemberLowestHP);
+                                    return Guardian;
                                 }
                             }
 
@@ -129,7 +102,7 @@ namespace XIVSlothComboPlugin.Combos
                                 if (GetRemainingCharges(Intervene) > 0 && (!InMeleeRange() || IsOnCooldown(ShieldBash)))
                                     return OriginalHook(Intervene);
 
-                                if (IsOffCooldown(ShieldBash) && !TargetHasEffectAny(All.Debuffs.Resilience))
+                                if (IsOffCooldown(ShieldBash) && !TargetHasEffectAny(All.Debuffs.Resilience) && !TargetHasEffectAny(PVPCommon.Debuffs.Stun))
                                     return OriginalHook(ShieldBash);
                             }
 
