@@ -43,19 +43,18 @@
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
+                if (TargetHasEffectAny(SAMPvP.Buffs.Chiten))
+                    return OriginalHook(PVPCommon.Sprint);
+
                 if (actionID is Bootshine or TrueStrike or SnapPunch or DragonKick or TwinSnakes or Demolish or PhantomRush)
                 {
                     //uint globalAction = PVPCommon.ExecutePVPGlobal.ExecuteGlobal(actionID);
 
-                    if (TargetHasEffectAny(SAMPvP.Buffs.Chiten))
-                        return OriginalHook(PVPCommon.Sprint);
-
-                    if (!TargetHasEffectAny(PVPCommon.Buffs.Guard) && !TargetHasEffectAny(SAMPvP.Buffs.Chiten) && !TargetHasEffectAny(PLDPvP.Buffs.HallowedGround) &&
-                        !TargetHasEffectAny(PLDPvP.Buffs.Phalanx))
+                    if (!TargetHasEffectAnyNoBurstPVP())
                     {
                         //var payloads = new List<Payload>()
                         //{
-                        //    new TextPayload($"{GetResourceCost(Meteordrive).ToString()}")
+                        //    new TextPayload($"{HasEffectAny(1991).ToString()}")
                         //};
 
                         //Service.ChatGui.PrintChat(new XivChatEntry

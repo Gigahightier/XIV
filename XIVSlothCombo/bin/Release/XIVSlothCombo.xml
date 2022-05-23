@@ -322,6 +322,12 @@
             <param name="effectID">Status effect ID.</param>
             <returns>A value indicating if the effect exists.</returns>
         </member>
+        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.TargetHasEffectAnyNoBurstPVP">
+            <summary>
+            Find if an effect on the target exists. Used to avoid bursting in PVP.
+            The effect may be owned by anyone or unowned.
+            </summary>
+        </member>
         <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.FindTargetEffectAny(System.UInt16)">
             <summary>
             Finds an effect on the current target.
@@ -494,11 +500,12 @@
             </summary>
             <param name="target">Target must be a game object that the player can normally click and target.</param>
         </member>
-        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.IsInRange(Dalamud.Game.ClientState.Objects.Types.GameObject)">
+        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.IsInRange(Dalamud.Game.ClientState.Objects.Types.GameObject,System.Int32)">
             <summary>
             Checks if target is in appropriate range for targeting
             </summary>
             <param name="target">The target object to check</param>
+            <param name="yalmDistanceX">The range distance to limit by</param>
         </member>
         <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.TargetObject(XIVSlothComboPlugin.Combos.CustomCombo.TargetType)">
             <summary>

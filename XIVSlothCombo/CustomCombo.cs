@@ -409,6 +409,18 @@ namespace XIVSlothComboPlugin.Combos
             => FindTargetEffectAny(effectID) is not null;
 
         /// <summary>
+        /// Find if an effect on the target exists. Used to avoid bursting in PVP.
+        /// The effect may be owned by anyone or unowned.
+        /// </summary>
+        public bool TargetHasEffectAnyNoBurstPVP()
+            => (FindTargetEffectAny(PVPCommon.Buffs.Guard) is not null ||
+               FindTargetEffectAny(SAMPvP.Buffs.Chiten) is not null ||
+               FindTargetEffectAny(PLDPvP.Buffs.HallowedGround) is not null ||
+               FindTargetEffectAny(PLDPvP.Buffs.Phalanx) is not null ||
+               FindTargetEffectAny(DRKPvP.Buffs.UndeadRedemption) is not null ||
+               FindTargetEffectAny(MNKPvP.Buffs.EarthResonance) is not null);
+
+        /// <summary>
         /// Finds an effect on the current target.
         /// The effect may be owned by anyone or unowned.
         /// </summary>
@@ -561,7 +573,7 @@ namespace XIVSlothComboPlugin.Combos
         /// <param name="end">Time (in seconds) to end the check for the weave window.</param>
         /// <returns>True or false.</returns>
         public bool CanDelayedWeave(uint actionID, double start = 1.25, double end = 0.6)
-           => GetCooldown(actionID).CooldownRemaining < start && GetCooldown(actionID).CooldownRemaining > end;
+           => GetCooldown(actionID).CooldownRemaining <= start && GetCooldown(actionID).CooldownRemaining >= end;
 
         /// <summary>
         /// Get a job gauge.
@@ -703,10 +715,11 @@ namespace XIVSlothComboPlugin.Combos
         /// Checks if target is in appropriate range for targeting
         /// </summary>
         /// <param name="target">The target object to check</param>
-        public bool IsInRange(GameObject? target)
+        /// <param name="yalmDistanceX">The range distance to limit by</param>
+        public bool IsInRange(GameObject? target, int yalmDistanceX = 30)
         {
             if (target == null) return false;
-            if (target.YalmDistanceX >= 30) return false;
+            if (target.YalmDistanceX >= yalmDistanceX) return false;
 
             return true;
         }

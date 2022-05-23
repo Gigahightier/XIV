@@ -3149,6 +3149,11 @@ namespace XIVSlothComboPlugin
             MNKRiddleOfEarthOption = 80102,
             #endregion
 
+        // PLD
+        [SecretCustomCombo]
+        [CustomComboInfo("Burst Mode", "Turns Royal Authority Combo into all-in-one damage button.", PLD.JobID)]
+        PLDBurstMode = 80200,
+
         #endregion
         // ====================================================================================
         #region PvPGlobals
