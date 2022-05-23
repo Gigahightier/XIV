@@ -46,7 +46,7 @@
                 if (TargetHasEffectAny(SAMPvP.Buffs.Chiten))
                     return OriginalHook(PVPCommon.Sprint);
 
-                if (actionID is Bootshine or TrueStrike or SnapPunch or DragonKick or TwinSnakes or Demolish or PhantomRush)
+                if (actionID is Bootshine or TrueStrike or SnapPunch or DragonKick or TwinSnakes or Demolish or PhantomRush or Enlightenment)
                 {
                     //uint globalAction = PVPCommon.ExecutePVPGlobal.ExecuteGlobal(actionID);
 
@@ -63,14 +63,14 @@
                         //    Type = XivChatType.Echo
                         //});
 
-                        if (CanWeave(actionID))
+                        if (CanWeave(actionID) || CanDelayedWeave(actionID, 2, 0.4))
                         {
                             if (JustUsed(Enlightenment))
                                 return OriginalHook(Meteordrive);
 
                             if (InMeleeRange())
                             {
-                                if (IsOffCooldown(SixSidedStar) && !TargetHasEffectAny(All.Debuffs.Resilience) && 
+                                if (IsOffCooldown(SixSidedStar) && !TargetHasEffectAny(All.Debuffs.Resilience) && !TargetHasEffectAny(PVPCommon.Debuffs.Stun) &&
                                     (lastComboMove is not Demolish or PhantomRush) && !HasEffect(Buffs.FireResonance))
                                     return OriginalHook(SixSidedStar);
 
@@ -79,7 +79,7 @@
                                     return OriginalHook(RisingPhoenix);
                             }
 
-                            if (IsEnabled(CustomComboPreset.MNKRiddleOfEarthOption) && HasEffect(Buffs.EarthResonance) && GetBuffRemainingTime(Buffs.EarthResonance) < 4)
+                            if (IsEnabled(CustomComboPreset.MNKRiddleOfEarthOption) && HasEffect(Buffs.EarthResonance) && (GetBuffRemainingTime(Buffs.EarthResonance) < (PlayerHealthPercentageHp() <= 25 ? 7 : 4)))
                                 return OriginalHook(EarthsReply);
                         }
 
@@ -102,6 +102,10 @@
                         if (IsEnabled(CustomComboPreset.MNKThunderClapOption) && !HasEffect(Buffs.WindResonance) && 
                             GetRemainingCharges(ThunderClap) > 0 && lastComboMove is not Demolish)
                             return OriginalHook(ThunderClap);
+                    } 
+                    else
+                    {
+                        return OriginalHook(Bootshine);
                     }
                 }
 
