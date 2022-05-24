@@ -777,6 +777,37 @@ namespace XIVSlothComboPlugin.Combos
         }
 
         /// <summary>
+        /// Gets furthest party members.
+        /// </summary>
+        /// <param name="yalmDistanceX">Limit search to specific distance.</param>
+        /// <returns></returns>
+        public PartyMember? GetFurthestPartyMember(int? yalmDistanceX = null)
+        {
+            Dictionary<PartyMember, double> partyMembersDistance = new();
+
+            foreach (PartyMember? partyMember in GetPartyMembers().Where(partyMember => partyMember.ObjectId != LocalPlayer.ObjectId && partyMember.CurrentHP > 0))
+            {
+                if (partyMember is not null && partyMember?.GameObject is not null)
+                {
+                    if (!partyMembersDistance.ContainsKey(partyMember))
+                    {
+                        if (IsInRange(partyMember.GameObject, yalmDistanceX))
+                            partyMembersDistance.Add(partyMember, partyMember.GameObject.YalmDistanceX);
+                    }
+                    else
+                    {
+                        if (!IsInRange(partyMember.GameObject, yalmDistanceX))
+                            partyMembersDistance.Remove(partyMember);
+                        else
+                            partyMembersDistance[partyMember] = partyMember.GameObject.YalmDistanceX;
+                    }
+                }
+            }
+
+            return partyMembersDistance.OrderByDescending(partyMember => partyMember.Value).Select(partyMember => partyMember.Key).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Gets party member with purifiable status.
         /// </summary>
         /// <param name="yalmDistanceX">Limit search to specific distance.</param>

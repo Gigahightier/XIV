@@ -511,6 +511,13 @@
             <param name="inPvP">Apply additional restrictions based off pvp status.</param>
             <returns></returns>
         </member>
+        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.GetFurthestPartyMember(System.Nullable{System.Int32})">
+            <summary>
+            Gets furthest party members.
+            </summary>
+            <param name="yalmDistanceX">Limit search to specific distance.</param>
+            <returns></returns>
+        </member>
         <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.GetPartyMemberWithPurifiableStatus(System.Nullable{System.Int32},System.Boolean)">
             <summary>
             Gets party member with purifiable status.

@@ -43,6 +43,17 @@ namespace XIVSlothComboPlugin
 
             protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
             {
+                if (IsOffCooldown(Kardia) && actionID == Dosis)
+                {
+                    PartyMember? purifyTarget = GetPartyMemberWithPurifiableStatus(yalmDistanceX: 31, inPvP: true);
+
+                    if (purifyTarget is not null && !TargetHasEffectAny(Buffs.Kardion, purifyTarget.GameObject))
+                    {
+                        TargetObject(purifyTarget.GameObject);
+                        return OriginalHook(Kardia);
+                    }
+                }
+
                 GameObject? topTarget = GetPartyMemberTopTarget(inPvP: true);
 
                 if (topTarget is not null && CurrentTarget != topTarget && IsInRange(topTarget, 26))
@@ -58,17 +69,6 @@ namespace XIVSlothComboPlugin
 
                     if (!TargetHasEffectAnyNoBurstPVP())
                     {
-                        if (IsOffCooldown(Kardia))
-                        {
-                            PartyMember? purifyTarget = GetPartyMemberWithPurifiableStatus(yalmDistanceX: 31, inPvP: true);
-
-                            if (purifyTarget is not null && !TargetHasEffectAny(Buffs.Kardion, purifyTarget.GameObject))
-                            {
-                                TargetObject(purifyTarget.GameObject);
-                                return OriginalHook(Kardia);
-                            }
-                        }
-
                         if (GetRemainingCharges(Phlegma) > 0 && !InMeleeRange() && GetRemainingCharges(Icarus) > 0 && IsOnCooldown(Pneuma) && TargetHasEffect(Debuffs.Toxicon))
                             return OriginalHook(Icarus);
 
@@ -79,6 +79,17 @@ namespace XIVSlothComboPlugin
 
                             if (HasEffect(Buffs.Addersting) && !HasEffect(Buffs.Eukrasia))
                                 return OriginalHook(Toxicon2);
+
+                            if (InMeleeRange() && GetRemainingCharges(Phlegma) == 0 && GetRemainingCharges(Icarus) > 0 && GetCooldownChargeRemainingTime(Phlegma) > 8)
+                            {
+                                PartyMember? furthestPartyMember = GetFurthestPartyMember(yalmDistanceX: 26);
+
+                                if (furthestPartyMember is not null && furthestPartyMember.GameObject.YalmDistanceX > 5)
+                                {
+                                    TargetObject(furthestPartyMember.GameObject);
+                                    return OriginalHook(Icarus);
+                                }
+                            }
                         }
 
                         if (!GetCooldown(Pneuma).IsCooldown && TargetHasEffect(Debuffs.Toxicon))
