@@ -337,6 +337,12 @@ namespace XIVSlothComboPlugin.Combos
             return eff?.RemainingTime ?? 0;
         }
 
+        public float GetTargetBuffRemainingTime(ushort effectId)
+        {
+            Status? eff = FindTargetEffect(effectId);
+            return eff?.RemainingTime ?? 0;
+        }
+
         ///<summary>
         ///Checks a member object for an effect.
         ///The effect may be owned by anyone or unowned.
@@ -404,9 +410,10 @@ namespace XIVSlothComboPlugin.Combos
         /// The effect may be owned by anyone or unowned.
         /// </summary>
         /// <param name="effectID">Status effect ID.</param>
+        /// <param name="target">Target.</param>
         /// <returns>A value indicating if the effect exists.</returns>
-        public bool TargetHasEffectAny(ushort effectID)
-            => FindTargetEffectAny(effectID) is not null;
+        public bool TargetHasEffectAny(ushort effectID, GameObject? target = null)
+            => FindTargetEffectAny(effectID, target) is not null;
 
         /// <summary>
         /// Find if an effect on the target exists. Used to avoid bursting in PVP.
@@ -589,15 +596,18 @@ namespace XIVSlothComboPlugin.Combos
         /// Gets the distance from the target.
         /// </summary>
         /// <returns>Double representing the distance from the target.</returns>
-        public double GetTargetDistance()
+        public double GetTargetDistance(GameObject? target = null)
         {
-            if (CurrentTarget is null || LocalPlayer is null)
+            if (target is null)
+                target = CurrentTarget;
+
+            if (target is null || LocalPlayer is null)
                 return 0;
 
-            if (CurrentTarget is not BattleChara chara)
+            if (target is not BattleChara chara)
                 return 0;
 
-            if (CurrentTarget.ObjectId == LocalPlayer.ObjectId)
+            if (target.ObjectId == LocalPlayer.ObjectId)
                 return 0;
 
             var position = new Vector2(chara.Position.X, chara.Position.Z);
@@ -767,6 +777,37 @@ namespace XIVSlothComboPlugin.Combos
             }
 
             return partyMembersTarget.OrderByDescending(partyMember => partyMember.Value).Select(partyMember => partyMember.Key).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets furthest party members.
+        /// </summary>
+        /// <param name="yalmDistanceX">Limit search to specific distance.</param>
+        /// <returns></returns>
+        public PartyMember? GetFurthestPartyMember(int? yalmDistanceX = null)
+        {
+            Dictionary<PartyMember, double> partyMembersDistance = new();
+
+            foreach (PartyMember? partyMember in GetPartyMembers().Where(partyMember => partyMember.ObjectId != LocalPlayer.ObjectId && partyMember.CurrentHP > 0))
+            {
+                if (partyMember is not null && partyMember?.GameObject is not null)
+                {
+                    if (!partyMembersDistance.ContainsKey(partyMember))
+                    {
+                        if (IsInRange(partyMember.GameObject, yalmDistanceX))
+                            partyMembersDistance.Add(partyMember, partyMember.GameObject.YalmDistanceX);
+                    }
+                    else
+                    {
+                        if (!IsInRange(partyMember.GameObject, yalmDistanceX))
+                            partyMembersDistance.Remove(partyMember);
+                        else
+                            partyMembersDistance[partyMember] = partyMember.GameObject.YalmDistanceX;
+                    }
+                }
+            }
+
+            return partyMembersDistance.OrderByDescending(partyMember => partyMember.Value).Select(partyMember => partyMember.Key).FirstOrDefault();
         }
 
         /// <summary>

@@ -314,12 +314,13 @@
             <param name="effectID">Status effect ID.</param>
             <returns>Status object or null.</returns>
         </member>
-        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.TargetHasEffectAny(System.UInt16)">
+        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.TargetHasEffectAny(System.UInt16,Dalamud.Game.ClientState.Objects.Types.GameObject)">
             <summary>
             Find if an effect on the target exists.
             The effect may be owned by anyone or unowned.
             </summary>
             <param name="effectID">Status effect ID.</param>
+            <param name="target">Target.</param>
             <returns>A value indicating if the effect exists.</returns>
         </member>
         <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.TargetHasEffectAnyNoBurstPVP(Dalamud.Game.ClientState.Objects.Types.GameObject)">
@@ -465,7 +466,7 @@
             <typeparam name="T">Type of job gauge.</typeparam>
             <returns>The job gauge.</returns>
         </member>
-        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.GetTargetDistance">
+        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.GetTargetDistance(Dalamud.Game.ClientState.Objects.Types.GameObject)">
             <summary>
             Gets the distance from the target.
             </summary>
@@ -508,6 +509,13 @@
             Gets most targeted by party members.
             </summary>
             <param name="inPvP">Apply additional restrictions based off pvp status.</param>
+            <returns></returns>
+        </member>
+        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.GetFurthestPartyMember(System.Nullable{System.Int32})">
+            <summary>
+            Gets furthest party members.
+            </summary>
+            <param name="yalmDistanceX">Limit search to specific distance.</param>
             <returns></returns>
         </member>
         <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.GetPartyMemberWithPurifiableStatus(System.Nullable{System.Int32},System.Boolean)">
