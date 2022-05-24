@@ -1,5 +1,3 @@
-using Dalamud.Game.ClientState.Objects.Types;
-
 namespace XIVSlothComboPlugin.Combos
 {
     internal static class MNKPvP
@@ -57,8 +55,8 @@ namespace XIVSlothComboPlugin.Combos
                 {
                     //uint globalAction = PVPCommon.ExecutePVPGlobal.ExecuteGlobal(actionID);
 
-                    //if (!TargetHasEffectAnyNoBurstPVP())
-                    //{
+                    if (!TargetHasEffectAnyNoBurstPVP())
+                    {
                         //var payloads = new List<Payload>()
                         //{
                         //    new TextPayload($"{HasEffectAny(1991).ToString()}")
@@ -113,7 +111,7 @@ namespace XIVSlothComboPlugin.Combos
                     else
                     {
                         return OriginalHook(Bootshine);
-                    
+					}
                 }
 
                 return actionID;
