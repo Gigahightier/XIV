@@ -45,7 +45,7 @@ namespace XIVSlothComboPlugin.Combos
                 if (actionID == PowerfulShot)
                 {
 					var canWeave = CanWeave(actionID, 0.5);
-                    if (canWeave) && (IsOffCooldown(WardensPaean))
+                    if ((canWeave) && (IsOffCooldown(WardensPaean)))
                     {
                         PartyMember? purifyTarget = GetPartyMemberWithPurifiableStatus(yalmDistanceX: 31, inPvP: true);
                         if (purifyTarget is not null)
