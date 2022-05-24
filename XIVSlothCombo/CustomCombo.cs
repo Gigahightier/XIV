@@ -418,7 +418,8 @@ namespace XIVSlothComboPlugin.Combos
                FindTargetEffectAny(PLDPvP.Buffs.HallowedGround, target) is not null ||
                FindTargetEffectAny(PLDPvP.Buffs.Phalanx, target) is not null ||
                FindTargetEffectAny(DRKPvP.Buffs.UndeadRedemption, target) is not null ||
-               FindTargetEffectAny(MNKPvP.Buffs.EarthResonance, target) is not null);
+               FindTargetEffectAny(MNKPvP.Buffs.EarthResonance, target) is not null ||
+               (FindTargetEffectAny(SGEPVP.Buffs.Mesotes, target) is not null && !HasEffectAny(SGEPVP.Debuffs.Lype)));
 
         /// <summary>
         /// Finds an effect on the current target.
