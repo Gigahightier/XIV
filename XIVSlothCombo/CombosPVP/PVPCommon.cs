@@ -40,7 +40,6 @@ namespace XIVSlothComboPlugin
                 Guard = 3054;
         }
 
-
         internal class GlobalEmergencyHeals : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.PVPEmergencyHeals;

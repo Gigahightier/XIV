@@ -1,4 +1,6 @@
-﻿namespace XIVSlothComboPlugin.Combos
+﻿using Dalamud.Game.ClientState.Objects.Types;
+
+namespace XIVSlothComboPlugin.Combos
 {
     internal static class MNKPvP
     {
@@ -43,6 +45,11 @@
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
+                GameObject? topTarget = GetPartyMemberTopTarget(inPvP: true);
+
+                if (topTarget is not null && CurrentTarget != topTarget && IsInRange(topTarget, 21))
+                    TargetObject(topTarget);
+
                 if (TargetHasEffectAny(SAMPvP.Buffs.Chiten))
                     return OriginalHook(PVPCommon.Sprint);
 

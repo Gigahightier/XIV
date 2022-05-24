@@ -60,6 +60,16 @@ namespace XIVSlothComboPlugin.Combos
                         TargetObject(previousTarget);
 
                     previousTarget = null;
+                } 
+                else
+                {
+                    if (IsOnCooldown(Guardian))
+                    {
+                        GameObject? topTarget = GetPartyMemberTopTarget(inPvP: true);
+
+                        if (topTarget is not null && CurrentTarget != topTarget && IsInRange(topTarget, 21))
+                            TargetObject(topTarget);
+                    }
                 }
 
                 if (TargetHasEffectAny(SAMPvP.Buffs.Chiten))

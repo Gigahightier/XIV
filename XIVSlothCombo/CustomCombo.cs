@@ -738,6 +738,58 @@ namespace XIVSlothComboPlugin.Combos
         }
 
         /// <summary>
+        /// Gets most targeted by party members.
+        /// </summary>
+        /// <param name="inPvP">Apply additional restrictions based off pvp status.</param>
+        /// <returns></returns>
+        public GameObject? GetPartyMemberTopTarget(bool inPvP = false)
+        {
+            Dictionary<GameObject, int> partyMembersTarget = new();
+            PartyList partyMembers = GetPartyMembers();
+            IEnumerable<GameObject?>? partyMemberObjects = partyMembers.Select(partyMember => partyMember.GameObject);
+
+            foreach (PartyMember? partyMember in partyMembers.Where(partyMember => partyMember.ObjectId != LocalPlayer.ObjectId && partyMember.CurrentHP > 0 &&
+                                                                    partyMember.GameObject.TargetObject != null && !partyMemberObjects.Contains(partyMember.GameObject.TargetObject) &&
+                                                                    (!inPvP || (inPvP && !TargetHasEffectAnyNoBurstPVP(partyMember.GameObject.TargetObject)))))
+            {
+                if (partyMember is not null && partyMember?.GameObject is not null && partyMember?.GameObject?.TargetObject is not null)
+                {
+                    if (!partyMembersTarget.ContainsKey(partyMember.GameObject.TargetObject))
+                    {
+                        partyMembersTarget.Add(partyMember.GameObject.TargetObject, 1);
+                    }
+                    else
+                    {
+                        partyMembersTarget[partyMember.GameObject.TargetObject]++;
+                    }
+                }
+            }
+
+            return partyMembersTarget.OrderByDescending(partyMember => partyMember.Value).Select(partyMember => partyMember.Key).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets party member with purifiable status.
+        /// </summary>
+        /// <param name="yalmDistanceX">Limit search to specific distance.</param>
+        /// <param name="inPvP">Apply additional restrictions based off pvp status.</param>
+        /// <returns></returns>
+        public PartyMember? GetPartyMemberWithPurifiableStatus(int? yalmDistanceX = null, bool inPvP = false)
+        {
+            var purifyStatuses = new List<uint>()
+            {
+                PVPCommon.Debuffs.Stun, PVPCommon.Debuffs.DeepFreeze, PVPCommon.Debuffs.HalfAsleep,
+                PVPCommon.Debuffs.Sleep, PVPCommon.Debuffs.Bind, PVPCommon.Debuffs.Heavy, PVPCommon.Debuffs.Silence
+            };
+
+            return GetPartyMembers().Where(partyMember => partyMember.CurrentHP > 0 &&
+                                           partyMember.Statuses.Where(status => purifyStatuses.Contains(status.StatusId)).Count() > 0 &&
+                                           IsInRange(partyMember.GameObject, yalmDistanceX) &&
+                                           (!inPvP || (inPvP && !TargetHasEffectAnyNoBurstPVP(partyMember.GameObject))))
+                                    .OrderBy(partyMember => partyMember.CurrentHP).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Sets the player's target. 
         /// </summary>
         /// <param name="target">Target must be a game object that the player can normally click and target.</param>

@@ -503,6 +503,21 @@
             <param name="inPvP">Apply additional restrictions based off pvp status.</param>
             <returns></returns>
         </member>
+        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.GetPartyMemberTopTarget(System.Boolean)">
+            <summary>
+            Gets most targeted by party members.
+            </summary>
+            <param name="inPvP">Apply additional restrictions based off pvp status.</param>
+            <returns></returns>
+        </member>
+        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.GetPartyMemberWithPurifiableStatus(System.Nullable{System.Int32},System.Boolean)">
+            <summary>
+            Gets party member with purifiable status.
+            </summary>
+            <param name="yalmDistanceX">Limit search to specific distance.</param>
+            <param name="inPvP">Apply additional restrictions based off pvp status.</param>
+            <returns></returns>
+        </member>
         <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.SetTarget(Dalamud.Game.ClientState.Objects.Types.GameObject)">
             <summary>
             Sets the player's target. 
