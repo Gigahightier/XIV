@@ -58,7 +58,7 @@ namespace XIVSlothComboPlugin.Combos
                     {
                         if (canWeave)
                         {
-                            if (IsOffCooldown(RepellingShot) && GetTargetDistance() < 10)
+                            if (IsEnabled(CustomComboPreset.BRDDisengage) && IsOffCooldown(RepellingShot) && GetTargetDistance() < 10)
                                 return OriginalHook(RepellingShot);
 
                             if (GetCooldown(EmpyrealArrow).RemainingCharges == 3)
