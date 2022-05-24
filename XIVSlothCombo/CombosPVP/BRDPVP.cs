@@ -42,27 +42,22 @@ namespace XIVSlothComboPlugin.Combos
 
                 //if (TargetHasEffectAny(SAMPvP.Buffs.Chiten))
                     //return OriginalHook(SilentNocturne);
-
                 if (actionID == PowerfulShot)
                 {
+					var canWeave = CanWeave(actionID, 0.5);
+                    if (canWeave) && (IsOffCooldown(WardensPaean))
+                    {
+                        PartyMember? purifyTarget = GetPartyMemberWithPurifiableStatus(yalmDistanceX: 31, inPvP: true);
+                        if (purifyTarget is not null)
+                        {
+                            TargetObject(purifyTarget.GameObject);
+                            return OriginalHook(WardensPaean);
+                        }
+                    }
                     if (!TargetHasEffectAnyNoBurstPVP())
                     {
-                        var canWeave = CanWeave(actionID, 0.5);
-                        //uint globalAction = PVPCommon.ExecutePVPGlobal.ExecuteGlobal(actionID);
-
                         if (canWeave)
                         {
-                            if (IsOffCooldown(WardensPaean))
-                            {
-                                PartyMember? purifyTarget = GetPartyMemberWithPurifiableStatus(yalmDistanceX: 31, inPvP: true);
-
-                                if (purifyTarget is not null)
-                                {
-                                    TargetObject(purifyTarget.GameObject);
-                                    return OriginalHook(WardensPaean);
-                                }
-                            }
-
                             if (IsOffCooldown(RepellingShot) && GetTargetDistance() < 10)
                                 return OriginalHook(RepellingShot);
 
@@ -72,7 +67,7 @@ namespace XIVSlothComboPlugin.Combos
                             if (!GetCooldown(SilentNocturne).IsCooldown && !TargetHasEffectAny(PVPCommon.Debuffs.Silence) &&
                                 !TargetHasEffectAny(PVPCommon.Buffs.Guard) && !TargetHasEffectAny(Buffs.WardensPaean))
                                 return OriginalHook(SilentNocturne);
-                        }
+                          }
 
                         if (HasEffect(Buffs.BlastArrowReady))
                             return OriginalHook(BlastArrow);
