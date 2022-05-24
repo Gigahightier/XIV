@@ -84,7 +84,7 @@ namespace XIVSlothComboPlugin
                             {
                                 PartyMember? furthestPartyMember = GetFurthestPartyMember(yalmDistanceX: 26);
 
-                                if (furthestPartyMember is not null && furthestPartyMember.GameObject.YalmDistanceX > 5)
+                                if (furthestPartyMember is not null && GetTargetDistance(furthestPartyMember.GameObject) > 5)
                                 {
                                     TargetObject(furthestPartyMember.GameObject);
                                     return OriginalHook(Icarus);

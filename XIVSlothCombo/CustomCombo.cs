@@ -596,15 +596,18 @@ namespace XIVSlothComboPlugin.Combos
         /// Gets the distance from the target.
         /// </summary>
         /// <returns>Double representing the distance from the target.</returns>
-        public double GetTargetDistance()
+        public double GetTargetDistance(GameObject? target = null)
         {
-            if (CurrentTarget is null || LocalPlayer is null)
+            if (target is null)
+                target = CurrentTarget;
+
+            if (target is null || LocalPlayer is null)
                 return 0;
 
-            if (CurrentTarget is not BattleChara chara)
+            if (target is not BattleChara chara)
                 return 0;
 
-            if (CurrentTarget.ObjectId == LocalPlayer.ObjectId)
+            if (target.ObjectId == LocalPlayer.ObjectId)
                 return 0;
 
             var position = new Vector2(chara.Position.X, chara.Position.Z);

@@ -466,7 +466,7 @@
             <typeparam name="T">Type of job gauge.</typeparam>
             <returns>The job gauge.</returns>
         </member>
-        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.GetTargetDistance">
+        <member name="M:XIVSlothComboPlugin.Combos.CustomCombo.GetTargetDistance(Dalamud.Game.ClientState.Objects.Types.GameObject)">
             <summary>
             Gets the distance from the target.
             </summary>
