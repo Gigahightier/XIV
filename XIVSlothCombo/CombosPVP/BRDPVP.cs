@@ -35,10 +35,10 @@ namespace XIVSlothComboPlugin.Combos
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
-                GameObject? topTarget = GetPartyMemberTopTarget(inPvP: true);
+                //GameObject? topTarget = GetPartyMemberTopTarget(inPvP: true);
 
-                if (topTarget is not null && CurrentTarget != topTarget && IsInRange(topTarget, 26))
-                    TargetObject(topTarget);
+                //if (topTarget is not null && CurrentTarget != topTarget && IsInRange(topTarget, 26))
+                //    TargetObject(topTarget);
 
                 if (TargetHasEffectAny(SAMPvP.Buffs.Chiten))
                     return OriginalHook(SilentNocturne);
