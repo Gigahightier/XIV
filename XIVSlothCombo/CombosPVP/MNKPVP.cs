@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
+?using Dalamud.Game.ClientState.Objects.Types;
 
 namespace XIVSlothComboPlugin.Combos
 {
@@ -45,10 +45,10 @@ namespace XIVSlothComboPlugin.Combos
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
-                GameObject? topTarget = GetPartyMemberTopTarget(inPvP: true);
+                //GameObject? topTarget = GetPartyMemberTopTarget(inPvP: true);
 
-                if (topTarget is not null && CurrentTarget != topTarget && IsInRange(topTarget, 21))
-                    TargetObject(topTarget);
+                //if (topTarget is not null && CurrentTarget != topTarget && IsInRange(topTarget, 21))
+                    //TargetObject(topTarget);
 
                 if (TargetHasEffectAny(SAMPvP.Buffs.Chiten))
                     return OriginalHook(PVPCommon.Sprint);
@@ -57,8 +57,8 @@ namespace XIVSlothComboPlugin.Combos
                 {
                     //uint globalAction = PVPCommon.ExecutePVPGlobal.ExecuteGlobal(actionID);
 
-                    if (!TargetHasEffectAnyNoBurstPVP())
-                    {
+                    //if (!TargetHasEffectAnyNoBurstPVP())
+                    //{
                         //var payloads = new List<Payload>()
                         //{
                         //    new TextPayload($"{HasEffectAny(1991).ToString()}")
@@ -113,7 +113,7 @@ namespace XIVSlothComboPlugin.Combos
                     else
                     {
                         return OriginalHook(Bootshine);
-                    }
+                    
                 }
 
                 return actionID;
