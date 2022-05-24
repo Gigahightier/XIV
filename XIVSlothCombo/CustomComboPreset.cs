@@ -2971,6 +2971,13 @@ namespace XIVSlothComboPlugin
         [SecretCustomCombo]
         [CustomComboInfo("Burst Mode", "Turns Powerful Shot into an all-in-one damage button.", BRDPvP.JobID)]
         BRDBurstMode = 80020,
+        
+            #region BRD Burst Mode
+            [SecretCustomCombo]
+            [ParentCombo(BRDBurstMode)]
+            [CustomComboInfo("Disengage", "Woops back.", BRDPvP.JobID)]
+            BRDDisengage = 80021,
+            #endregion
 
         // RDM
         [SecretCustomCombo]
