@@ -57,7 +57,7 @@ namespace XIVSlothComboPlugin.Combos
                                 PartyMember? purifyTarget = GetPartyMemberWithPurifiableStatus(yalmDistanceX: 31, inPvP: true);
 
                                 if (purifyTarget is not null)
-                                {
+                                {                                    
                                     TargetObject(purifyTarget.GameObject);
                                     return OriginalHook(WardensPaean);
                                 }

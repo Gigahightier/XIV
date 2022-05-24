@@ -1,4 +1,6 @@
-﻿using XIVSlothComboPlugin.Combos;
+﻿using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Game.ClientState.Party;
+using XIVSlothComboPlugin.Combos;
 
 namespace XIVSlothComboPlugin
 {
@@ -41,33 +43,60 @@ namespace XIVSlothComboPlugin
 
             protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
             {
+                GameObject? topTarget = GetPartyMemberTopTarget(inPvP: true);
+
+                if (topTarget is not null && CurrentTarget != topTarget && IsInRange(topTarget, 26))
+                    TargetObject(topTarget);
+
+                if (TargetHasEffectAny(SAMPvP.Buffs.Chiten))
+                    return OriginalHook(PVPCommon.Sprint);
+
                 if (actionID == Dosis)
                 {
-                    //uint globalAction = PVPCommon.ExecutePVPGlobal.ExecuteGlobal(actionID);
-
-                    //if (globalAction != actionID) return globalAction;
-
                     if (!HasEffectAny(Buffs.Kardia))
-                        return Kardia;
+                        return OriginalHook(Kardia);
 
-                    if (!GetCooldown(Pneuma).IsCooldown)
-                        return Pneuma;
+                    if (!TargetHasEffectAnyNoBurstPVP())
+                    {
+                        if (IsOffCooldown(Kardia))
+                        {
+                            PartyMember? purifyTarget = GetPartyMemberWithPurifiableStatus(yalmDistanceX: 31, inPvP: true);
 
-                    if (InMeleeRange() && !HasEffect(Buffs.Eukrasia) && GetCooldown(Phlegma).RemainingCharges > 0)
-                        return Phlegma;
+                            if (purifyTarget is not null && !TargetHasEffectAny(Buffs.Kardion, purifyTarget.GameObject))
+                            {
+                                TargetObject(purifyTarget.GameObject);
+                                return OriginalHook(Kardia);
+                            }
+                        }
 
-                    if (HasEffect(Buffs.Addersting) && !HasEffect(Buffs.Eukrasia))
-                        return Toxicon2;
+                        if (GetRemainingCharges(Phlegma) > 0 && !InMeleeRange() && GetRemainingCharges(Icarus) > 0 && IsOnCooldown(Pneuma) && TargetHasEffect(Debuffs.Toxicon))
+                            return OriginalHook(Icarus);
 
-                    if (!TargetHasEffectAny(Debuffs.EukrasianDosis) && GetCooldown(Eukrasia).RemainingCharges > 0 && !HasEffect(Buffs.Eukrasia))
-                        return Eukrasia;
+                        if (CanWeave(actionID))
+                        {
+                            if ((!TargetHasEffect(Debuffs.Toxicon) || GetTargetBuffRemainingTime(Debuffs.Toxicon) <= 1) && GetCooldown(Toxikon).RemainingCharges > 0)
+                                return OriginalHook(Toxikon);
 
-                    if (HasEffect(Buffs.Eukrasia))
+                            if (HasEffect(Buffs.Addersting) && !HasEffect(Buffs.Eukrasia))
+                                return OriginalHook(Toxicon2);
+                        }
+
+                        if (!GetCooldown(Pneuma).IsCooldown && TargetHasEffect(Debuffs.Toxicon))
+                            return OriginalHook(Pneuma);
+
+                        if (InMeleeRange() && !HasEffect(Buffs.Eukrasia) && GetCooldown(Phlegma).RemainingCharges > 0 && TargetHasEffect(Debuffs.Toxicon))
+                            return OriginalHook(Phlegma);
+
+                        if (!TargetHasEffectAny(Debuffs.EukrasianDosis) && GetCooldown(Eukrasia).RemainingCharges > 0 && !HasEffect(Buffs.Eukrasia))
+                            return OriginalHook(Eukrasia);
+
+                        if (HasEffect(Buffs.Eukrasia))
+                            return OriginalHook(Dosis);
+                    }
+                    else
+                    {
                         return OriginalHook(Dosis);
-
-                    if (!TargetHasEffect(Debuffs.Toxicon) && GetCooldown(Toxikon).RemainingCharges > 0)
-                        return OriginalHook(Toxikon);
-
+                    }
                 }
                 return actionID;
             }

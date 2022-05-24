@@ -337,6 +337,12 @@ namespace XIVSlothComboPlugin.Combos
             return eff?.RemainingTime ?? 0;
         }
 
+        public float GetTargetBuffRemainingTime(ushort effectId)
+        {
+            Status? eff = FindTargetEffect(effectId);
+            return eff?.RemainingTime ?? 0;
+        }
+
         ///<summary>
         ///Checks a member object for an effect.
         ///The effect may be owned by anyone or unowned.
@@ -404,9 +410,10 @@ namespace XIVSlothComboPlugin.Combos
         /// The effect may be owned by anyone or unowned.
         /// </summary>
         /// <param name="effectID">Status effect ID.</param>
+        /// <param name="target">Target.</param>
         /// <returns>A value indicating if the effect exists.</returns>
-        public bool TargetHasEffectAny(ushort effectID)
-            => FindTargetEffectAny(effectID) is not null;
+        public bool TargetHasEffectAny(ushort effectID, GameObject? target = null)
+            => FindTargetEffectAny(effectID, target) is not null;
 
         /// <summary>
         /// Find if an effect on the target exists. Used to avoid bursting in PVP.
