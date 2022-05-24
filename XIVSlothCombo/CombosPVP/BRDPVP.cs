@@ -40,8 +40,8 @@ namespace XIVSlothComboPlugin.Combos
                 //if (topTarget is not null && CurrentTarget != topTarget && IsInRange(topTarget, 26))
                 //    TargetObject(topTarget);
 
-                if (TargetHasEffectAny(SAMPvP.Buffs.Chiten))
-                    return OriginalHook(SilentNocturne);
+                //if (TargetHasEffectAny(SAMPvP.Buffs.Chiten))
+                    //return OriginalHook(SilentNocturne);
 
                 if (actionID == PowerfulShot)
                 {
