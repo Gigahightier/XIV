@@ -85,7 +85,7 @@ namespace XIVSlothComboPlugin.Combos
                                     return OriginalHook(RisingPhoenix);
                             }
 
-                            if (IsEnabled(CustomComboPreset.MNKRiddleOfEarthOption) && HasEffect(Buffs.EarthResonance) && (GetBuffRemainingTime(Buffs.EarthResonance) < (PlayerHealthPercentageHp() <= 25 ? 6 : 4)))
+                            if (IsEnabled(CustomComboPreset.MNKRiddleOfEarthOption) && HasEffect(Buffs.EarthResonance) && GetBuffRemainingTime(Buffs.EarthResonance) < 6)
                                 return OriginalHook(EarthsReply);
                         }
 
