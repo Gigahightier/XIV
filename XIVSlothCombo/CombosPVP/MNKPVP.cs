@@ -49,7 +49,7 @@ namespace XIVSlothComboPlugin.Combos
                 //if (topTarget is not null && CurrentTarget != topTarget && IsInRange(topTarget, 21))
                     //TargetObject(topTarget);
 
-                if (TargetHasEffectAny(SAMPvP.Buffs.Chiten) and !HasEffect(Buffs.Sprinting))
+                if (TargetHasEffectAny(SAMPvP.Buffs.Chiten) && !HasEffect(Buffs.Sprinting))
                     return OriginalHook(PVPCommon.Sprint);
 
                 if (actionID is Bootshine or TrueStrike or SnapPunch or DragonKick or TwinSnakes or Demolish or PhantomRush or Enlightenment)
