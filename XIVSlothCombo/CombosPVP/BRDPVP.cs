@@ -46,10 +46,10 @@ namespace XIVSlothComboPlugin.Combos
                 {
                     if (!TargetHasEffectAnyNoBurstPVP())
                     {
-						var canWeave = CanWeave(actionID, 0.5);
+			var canWeave = CanWeave(actionID, 0.5);
 			    
                         if (canWeave)
-						{
+			{
                             if (IsOffCooldown(WardensPaean))
                             {
                                 PartyMember? purifyTarget = GetPartyMemberWithPurifiableStatus(yalmDistanceX: 31, inPvP: true);
