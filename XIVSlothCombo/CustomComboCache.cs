@@ -160,7 +160,7 @@ internal class CustomComboCache : IDisposable
         if (this.cooldownGroupCache.TryGetValue(actionID, out byte cooldownGroup))
             return cooldownGroup;
 
-	Lumina.Excel.ExcelSheet<Lumina.Excel.GeneratedSheets.Action> sheet = Service.GameData.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()!;
+	Lumina.Excel.ExcelSheet<Lumina.Excel.GeneratedSheets.Action> sheet = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()!;
         Lumina.Excel.GeneratedSheets.Action row = sheet.GetRow(actionID)!;
 
         return this.cooldownGroupCache[actionID] = row.CooldownGroup;
