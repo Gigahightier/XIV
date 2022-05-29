@@ -114,7 +114,6 @@ internal class CustomComboCache : IDisposable
 		cooldownPtr->ActionID = actionID;
 
 		CooldownData cd = this.cooldownCache[actionID] = *(CooldownData*)cooldownPtr;
-		Service.Logger.debug($"Retrieved cooldown data for action #{actionID}: {cd.DebugLabel}");
 		return cd;
 	}
 
