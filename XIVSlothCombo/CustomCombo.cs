@@ -1,17 +1,21 @@
-﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Party;
 using Dalamud.Game.ClientState.Statuses;
 using Dalamud.Utility;
+using Dalamud.Hooking;
+using Dalamud.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Timers;
+using System.Runtime.InteropServices;
 using XIVSlothComboPlugin.Attributes;
 using GameMain = FFXIVClientStructs.FFXIV.Client.Game.GameMain;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 
 namespace XIVSlothComboPlugin.Combos
 {
@@ -1028,6 +1032,15 @@ namespace XIVSlothComboPlugin.Combos
         public bool IsSpellActive(uint id)
             => Service.Configuration.ActiveBLUSpells.Contains(id);
 
+        public unsafe bool HasPVPLimitBreak()
+        {
+            AtkUnitBase* LBWidget = (AtkUnitBase*)Service.GameGui.GetAddonByName("_LimitBreak", 1);
+
+            if(LBWidget->UldManager.SearchNodeById(6)->GetComponent()->UldManager.SearchNodeById(3)->Width >= 146)
+                return true;
+            return false;
+        }
+        
         //public bool CanUseAction(uint id)
         //{
         //    if (!ActionWatching.ActionSheet.TryGetValue(id, out var actionFromSheet)) return false;
