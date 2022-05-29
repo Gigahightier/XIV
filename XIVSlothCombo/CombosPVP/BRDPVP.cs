@@ -44,23 +44,22 @@ namespace XIVSlothComboPlugin.Combos
                     //return OriginalHook(SilentNocturne);
                 if (actionID == PowerfulShot)
                 {
+                    if (IsOffCooldown(WardensPaean))
+                    {
+                        PartyMember? purifyTarget = GetPartyMemberWithPurifiableStatus(yalmDistanceX: 31, inPvP: true);
+
+                        if (purifyTarget is not null)
+                        {
+                            TargetObject(purifyTarget.GameObject);
+                            return OriginalHook(WardensPaean);
+                        }
+                    }
                     if (!TargetHasEffectAnyNoBurstPVP())
                     {
-			var canWeave = CanWeave(actionID, 0.5);
+			            var canWeave = CanWeave(actionID, 0.5);
 			    
                         if (canWeave)
-			{
-                            if (IsOffCooldown(WardensPaean))
-                            {
-                                PartyMember? purifyTarget = GetPartyMemberWithPurifiableStatus(yalmDistanceX: 31, inPvP: true);
-				    
-                                if (purifyTarget is not null)
-                                {
-                                    TargetObject(purifyTarget.GameObject);
-                                    return OriginalHook(WardensPaean);
-                                }
-                            }
-				
+			            {
                             if (IsEnabled(CustomComboPreset.BRDDisengage) && IsOffCooldown(RepellingShot) && GetTargetDistance() < 10)
                                 return OriginalHook(RepellingShot);
 
