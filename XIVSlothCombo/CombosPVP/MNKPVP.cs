@@ -28,7 +28,8 @@ namespace XIVSlothComboPlugin.Combos
                 WindResonance = 2007,
                 FireResonance = 3170,
                 EarthResonance = 3171,
-                Thunderclap = 3173;
+                Thunderclap = 3173,
+		Sprinting = 1342;
         }
 
         public static class Debuffs
@@ -48,7 +49,7 @@ namespace XIVSlothComboPlugin.Combos
                 //if (topTarget is not null && CurrentTarget != topTarget && IsInRange(topTarget, 21))
                     //TargetObject(topTarget);
 
-                if (TargetHasEffectAny(SAMPvP.Buffs.Chiten))
+                if (TargetHasEffectAny(SAMPvP.Buffs.Chiten) && !HasEffect(Buffs.Sprinting))
                     return OriginalHook(PVPCommon.Sprint);
 
                 if (actionID is Bootshine or TrueStrike or SnapPunch or DragonKick or TwinSnakes or Demolish or PhantomRush or Enlightenment)
@@ -68,7 +69,7 @@ namespace XIVSlothComboPlugin.Combos
                         //    Type = XivChatType.Echo
                         //});
 
-                        if (CanWeave(actionID) || CanDelayedWeave(actionID, 2, 0.4))
+                        if (CanWeave(actionID))
                         {
                             if (JustUsed(Enlightenment))
                                 return OriginalHook(Meteordrive);
@@ -76,15 +77,15 @@ namespace XIVSlothComboPlugin.Combos
                             if (InMeleeRange())
                             {
                                 if (IsOffCooldown(SixSidedStar) && !TargetHasEffectAny(All.Debuffs.Resilience) && !TargetHasEffectAny(PVPCommon.Debuffs.Stun) &&
-                                    (lastComboMove is not Demolish or PhantomRush) && !HasEffect(Buffs.FireResonance))
+                                    !HasEffect(Buffs.FireResonance))
                                     return OriginalHook(SixSidedStar);
 
                                 if (GetRemainingCharges(RisingPhoenix) > 0 && !HasEffect(Buffs.FireResonance) &&
-                                    ((lastComboMove is Demolish && !IsEnlightenmentOffCooldown()) || IsEnlightenmentOffCooldown()))
+                                    (lastComboMove is Demolish || IsEnlightenmentOffCooldown()))
                                     return OriginalHook(RisingPhoenix);
                             }
 
-                            if (IsEnabled(CustomComboPreset.MNKRiddleOfEarthOption) && HasEffect(Buffs.EarthResonance) && (GetBuffRemainingTime(Buffs.EarthResonance) < (PlayerHealthPercentageHp() <= 25 ? 7 : 4)))
+                            if (IsEnabled(CustomComboPreset.MNKRiddleOfEarthOption) && HasEffect(Buffs.EarthResonance) && GetBuffRemainingTime(Buffs.EarthResonance) < 6)
                                 return OriginalHook(EarthsReply);
                         }
 
