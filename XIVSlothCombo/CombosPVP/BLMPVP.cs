@@ -1,4 +1,4 @@
-﻿namespace XIVSlothComboPlugin.Combos
+namespace XIVSlothComboPlugin.Combos
 {
     internal static class BLMPVP
     {
@@ -14,7 +14,8 @@
             Flare = 29651,
             Blizzard4 = 29654,
             Freeze = 29655,
-            Foul = 29371;
+            Foul = 29371,
+            SoulResonance = 29662;
 
         public static class Buffs
         {
@@ -47,6 +48,9 @@
 
                 if (actionID is Fire or Fire4 or Flare)
                 {
+                    if(HasPVPLimitBreak())
+                        return SoulResonance;
+                    
                     if (HasEffect(Buffs.Polyglot))
                         return Foul;
 
@@ -82,6 +86,9 @@
                 }
                 if (actionID is Blizzard or Blizzard4 or Freeze)
                 {
+                    if(HasPVPLimitBreak())
+                        return SoulResonance;
+                    
                     if (HasEffect(Buffs.Polyglot))
                         return Foul;
 
