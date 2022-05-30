@@ -39,9 +39,6 @@ namespace XIVSlothComboPlugin.Combos
 
                 //if (topTarget is not null && CurrentTarget != topTarget && IsInRange(topTarget, 26))
                 //    TargetObject(topTarget);
-
-                if (TargetHasEffectAny(SAMPvP.Buffs.Chiten))
-                    return OriginalHook(SilentNocturne);
 		    
                 if (actionID == PowerfulShot)
                 {
@@ -55,12 +52,16 @@ namespace XIVSlothComboPlugin.Combos
                             //return OriginalHook(WardensPaean);
                         //}
                     //}
+			
+		    if (!GetCooldown(SilentNocturne).IsCooldown && TargetHasEffectAny(1240))
+			return OriginalHook(SilentNocturne);
+			
                     if (!TargetHasEffectAnyNoBurstPVP())
                     {
-						var canWeave = CanWeave(actionID);
+			var canWeave = CanWeave(actionID, 0.5);
 			    
                         if (canWeave)
-						{
+			{
                             if (IsEnabled(CustomComboPreset.BRDDisengage) && IsOffCooldown(RepellingShot) && GetTargetDistance() < 10)
                                 return OriginalHook(RepellingShot);
 
@@ -70,9 +71,9 @@ namespace XIVSlothComboPlugin.Combos
                             if (!GetCooldown(SilentNocturne).IsCooldown && !TargetHasEffectAny(PVPCommon.Debuffs.Silence) &&
                                 !TargetHasEffectAny(PVPCommon.Buffs.Guard) && !TargetHasEffectAny(Buffs.WardensPaean))
                                 return OriginalHook(SilentNocturne);
-						}
+			}
 
-						if (HasEffect(Buffs.BlastArrowReady))
+			if (HasEffect(Buffs.BlastArrowReady))
                             return OriginalHook(BlastArrow);
 
                         if (HasEffect(Buffs.Repertoire))
