@@ -45,22 +45,22 @@ namespace XIVSlothComboPlugin.Combos
 		    
                 if (actionID == PowerfulShot)
                 {
-                    if (IsOffCooldown(WardensPaean))
-                    {
-                        PartyMember? purifyTarget = GetPartyMemberWithPurifiableStatus(yalmDistanceX: 31, inPvP: true);
+                    //if (IsOffCooldown(WardensPaean))
+                    //{
+                        //PartyMember? purifyTarget = GetPartyMemberWithPurifiableStatus(yalmDistanceX: 31, inPvP: true);
 
-                        if (purifyTarget is not null)
-                        {
-                            TargetObject(purifyTarget.GameObject);
-                            return OriginalHook(WardensPaean);
-                        }
-                    }
+                        //if (purifyTarget is not null)
+                        //{
+                            //TargetObject(purifyTarget.GameObject);
+                            //return OriginalHook(WardensPaean);
+                        //}
+                    //}
                     if (!TargetHasEffectAnyNoBurstPVP())
                     {
-			var canWeave = CanWeave(actionID, 0.5);
+						var canWeave = CanWeave(actionID);
 			    
                         if (canWeave)
-			{
+						{
                             if (IsEnabled(CustomComboPreset.BRDDisengage) && IsOffCooldown(RepellingShot) && GetTargetDistance() < 10)
                                 return OriginalHook(RepellingShot);
 
@@ -70,9 +70,9 @@ namespace XIVSlothComboPlugin.Combos
                             if (!GetCooldown(SilentNocturne).IsCooldown && !TargetHasEffectAny(PVPCommon.Debuffs.Silence) &&
                                 !TargetHasEffectAny(PVPCommon.Buffs.Guard) && !TargetHasEffectAny(Buffs.WardensPaean))
                                 return OriginalHook(SilentNocturne);
-			}
+						}
 
-			if (HasEffect(Buffs.BlastArrowReady))
+						if (HasEffect(Buffs.BlastArrowReady))
                             return OriginalHook(BlastArrow);
 
                         if (HasEffect(Buffs.Repertoire))
