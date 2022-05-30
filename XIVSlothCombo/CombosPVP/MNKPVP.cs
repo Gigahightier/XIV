@@ -69,7 +69,7 @@ namespace XIVSlothComboPlugin.Combos
                         //    Type = XivChatType.Echo
                         //});
 
-                        if (CanWeave(actionID))
+                        if (CanWeave(actionID) || CanDelayedWeave(actionID, 2, 0.4))
                         {
                             if (JustUsed(Enlightenment))
                                 return OriginalHook(Meteordrive);
