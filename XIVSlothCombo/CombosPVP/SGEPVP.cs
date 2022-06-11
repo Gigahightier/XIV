@@ -37,7 +37,6 @@ namespace XIVSlothComboPlugin
                 Mesotes = 3119;
         }
 
-        internal class SGEBurstMode : CustomCombo
         internal class SGEPvP_BurstMode : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGEPvP_BurstMode;
