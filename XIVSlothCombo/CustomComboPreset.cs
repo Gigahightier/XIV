@@ -2949,6 +2949,11 @@ namespace XIVSlothComboPlugin
         [SecretCustomCombo]
         [CustomComboInfo("Burst Mode", "Turns Powerful Shot into an all-in-one damage button.", BRDPvP.JobID)]
         BRDPvP_BurstMode = 80020,
+        
+            [SecretCustomCombo]
+            [ParentCombo(BRDPvP_BurstMode)]
+            [CustomComboInfo("Disengage", "Woops back.", BRDPvP.JobID)]
+            MCHPvP_BurstMode_AltAnalysis = 80021,
         #endregion
 
         #region RED MAGE
