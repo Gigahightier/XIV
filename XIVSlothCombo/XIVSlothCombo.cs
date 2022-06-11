@@ -12,8 +12,10 @@ using System.Threading.Tasks;
 
 namespace XIVSlothComboPlugin
 {
-    /// <summary> Main plugin implementation. </summary>
-    public sealed partial class XIVSlothCombo : IDalamudPlugin
+    /// <summary>
+    /// Main plugin implementation.
+    /// </summary>
+    public sealed partial class XIVComboExpandedPlugin : IDalamudPlugin
     {
         private const string Command = "/scombo";
 
@@ -22,9 +24,11 @@ namespace XIVSlothComboPlugin
 
         private readonly TextPayload starterMotd = new("[Sloth Message of the Day] ");
 
-        /// <summary> Initializes a new instance of the <see cref="XIVSlothCombo"/> class. </summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XIVComboExpandedPlugin"/> class.
+        /// </summary>
         /// <param name="pluginInterface">Dalamud plugin interface.</param>
-        public XIVSlothCombo(DalamudPluginInterface pluginInterface)
+        public XIVComboExpandedPlugin(DalamudPluginInterface pluginInterface)
         {
             FFXIVClientStructs.Resolver.Initialize();
 
@@ -35,20 +39,20 @@ namespace XIVSlothComboPlugin
             Service.Address.Setup();
 
             if (Service.Configuration.Version == 4)
-                UpgradeConfig4();
+                this.UpgradeConfig4();
 
             Service.ComboCache = new CustomComboCache();
             Service.IconReplacer = new IconReplacer();
             ActionWatching.Enable();
 
-            configWindow = new();
-            windowSystem = new("XIVSlothCombo");
-            windowSystem.AddWindow(configWindow);
+            this.configWindow = new();
+            this.windowSystem = new("XIVSlothCombo");
+            this.windowSystem.AddWindow(this.configWindow);
 
-            Service.Interface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
-            Service.Interface.UiBuilder.Draw += windowSystem.Draw;
+            Service.Interface.UiBuilder.OpenConfigUi += this.OnOpenConfigUi;
+            Service.Interface.UiBuilder.Draw += this.windowSystem.Draw;
 
-            Service.CommandManager.AddHandler(Command, new CommandInfo(OnCommand)
+            Service.CommandManager.AddHandler(Command, new CommandInfo(this.OnCommand)
             {
                 HelpMessage = "Open a window to edit custom combo settings.",
                 ShowInHelp = true,
@@ -88,7 +92,7 @@ namespace XIVSlothComboPlugin
             }
             catch (Exception ex)
             {
-                Dalamud.Logging.PluginLog.Error(ex, "Unable to retrieve MotD");
+                Dalamud.Logging.PluginLog.Error(ex, "Unable to retrieve MOTD");
             }
         }
 
@@ -100,8 +104,8 @@ namespace XIVSlothComboPlugin
         {
             Service.CommandManager.RemoveHandler(Command);
 
-            Service.Interface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
-            Service.Interface.UiBuilder.Draw -= windowSystem.Draw;
+            Service.Interface.UiBuilder.OpenConfigUi -= this.OnOpenConfigUi;
+            Service.Interface.UiBuilder.Draw -= this.windowSystem.Draw;
 
             Service.IconReplacer?.Dispose();
             Service.ComboCache?.Dispose();
@@ -111,7 +115,7 @@ namespace XIVSlothComboPlugin
         }
 
         private void OnOpenConfigUi()
-            => configWindow.IsOpen = true;
+            => this.configWindow.IsOpen = true;
 
         private void OnCommand(string command, string arguments)
         {
@@ -119,7 +123,7 @@ namespace XIVSlothComboPlugin
 
             switch (argumentsParts[0].ToLower())
             {
-                case "unsetall": // unset all features
+                case "unsetall":
                     {
                         foreach (var preset in Enum.GetValues<CustomComboPreset>())
                         {
@@ -131,7 +135,7 @@ namespace XIVSlothComboPlugin
                         break;
                     }
 
-                case "set": // set a feature
+                case "set":
                     {
                         if (!Service.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat])
                         {
@@ -154,7 +158,7 @@ namespace XIVSlothComboPlugin
                         break;
                     }
 
-                case "toggle": // toggle a feature
+                case "toggle":
                     {
                         if (!Service.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat])
                         {
@@ -187,7 +191,7 @@ namespace XIVSlothComboPlugin
                         break;
                     }
 
-                case "unset": // unset a feature
+                case "unset":
                     {
                         if (!Service.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat])
                         {
@@ -210,13 +214,13 @@ namespace XIVSlothComboPlugin
                         break;
                     }
 
-                case "list": // list features
+                case "list":
                     {
                         var filter = argumentsParts.Length > 1
                             ? argumentsParts[1].ToLowerInvariant()
                             : "all";
 
-                        if (filter == "set") // list set features
+                        if (filter == "set")
                         {
                             foreach (var preset in Enum.GetValues<CustomComboPreset>()
                                 .Select(preset => Service.Configuration.IsEnabled(preset)))
@@ -224,7 +228,7 @@ namespace XIVSlothComboPlugin
                                 Service.ChatGui.Print(preset.ToString());
                             }
                         }
-                        else if (filter == "unset") // list unset features
+                        else if (filter == "unset")
                         {
                             foreach (var preset in Enum.GetValues<CustomComboPreset>()
                                 .Select(preset => !Service.Configuration.IsEnabled(preset)))
@@ -232,7 +236,7 @@ namespace XIVSlothComboPlugin
                                 Service.ChatGui.Print(preset.ToString());
                             }
                         }
-                        else if (filter == "all") // list all features
+                        else if (filter == "all")
                         {
                             foreach (var preset in Enum.GetValues<CustomComboPreset>())
                             {
@@ -246,8 +250,7 @@ namespace XIVSlothComboPlugin
 
                         break;
                     }
-
-                case "enabled": // list all currently enabled features
+                case "enabled":
                     {
                         foreach (var preset in Service.Configuration.EnabledActions.OrderBy(x => x))
                         {
@@ -256,43 +259,25 @@ namespace XIVSlothComboPlugin
                         }
                         break;
                     }
-
-                case "debug": // debug logging
+                case "debug":
                     {
                         try
                         {
-                            var specificJob = argumentsParts.Length == 2 ? argumentsParts[1].ToLower() : "";
-
                             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
-                            using StreamWriter file = new($"{desktopPath}/SlothDebug.txt", append: false); // output path
+                            using StreamWriter file = new($"{desktopPath}/SlothDebug.txt", append: false);
 
                             file.WriteLine("START DEBUG LOG");
-                            file.WriteLine($"Plugin Version: {GetType().Assembly.GetName().Version}"); // Plugin version
-                            file.WriteLine($"Current Job: {Service.ClientState.LocalPlayer.ClassJob.GameData.Name}"); // Currently equipped job
-                            file.WriteLine($"Current Zone: {Service.ClientState.TerritoryType}"); // Current zone location
-                            file.WriteLine($"Current Party Size: {Service.PartyList.Length}"); // Current party size
+                            file.WriteLine($"Current Job: {Service.ClientState.LocalPlayer.ClassJob.Id}");
+                            file.WriteLine($"Current Zone: {Service.ClientState.TerritoryType}");
+                            file.WriteLine($"Current Party Size: {Service.PartyList.Length}");
                             file.WriteLine($"START ENABLED FEATURES");
 
                             int i = 0;
-                            if (string.IsNullOrEmpty(specificJob))
+                            foreach (var preset in Service.Configuration.EnabledActions.OrderBy(x => x))
                             {
-                                foreach (var preset in Service.Configuration.EnabledActions.OrderBy(x => x))
-                                {
-                                    if (int.TryParse(preset.ToString(), out _)) { i++; continue; }
-                                    file.WriteLine($"{(int)preset} - {preset}");
-                                }
-                            }
-                            else
-                            {
-                                foreach (var preset in Service.Configuration.EnabledActions.OrderBy(x => x))
-                                {
-                                    if (int.TryParse(preset.ToString(), out _)) { i++; continue; }
-                                    if (preset.ToString().Substring(0, 3).ToLower() == specificJob || // Job identifier
-                                        preset.ToString().Substring(0, 3).ToLower() == "all" || // adds in Globals
-                                        preset.ToString().Substring(0, 3).ToLower() == "pvp") // adds in PvP Globals
-                                    file.WriteLine($"{(int)preset} - {preset}");
-                                }
+                                if (int.TryParse(preset.ToString(), out _)) { i++; continue; }
+                                file.WriteLine($"{(int)preset} - {preset}");
                             }
                             file.WriteLine($"END ENABLED FEATURES");
                             file.WriteLine($"Redundant IDs found: {i}");
@@ -316,20 +301,19 @@ namespace XIVSlothComboPlugin
                                 file.WriteLine($"END STATUS EFFECTS");
 
                             }
+
                             file.WriteLine("END DEBUG LOG");
                             Service.ChatGui.Print("Please check your desktop for SlothDebug.txt and upload this file where requested.");
                             break;
                         }
-                        catch (Exception ex)
+                        catch
                         {
-                            Dalamud.Logging.PluginLog.Error(ex, "Debug Log");
                             Service.ChatGui.Print("Unable to write Debug log.");
                             break;
                         }
                     }
-
                 default:
-                    configWindow.Toggle();
+                    this.configWindow.Toggle();
                     break;
             }
 

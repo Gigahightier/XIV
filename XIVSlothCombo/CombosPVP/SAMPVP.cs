@@ -38,46 +38,40 @@
         public static class Config
         {
             public const string
-                SAMPvP_SotenCharges = "SamSotenCharges",
-                SAMPvP_SotenHP = "SamSotenHP";
+                SamSotenCharges = "SamSotenCharges",
+                SamSotenHP = "SamSotenHP";
 
         }
 
-        internal class SAMPvP_BurstMode : CustomCombo
+        internal class SAMBurstMode : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SAMPvP_BurstMode;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SAMBurstMode;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
-                var sotenCharges = PluginConfiguration.GetCustomIntValue(Config.SAMPvP_SotenCharges);
+                var sotenCharges = Service.Configuration.GetCustomIntValue(Config.SamSotenCharges);
                 
-                if ((IsNotEnabled(CustomComboPreset.SAMPvP_BurstMode_MainCombo) && actionID == MeikyoShisui) ||
-                    (IsEnabled(CustomComboPreset.SAMPvP_BurstMode_MainCombo) && actionID is Yukikaze or Gekko or Kasha or Hyosetsu or Oka or Mangetsu))
+                if ((IsNotEnabled(CustomComboPreset.SamPVPMainComboFeature) && actionID == MeikyoShisui) ||
+                    (IsEnabled(CustomComboPreset.SamPVPMainComboFeature) && actionID is Yukikaze or Gekko or Kasha or Hyosetsu or Oka or Mangetsu))
                 {
+                    //uint globalAction = PVPCommon.ExecutePVPGlobal.ExecuteGlobal(actionID);
 
-                    if (!TargetHasEffectAny(PvPCommon.Buffs.Guard))
+                    if (!TargetHasEffectAny(PVPCommon.Buffs.Guard))
                     {
                         if (IsOffCooldown(MeikyoShisui))
                             return OriginalHook(MeikyoShisui);
-
-                        if (IsEnabled(CustomComboPreset.SAMPvP_BurstMode_Chiten) && IsOffCooldown(Chiten) && InCombat() && PlayerHealthPercentageHp() <= 95)
+                        if (IsEnabled(CustomComboPreset.SAMBurstChitenFeature) && IsOffCooldown(Chiten) && InCombat() && PlayerHealthPercentageHp() <= 95)
                             return OriginalHook(Chiten);
-
                         if (GetCooldownRemainingTime(Soten) < 1 && CanWeave(Yukikaze))
                             return OriginalHook(Soten);
-
                         if (OriginalHook(MeikyoShisui) == Midare && !this.IsMoving)
                             return OriginalHook(MeikyoShisui);
-
-                        if (IsEnabled(CustomComboPreset.SAMPvP_BurstMode_Stun) && IsOffCooldown(Mineuchi))
+                        if (IsEnabled(CustomComboPreset.SAMBurstStunFeature) && IsOffCooldown(Mineuchi))
                             return OriginalHook(Mineuchi);
-
                         if (IsOffCooldown(OgiNamikiri) && !this.IsMoving)
                             return OriginalHook(OgiNamikiri);
-
                         if (GetRemainingCharges(Soten) > sotenCharges && CanWeave(Yukikaze))
                             return OriginalHook(Soten);
-
                         if (OriginalHook(OgiNamikiri) == Kaeshi)
                             return OriginalHook(OgiNamikiri);
                     }
@@ -87,22 +81,21 @@
             }
         }
 
-        internal class SAMPvP_KashaFeatures : CustomCombo
+        internal class SamPvPKashaFeatures : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SAMPvP_KashaFeatures;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SamPvPKashaFeatures;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
-                var SamSotenHP = PluginConfiguration.GetCustomIntValue(Config.SAMPvP_SotenHP);
+                var SamSotenHP = Service.Configuration.GetCustomIntValue(Config.SamSotenHP);
 
                 if (actionID is Yukikaze or Gekko or Kasha or Hyosetsu or Mangetsu or Oka)
                 {
                     if (!InMeleeRange())
                     {
-                        if (IsEnabled(CustomComboPreset.SAMPvP_KashaFeatures_GapCloser) && GetRemainingCharges(Soten) > 0 && GetTargetHPPercent() <= SamSotenHP)
+                        if (IsEnabled(CustomComboPreset.SamGapCloserFeature) && GetRemainingCharges(Soten) > 0 && GetTargetHPPercent() <= SamSotenHP)
                             return OriginalHook(Soten);
-
-                        if (IsEnabled(CustomComboPreset.SAMPvP_KashaFeatures_AoEMeleeProtection) && !IsOriginal(Yukikaze) && !HasEffect(Buffs.Midare) && IsOnCooldown(MeikyoShisui) && IsOnCooldown(OgiNamikiri) && OriginalHook(OgiNamikiri) != Kaeshi)
+                        if (IsEnabled(CustomComboPreset.SamAOEMeleeFeature) && !IsOriginal(Yukikaze) && !HasEffect(Buffs.Midare) && IsOnCooldown(MeikyoShisui) && IsOnCooldown(OgiNamikiri) && OriginalHook(OgiNamikiri) != Kaeshi)
                             return SAM.Yukikaze;
                     }
                 }

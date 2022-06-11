@@ -5,7 +5,7 @@ namespace XIVSlothComboPlugin.Combos
 {
     internal static class BRDPvP
     {
-        public const byte ClassID = 5;
+        public const byte ClassID = 41;
         public const byte JobID = 23;
 
         public const uint
@@ -16,7 +16,8 @@ namespace XIVSlothComboPlugin.Combos
             RepellingShot = 29399,
             WardensPaean = 29400,
             PitchPerfect = 29392,
-            BlastArrow = 29394;
+            BlastArrow = 29394,
+            FinalFantasia = 29401;
 
         public static class Buffs
         {
@@ -28,9 +29,9 @@ namespace XIVSlothComboPlugin.Combos
                 WardensPaean = 3143;
         }
 
-        internal class BRDPvP_BurstMode : CustomCombo
+        internal class BurstShotFeaturePVP : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BRDPvP_BurstMode;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BRDBurstMode;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {

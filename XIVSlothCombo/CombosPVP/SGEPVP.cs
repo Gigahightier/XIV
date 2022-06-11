@@ -38,9 +38,8 @@ namespace XIVSlothComboPlugin
         }
 
         internal class SGEBurstMode : CustomCombo
-        internal class SGEPvP_BurstMode : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGEPvP_BurstMode;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGEBurstMode;
 
             protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
             {

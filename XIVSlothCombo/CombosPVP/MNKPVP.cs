@@ -38,9 +38,9 @@ namespace XIVSlothComboPlugin.Combos
                 PressurePoint = 3172;
         }
 
-        internal class MNKPvP_Burst : CustomCombo
+        internal class MNKBurstMode : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MNKPvP_Burst;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MNKBurstMode;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
@@ -54,6 +54,7 @@ namespace XIVSlothComboPlugin.Combos
 
                 if (actionID is Bootshine or TrueStrike or SnapPunch or DragonKick or TwinSnakes or Demolish or PhantomRush or Enlightenment)
                 {
+                    //uint globalAction = PVPCommon.ExecutePVPGlobal.ExecuteGlobal(actionID);
 
                     if (!TargetHasEffectAnyNoBurstPVP())
                     {

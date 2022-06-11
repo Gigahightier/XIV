@@ -38,9 +38,10 @@ namespace XIVSlothComboPlugin
                 MagickBarrier = 3240;
         }
 
-        internal class RDMPvP_BurstMode : CustomCombo
+
+        internal class RedMageBurstMode : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDMPvP_BurstMode;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDMBurstMode;
 
             protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
             {

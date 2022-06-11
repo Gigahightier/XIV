@@ -6,7 +6,7 @@ namespace XIVSlothComboPlugin.Combos
 {
     internal static class SCH
     {
-        public const byte ClassID = 26;
+        public const byte ClassID = 15;
         public const byte JobID = 28;
 
         public const uint
@@ -118,10 +118,10 @@ namespace XIVSlothComboPlugin.Combos
         }
 
 
-        // Even though Summon Seraph becomes Consolation, this Feature puts the temporary Fairy AoE heal+barrier ontop of the existing fairy AoE skill, Fey Blessing
-        internal class SCH_Consolation : CustomCombo
+        //Even though Summon Seraph becomes Consolation, this Feature puts the temporary fairy aoe heal+barrier ontop of the existing fairy AoE skill Fey Blessing
+        internal class ScholarSeraphConsolationFeature : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_Consolation;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_ConsolationFeature;
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
                 if (actionID is FeyBlessing &&
@@ -132,11 +132,11 @@ namespace XIVSlothComboPlugin.Combos
             }
         }
 
-        // Replaces all Energy Drain actions with Aetherflow when depleted
-        // Revised to a similar flow as SGE Rhizomata, but with Dissipation / Recitation as a backup
-        internal class SCH_Aetherflow : CustomCombo
+        //Replaces all EnergyDrain actions with Aetherflow when depleted
+        //Revised to a similar flow as Sage Rhizomata, but with Dissipation / Recitation as a backup
+        internal class ScholarAetherflowFeature : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_Aetherflow;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_AetherflowFeature;
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
                 if (actionID is EnergyDrain or Lustrate or SacredSoil or Indomitability or Excogitation &&
@@ -184,10 +184,10 @@ namespace XIVSlothComboPlugin.Combos
             }
         }
 
-        // Swiftcast changes to Raise when activated / on cooldown
-        internal class SCH_Raise : CustomCombo
+        //Swiftcast changes to Raise when activated / on cooldown
+        internal class ScholarRaiseFeature : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_Raise;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_RaiseFeature;
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
                 if (actionID is All.Swiftcast && IsOnCooldown(All.Swiftcast)) return Resurrection;
@@ -195,10 +195,10 @@ namespace XIVSlothComboPlugin.Combos
             }
         }
 
-        // Replaces Fairy abilities with Fairy summoning with Eos (default) or Selene
-        internal class SCH_FairyReminder : CustomCombo
+        //Replaces Fairy abilitys with fairy summoning with Eos (default) or Selene
+        internal class ScholarFairyFeature : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_FairyReminder;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_FairyFeature;
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
                 if (actionID is WhisperingDawn or FeyBlessing or FeyIllumination or Dissipation or Aetherpact &&
@@ -211,14 +211,12 @@ namespace XIVSlothComboPlugin.Combos
             }
         }
 
-        /*
-        Overrides main DPS ability family, The Broils (and Ruin 1)
-        Implements Ruin 2 as the movement option
-        Chain Stratagem has overlap protection
-        */
-        internal class SCH_DPS : CustomCombo
+        //Overwrides main DPS ability family, The Broils (and ruin 1)
+        //Implements new Sage features as ToT, and Ruin 2 as the movement option
+        //ChainStratagem has overlap protection
+        internal class ScholarDPSFeature : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_DPS;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_DPS_Feature;
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
                 bool AlternateMode = GetOptionBool(Config.SCH_ST_DPS_AltMode); //(0 or 1 radio values)
@@ -227,7 +225,7 @@ namespace XIVSlothComboPlugin.Combos
                     && InCombat())
                 {
                     //Lucid Dreaming
-                    if (IsEnabled(CustomComboPreset.SCH_DPS_Lucid) &&
+                    if (IsEnabled(CustomComboPreset.SCH_DPS_LucidOption) &&
                         level >= All.Levels.LucidDreaming &&
                         IsOffCooldown(All.LucidDreaming) &&
                         LocalPlayer.CurrentMp <= GetOptionValue(Config.SCH_ST_DPS_LucidOption) &&
@@ -235,7 +233,7 @@ namespace XIVSlothComboPlugin.Combos
                        ) return All.LucidDreaming;
 
                     //Aetherflow
-                    if (IsEnabled(CustomComboPreset.SCH_DPS_Aetherflow) &&
+                    if (IsEnabled(CustomComboPreset.SCH_DPS_AetherflowOption) &&
                         level >= Levels.Aetherflow &&
                         GetJobGauge<SCHGauge>().Aetherflow == 0 &&
                         IsOffCooldown(Aetherflow) &&
@@ -243,7 +241,7 @@ namespace XIVSlothComboPlugin.Combos
                        ) return Aetherflow;
 
                     //Chain Stratagem
-                    if (IsEnabled(CustomComboPreset.SCH_DPS_ChainStrat) &&
+                    if (IsEnabled(CustomComboPreset.SCH_DPS_ChainStratagemOption) &&
                         level >= Levels.ChainStratagem &&
                         IsOffCooldown(ChainStratagem) &&
                         !TargetHasEffectAny(Debuffs.ChainStratagem) && //Overwrite protection
@@ -252,14 +250,14 @@ namespace XIVSlothComboPlugin.Combos
                        ) return ChainStratagem;
 
                     //Ruin 2 Movement 
-                    if (IsEnabled(CustomComboPreset.SCH_DPS_Ruin2Movement) &&
+                    if (IsEnabled(CustomComboPreset.SCH_DPS_Ruin2MovementOption) &&
                         level >= Levels.Ruin2 &&
                         HasBattleTarget() &&
                         this.IsMoving
                        ) return OriginalHook(Ruin2); //Who knows in the future
 
                     //Bio/Biolysis
-                    if (IsEnabled(CustomComboPreset.SCH_DPS_Bio) && 
+                    if (IsEnabled(CustomComboPreset.SCH_DPS_BioOption) && 
                         level >= Levels.Bio1 && 
                         (CurrentTarget as BattleNpc)?.BattleNpcKind is BattleNpcSubKind.Enemy)
                     {
@@ -272,7 +270,7 @@ namespace XIVSlothComboPlugin.Combos
                             //Bio 1 checked at the start, fine for default
                             _ => FindTargetEffect(Debuffs.Bio1),
                         };
-                        if ((BioDebuffID is null || BioDebuffID?.RemainingTime <= 3) &&
+                        if ((BioDebuffID is null) || (BioDebuffID?.RemainingTime <= 3) &&
                             (GetTargetHPPercent() > GetOptionValue(Config.SCH_ST_DPS_BioOption))
                            ) return OriginalHook(Bio1);
 

@@ -62,7 +62,6 @@ namespace XIVSlothComboPlugin.Combos
                 Decimate = 60,
                 Onslaught = 62,
                 Upheaval = 64,
-                InnerRelease = 70,
                 ChaoticCyclone = 72,
                 MythrilTempestTrait = 74,
                 NascentFlash = 76,
@@ -74,62 +73,63 @@ namespace XIVSlothComboPlugin.Combos
         public static class Config
         {
             public const string
-                WAR_InfuriateRange = "WarInfuriateRange",
-                WAR_SurgingRefreshRange = "WarSurgingRefreshRange",
-                WAR_KeepOnslaughtCharges = "WarKeepOnslaughtCharges";
+                WarInfuriateRange = "WarInfuriateRange",
+                WarSurgingRefreshRange = "WarSurgingRefreshRange",
+                WarKeepOnslaughtCharges = "WarKeepOnslaughtCharges";
         }
 
+
         // Replace Storm's Path with Storm's Path combo and overcap feature on main combo to fellcleave
-        internal class WAR_ST_StormsPath : CustomCombo
+        internal class WarriorStormsPathCombo : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_ST_StormsPath;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WarriorStormsPathCombo;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
-                if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath) && actionID == StormsPath)
+                if (IsEnabled(CustomComboPreset.WarriorStormsPathCombo) && actionID == StormsPath)
                 {
                     var gauge = GetJobGauge<WARGauge>().BeastGauge;
-                    var surgingThreshold = PluginConfiguration.GetCustomIntValue(Config.WAR_SurgingRefreshRange);
-                    var onslaughtChargesRemaining = PluginConfiguration.GetCustomIntValue(Config.WAR_KeepOnslaughtCharges);
+                    var surgingThreshold = Service.Configuration.GetCustomIntValue(Config.WarSurgingRefreshRange);
+                    var onslaughtChargesRemaining = Service.Configuration.GetCustomIntValue(Config.WarKeepOnslaughtCharges);
 
-                    if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_RangedUptime) && level >= Levels.Tomahawk)
+                    if (IsEnabled(CustomComboPreset.WARRangedUptimeFeature) && level >= Levels.Tomahawk)
                     {
                         if (!InMeleeRange())
                             return Tomahawk;
                     }
 
-                    if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_Infuriate) && level >= Levels.Infuriate && GetRemainingCharges(Infuriate) >= 1 && !HasEffect(Buffs.NascentChaos) && gauge <= 40 && CanWeave(actionID))
+                    if (IsEnabled(CustomComboPreset.WarriorInfuriateonST) && level >= Levels.Infuriate && GetRemainingCharges(Infuriate) >= 1 && !HasEffect(Buffs.NascentChaos) && gauge <= 40 && CanWeave(actionID))
                         return Infuriate;
 
                     //Sub Storm's Eye level check
-                    if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_InnerRelease) && CanDelayedWeave(actionID) && IsOffCooldown(OriginalHook(Berserk)) && level is >= Levels.Berserk and < Levels.StormsEye && InCombat())
+                    if (IsEnabled(CustomComboPreset.WarriorIRonST) && CanDelayedWeave(actionID) && IsOffCooldown(OriginalHook(Berserk)) && level is >= Levels.Berserk and < Levels.StormsEye && InCombat())
                         return OriginalHook(Berserk);
 
                     if (HasEffect(Buffs.SurgingTempest) && InCombat())
                     {
                         if (CanWeave(actionID))
                         {
-                            if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_InnerRelease) && CanDelayedWeave(actionID) && IsOffCooldown(OriginalHook(Berserk)) && level >= Levels.Berserk)
+                            if (IsEnabled(CustomComboPreset.WarriorIRonST) && CanDelayedWeave(actionID) && IsOffCooldown(OriginalHook(Berserk)) && level >= Levels.Berserk)
                                 return OriginalHook(Berserk);
-                            if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_Upheaval) && IsOffCooldown(Upheaval) && level >= Levels.Upheaval)
+                            if (IsEnabled(CustomComboPreset.WarriorUpheavalMainComboFeature) && IsOffCooldown(Upheaval) && level >= Levels.Upheaval)
                                 return Upheaval;
-                            if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_Onslaught) && level >= Levels.Onslaught && GetRemainingCharges(Onslaught) > onslaughtChargesRemaining)
+                            if (IsEnabled(CustomComboPreset.WarriorOnslaughtFeature) && level >= Levels.Onslaught && GetRemainingCharges(Onslaught) > onslaughtChargesRemaining)
                             {
-                                if (IsNotEnabled(CustomComboPreset.WAR_ST_StormsPath_Onslaught_MeleeSpender) ||
-                                    (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_Onslaught_MeleeSpender) && GetTargetDistance() <= 1 && (GetCooldownRemainingTime(InnerRelease) > 40 || level < Levels.InnerRelease)))
+                                if (IsNotEnabled(CustomComboPreset.WarriorMeleeOnslaughtOption) ||
+                                    (IsEnabled(CustomComboPreset.WarriorMeleeOnslaughtOption) && GetTargetDistance() <= 1 && GetCooldownRemainingTime(InnerRelease) > 40))
                                     return Onslaught;
                             }
                         }
 
-                        if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_PrimalRend) && HasEffect(Buffs.PrimalRendReady) && level >= Levels.PrimalRend)
+                        if (IsEnabled(CustomComboPreset.WarriorPrimalRendFeature) && HasEffect(Buffs.PrimalRendReady) && level >= Levels.PrimalRend)
                         {
-                            if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_PrimalRend_CloseRange) && (GetTargetDistance() <= 1 || GetBuffRemainingTime(Buffs.PrimalRendReady) <= 10))
+                            if (IsEnabled(CustomComboPreset.WarriorPrimalRendCloseRangeFeature) && (GetTargetDistance() <= 1 || GetBuffRemainingTime(Buffs.PrimalRendReady) <= 10))
                                 return PrimalRend;
-                            if (IsNotEnabled(CustomComboPreset.WAR_ST_StormsPath_PrimalRend_CloseRange))
+                            if (IsNotEnabled(CustomComboPreset.WarriorPrimalRendCloseRangeFeature))
                                 return PrimalRend;
                         }
 
-                        if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_Spender) && level >= Levels.InnerBeast)
+                        if (IsEnabled(CustomComboPreset.WarriorSpenderOption) && level >= Levels.InnerBeast)
                         {
                             if (gauge >= 50 && (IsOffCooldown(InnerRelease) || GetCooldownRemainingTime(InnerRelease) > 35 || HasEffect(Buffs.NascentChaos)))
                                 return OriginalHook(InnerBeast);
@@ -143,14 +143,14 @@ namespace XIVSlothComboPlugin.Combos
                     {
                         if (lastComboMove == HeavySwing && level >= Levels.Maim)
                         {
-                            if (gauge == 100 && IsEnabled(CustomComboPreset.WAR_ST_StormsPath_OvercapProtection) && level >= Levels.InnerBeast)
+                            if (gauge == 100 && IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature) && level >= Levels.InnerBeast)
                                 return OriginalHook(InnerBeast);
                             return Maim;
                         }
 
                         if (lastComboMove == Maim && level >= Levels.StormsPath)
                         {
-                            if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_OvercapProtection) && level >= Levels.InnerBeast && (level < Levels.StormsEye || HasEffectAny(Buffs.SurgingTempest)) && gauge >= 90)
+                            if (IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature) && level >= Levels.InnerBeast && (level < Levels.StormsEye || HasEffectAny(Buffs.SurgingTempest)) && gauge >= 90)
                                 return OriginalHook(InnerBeast);
                             if ((GetBuffRemainingTime(Buffs.SurgingTempest) <= surgingThreshold) && level >= Levels.StormsEye)
                                 return StormsEye;
@@ -164,9 +164,9 @@ namespace XIVSlothComboPlugin.Combos
                 return actionID;
             }
 
-            internal class War_ST_StormsEye : CustomCombo
+            internal class WarriorStormsEyeCombo : CustomCombo
             {
-                protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.War_ST_StormsEye;
+                protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WarriorStormsEyeCombo;
 
                 protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
                 {
@@ -188,9 +188,9 @@ namespace XIVSlothComboPlugin.Combos
                 }
             }
 
-            internal class WAR_AoE_Overpower : CustomCombo
+            internal class WarriorMythrilTempestCombo : CustomCombo
             {
-                protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_AoE_Overpower;
+                protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WarriorMythrilTempestCombo;
 
                 protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
                 {
@@ -198,32 +198,32 @@ namespace XIVSlothComboPlugin.Combos
                     {
                         var gauge = GetJobGauge<WARGauge>().BeastGauge;
 
-                        if (IsEnabled(CustomComboPreset.WAR_AoE_Overpower_Infuriate) && level >= Levels.Infuriate && GetRemainingCharges(Infuriate) >= 1 && !HasEffect(Buffs.NascentChaos) && gauge <= 50 && CanWeave(actionID))
+                        if (IsEnabled(CustomComboPreset.WarriorInfuriateOnAOE) && level >= Levels.Infuriate && GetRemainingCharges(Infuriate) >= 1 && !HasEffect(Buffs.NascentChaos) && gauge <= 50 && CanWeave(actionID))
                             return Infuriate;
 
                         //Sub Mythril Tempest level check
-                        if (IsEnabled(CustomComboPreset.WAR_AoE_Overpower_InnerRelease) && CanDelayedWeave(actionID) && IsOffCooldown(OriginalHook(Berserk)) && level is >= Levels.Berserk and < Levels.MythrilTempest && InCombat())
+                        if (IsEnabled(CustomComboPreset.WarriorIRonAOE) && CanDelayedWeave(actionID) && IsOffCooldown(OriginalHook(Berserk)) && level is >= Levels.Berserk and < Levels.MythrilTempest && InCombat())
                             return OriginalHook(Berserk);
 
                         if (HasEffect(Buffs.SurgingTempest) && InCombat())
                         {
                             if (CanWeave(actionID))
                             {
-                                if (IsEnabled(CustomComboPreset.WAR_AoE_Overpower_InnerRelease) && CanDelayedWeave(actionID) && IsOffCooldown(OriginalHook(Berserk)) && level >= Levels.Berserk)
+                                if (IsEnabled(CustomComboPreset.WarriorIRonAOE) && CanDelayedWeave(actionID) && IsOffCooldown(OriginalHook(Berserk)) && level >= Levels.Berserk)
                                     return OriginalHook(Berserk);
-                                if (IsEnabled(CustomComboPreset.WAR_AoE_Overpower_Orogeny) && IsOffCooldown(Orogeny) && level >= Levels.Orogeny && HasEffect(Buffs.SurgingTempest))
+                                if (IsEnabled(CustomComboPreset.WarriorOrogenyFeature) && IsOffCooldown(Orogeny) && level >= Levels.Orogeny && HasEffect(Buffs.SurgingTempest))
                                     return Orogeny;
                             }
 
-                            if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_PrimalRend) && HasEffect(Buffs.PrimalRendReady) && level >= Levels.PrimalRend)
+                            if (IsEnabled(CustomComboPreset.WarriorPrimalRendFeature) && HasEffect(Buffs.PrimalRendReady) && level >= Levels.PrimalRend)
                             {
-                                if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_PrimalRend_CloseRange) && (GetTargetDistance() <= 3 || GetBuffRemainingTime(Buffs.PrimalRendReady) <= 10))
+                                if (IsEnabled(CustomComboPreset.WarriorPrimalRendCloseRangeFeature) && (GetTargetDistance() <= 3 || GetBuffRemainingTime(Buffs.PrimalRendReady) <= 10))
                                     return PrimalRend;
-                                if (IsNotEnabled(CustomComboPreset.WAR_ST_StormsPath_PrimalRend_CloseRange))
+                                if (IsNotEnabled(CustomComboPreset.WarriorPrimalRendCloseRangeFeature))
                                     return PrimalRend;
                             }
 
-                            if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_Spender) && level >= Levels.SteelCyclone && (gauge >= 50 || HasEffect(Buffs.InnerRelease)))
+                            if (IsEnabled(CustomComboPreset.WarriorSpenderOption) && level >= Levels.SteelCyclone && (gauge >= 50 || HasEffect(Buffs.InnerRelease)))
                                 return OriginalHook(SteelCyclone);
                         }
 
@@ -231,7 +231,7 @@ namespace XIVSlothComboPlugin.Combos
                         {
                             if (lastComboMove == Overpower && level >= Levels.MythrilTempest)
                             {
-                                if (IsEnabled(CustomComboPreset.WAR_ST_StormsPath_OvercapProtection) && gauge >= 90 && level >= Levels.SteelCyclone)
+                                if (IsEnabled(CustomComboPreset.WarriorGaugeOvercapFeature) && gauge >= 90 && level >= Levels.SteelCyclone)
                                     return OriginalHook(SteelCyclone);
                                 return MythrilTempest;
                             }
@@ -244,9 +244,9 @@ namespace XIVSlothComboPlugin.Combos
                 }
             }
 
-            internal class WAR_NascentFlash : CustomCombo
+            internal class WarriorNascentFlashFeature : CustomCombo
             {
-                protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_NascentFlash;
+                protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WarriorNascentFlashFeature;
 
                 protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
                 {
@@ -262,9 +262,9 @@ namespace XIVSlothComboPlugin.Combos
             }
         }
 
-        internal class WAR_ST_StormsPath_PrimalRend : CustomCombo
+        internal class WarriorPrimalRendFeature : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_ST_StormsPath_PrimalRend;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WarriorPrimalRendFeature;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
@@ -284,31 +284,30 @@ namespace XIVSlothComboPlugin.Combos
             }
         }
 
-        internal class WAR_InfuriateFellCleave : CustomCombo
+        internal class WarriorInfuriateFellCleave : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_InfuriateFellCleave;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WarriorInfuriateFellCleave;
 
             protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
             {
                 if (actionID is InnerBeast or FellCleave or SteelCyclone or Decimate)
                 {
                     var rageGauge = GetJobGauge<WARGauge>();
-                    var rageThreshold = PluginConfiguration.GetCustomIntValue(Config.WAR_InfuriateRange);
+                    var rageThreshold = Service.Configuration.GetCustomIntValue(Config.WarInfuriateRange);
                     var hasNascent = HasEffect(Buffs.NascentChaos);
                     var hasInnerRelease = HasEffect(Buffs.InnerRelease);
 
                     if (InCombat() && rageGauge.BeastGauge <= rageThreshold && GetCooldown(Infuriate).RemainingCharges > 0 && !hasNascent && level >= Levels.Infuriate
-                    && ((!hasInnerRelease) || IsNotEnabled(CustomComboPreset.WAR_InfuriateFellCleave_IRFirst)))
+                    && ((!hasInnerRelease) || IsNotEnabled(CustomComboPreset.WarriorUseInnerReleaseFirst)))
                         return OriginalHook(Infuriate);
                 }
 
                 return actionID;
             }
         }
-
-        internal class WAR_PrimalRend_InnerRelease : CustomCombo
+        internal class WarriorPrimalRendOnInnerRelease : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WAR_PrimalRend_InnerRelease;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WarriorPrimalRendOnInnerRelease;
 
             protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
             {

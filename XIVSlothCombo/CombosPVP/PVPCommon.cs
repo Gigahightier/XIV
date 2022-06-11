@@ -2,7 +2,7 @@
 
 namespace XIVSlothComboPlugin
 {
-    internal static class PvPCommon
+    internal static class PVPCommon
     {
         public const uint
             Teleport = 5,
@@ -42,11 +42,11 @@ namespace XIVSlothComboPlugin
 
         internal class GlobalEmergencyHeals : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.PvP_EmergencyHeals;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.PVPEmergencyHeals;
 
             protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
             {
-                if ((HasEffect(Buffs.Guard) || JustUsed(Guard)) && IsEnabled(CustomComboPreset.PvP_MashCancel))
+                if ((HasEffect(Buffs.Guard) || JustUsed(Guard)) && IsEnabled(CustomComboPreset.PVPMashCancel))
                 {
                     if (actionID == Guard) return Guard;
                     else return OriginalHook(11);
@@ -69,12 +69,12 @@ namespace XIVSlothComboPlugin
             public bool Execute()
             {
                 var jobMaxHp = LocalPlayer.MaxHp;
-                var threshold = PluginConfiguration.GetCustomIntValue(Config.EmergencyHealThreshold);
+                var threshold = Service.Configuration.GetCustomIntValue(Config.EmergencyHealThreshold);
                 var maxHPThreshold = jobMaxHp - 15000;
                 var remainingPercentage = (float)LocalPlayer.CurrentHp / (float)maxHPThreshold;
 
 
-                if (HasEffect(3180)) return false; //DRG LB buff
+
                 if (LocalPlayer.CurrentMp < 2500) return false;
                 if (remainingPercentage * 100 > threshold) return false;
 
@@ -85,11 +85,11 @@ namespace XIVSlothComboPlugin
 
         internal class GlobalEmergencyGuard : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.PvP_EmergencyGuard;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.PVPEmergencyGuard;
 
             protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
             {
-                if ((HasEffect(Buffs.Guard) || JustUsed(Guard)) && IsEnabled(CustomComboPreset.PvP_MashCancel))
+                if ((HasEffect(Buffs.Guard) || JustUsed(Guard)) && IsEnabled(CustomComboPreset.PVPMashCancel))
                 {
                     if (actionID == Guard) return Guard;
                     else return OriginalHook(11);
@@ -112,10 +112,9 @@ namespace XIVSlothComboPlugin
             public bool Execute()
             {
                 var jobMaxHp = LocalPlayer.MaxHp;
-                var threshold = PluginConfiguration.GetCustomIntValue(Config.EmergencyGuardThreshold);
+                var threshold = Service.Configuration.GetCustomIntValue(Config.EmergencyGuardThreshold);
                 var remainingPercentage = (float)LocalPlayer.CurrentHp / (float)jobMaxHp;
 
-                if (HasEffect(3180)) return false; //DRG LB buff
                 if (HasEffectAny(Debuffs.Unguarded) || HasEffect(WARPVP.Buffs.InnerRelease)) return false;
                 if (GetCooldown(Guard).IsCooldown) return false;
                 if (remainingPercentage * 100 > threshold) return false;
@@ -127,11 +126,11 @@ namespace XIVSlothComboPlugin
 
         internal class QuickPurify : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.PvP_QuickPurify;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.PVPQuickPurify;
 
             protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
             {
-                if ((HasEffect(Buffs.Guard) || JustUsed(Guard)) && IsEnabled(CustomComboPreset.PvP_MashCancel))
+                if ((HasEffect(Buffs.Guard) || JustUsed(Guard)) && IsEnabled(CustomComboPreset.PVPMashCancel))
                 {
                     if (actionID == Guard) return Guard;
                     else return OriginalHook(11);
@@ -153,9 +152,8 @@ namespace XIVSlothComboPlugin
 
             public bool Execute()
             {
-                var selectedStatuses = PluginConfiguration.GetCustomBoolArrayValue(Config.QuickPurifyStatuses);
+                var selectedStatuses = Service.Configuration.GetCustomBoolArrayValue(Config.QuickPurifyStatuses);
 
-                if (HasEffect(3180)) return false; //DRG LB buff
 
                 if (selectedStatuses.Length == 0) return false;
                 if (GetCooldown(Purify).IsCooldown) return false;

@@ -4,7 +4,7 @@ namespace XIVSlothComboPlugin
 {
     internal static class NINPVP
     {
-        public const byte ClassID = 29;
+        public const byte ClassID = 18;
         public const byte JobID = 30;
 
         internal const uint
@@ -46,9 +46,10 @@ namespace XIVSlothComboPlugin
                 SealedMeisui = 3198;
         }
 
-        internal class NINPvP_ST_BurstMode : CustomCombo
+
+        internal class NINBurstMode : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.NINPvP_ST_BurstMode;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.NINBurstMode;
 
             protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
             {
@@ -102,9 +103,9 @@ namespace XIVSlothComboPlugin
             }
         }
 
-        internal class NINPvP_AoE_BurstMode : CustomCombo
+        internal class NINAoEBurstMode : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.NINPvP_AoE_BurstMode;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.NINAoEBurstMode;
 
             protected override uint Invoke(uint actionID, uint lastComboActionID, float comboTime, byte level)
             {

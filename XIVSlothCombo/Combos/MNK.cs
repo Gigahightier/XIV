@@ -36,6 +36,7 @@ namespace XIVSlothComboPlugin.Combos
             FormShift = 4262,
             Thunderclap = 25762;
 
+
         public static class Buffs
         {
             public const ushort
@@ -79,18 +80,18 @@ namespace XIVSlothComboPlugin.Combos
                 RiddleOfWind = 72,
                 ShadowOfTheDestroyer = 82;
         }
-
         public static class Config
         {
             public const string
-                MNK_Demolish_Apply = "MnkDemolishApply";
+                MnkDemolishApply = "MnkDemolishApply";
             public const string
-                MNK_DisciplinedFist_Apply = "MnkDisciplinedFistApply";
+                MnkDisciplinedFistApply = "MnkDisciplinedFistApply";
         }
 
-        internal class MNK_AoE_SimpleMode : CustomCombo
+
+        internal class MnkAoECombo : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MNK_AoE_SimpleMode;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MnkArmOfTheDestroyerCombo;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
@@ -116,7 +117,7 @@ namespace XIVSlothComboPlugin.Combos
                         {
                             return FormShift;
                         }
-                        if (IsEnabled(CustomComboPreset.MNK_AoE_Simple_Thunderclap) && !InMeleeRange() && gauge.Chakra == 5 && HasEffect(Buffs.FormlessFist))
+                        if (IsEnabled(CustomComboPreset.MnkThunderclapOnAoEComboFeature) && !InMeleeRange() && gauge.Chakra == 5 && HasEffect(Buffs.FormlessFist))
                         {
                             return Thunderclap;
                         }
@@ -125,13 +126,13 @@ namespace XIVSlothComboPlugin.Combos
                     // Buffs
                     if (inCombat && canWeave)
                     {
-                        if (IsEnabled(CustomComboPreset.MNK_AoE_Simple_CDs))
+                        if (IsEnabled(CustomComboPreset.MnkCDsOnAoEComboFeature))
                         {
                             if (level >= Levels.RiddleOfFire && !IsOnCooldown(RiddleOfFire))
                             {
                                 return RiddleOfFire;
                             }
-                            if (IsEnabled(CustomComboPreset.MNK_AoE_Simple_CDs_PerfectBalance) &&
+                            if (IsEnabled(CustomComboPreset.MnkPerfectBalanceOnAoEComboFeature) &&
                                 level >= Levels.PerfectBalance && !HasEffect(Buffs.PerfectBalance) && OriginalHook(MasterfulBlitz) == MasterfulBlitz)
                             {
                                 // Use Perfect Balance if:
@@ -149,23 +150,23 @@ namespace XIVSlothComboPlugin.Combos
                                     return PerfectBalance;
                                 }
                             }
-                            if (IsEnabled(CustomComboPreset.MNK_AoE_Simple_CDs_Brotherhood) && level >= Levels.Brotherhood && !IsOnCooldown(Brotherhood))
+                            if (IsEnabled(CustomComboPreset.MnkBrotherhoodOnAoEComboFeature) && level >= Levels.Brotherhood && !IsOnCooldown(Brotherhood))
                             {
                                 return Brotherhood;
                             }
-                            if (IsEnabled(CustomComboPreset.MNK_AoE_Simple_CDs_RiddleOfWind) && level >= Levels.RiddleOfWind && !IsOnCooldown(RiddleOfWind))
+                            if (IsEnabled(CustomComboPreset.MnkRiddleOfWindOnAoEComboFeature) && level >= Levels.RiddleOfWind && !IsOnCooldown(RiddleOfWind))
                             {
                                 return RiddleOfWind;
                             }
                         }
-                        if (IsEnabled(CustomComboPreset.MNK_AoE_Simple_Meditation) && level >= Levels.Meditation && gauge.Chakra == 5 && (HasEffect(Buffs.DisciplinedFist) || level < Levels.TwinSnakes) && canWeaveChakra)
+                        if (IsEnabled(CustomComboPreset.MnkMeditationOnAoEComboFeature) && level >= Levels.Meditation && gauge.Chakra == 5 && (HasEffect(Buffs.DisciplinedFist) || level < Levels.TwinSnakes) && canWeaveChakra)
                         {
                             return level >= Levels.Enlightenment ? OriginalHook(Enlightenment) : OriginalHook(Meditation);
                         }
                     }
 
                     // Masterful Blitz
-                    if (IsEnabled(CustomComboPreset.MNK_AoE_Simple_MasterfulBlitz) &&
+                    if (IsEnabled(CustomComboPreset.MonkMasterfulBlitzOnAoECombo) &&
                         level >= Levels.MasterfulBlitz && !HasEffect(Buffs.PerfectBalance) && OriginalHook(MasterfulBlitz) != MasterfulBlitz)
                     {
                         return OriginalHook(MasterfulBlitz);
@@ -215,15 +216,15 @@ namespace XIVSlothComboPlugin.Combos
             }
         }
 
-        internal class MNK_DragonKick_Bootshine : CustomCombo
+        internal class MnkBootshineFeature : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MNK_DragonKick_Bootshine;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MnkBootshineFeature;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
                 if (actionID == DragonKick)
                 {
-                    if (IsEnabled(CustomComboPreset.MNK_BootshineBalance) && OriginalHook(MasterfulBlitz) != MasterfulBlitz)
+                    if (IsEnabled(CustomComboPreset.MnkBootshineBalanceFeature) && OriginalHook(MasterfulBlitz) != MasterfulBlitz)
                         return OriginalHook(MasterfulBlitz);
 
                     if (HasEffect(Buffs.LeadenFist) && (
@@ -239,9 +240,9 @@ namespace XIVSlothComboPlugin.Combos
             }
         }
 
-        internal class MNK_TwinSnakes : CustomCombo
+        internal class MnkTwinSnakesFeature : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MNK_TwinSnakes;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MnkTwinSnakesFeature;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
@@ -263,9 +264,9 @@ namespace XIVSlothComboPlugin.Combos
             }
         }
 
-        internal class MNK_BasicCombo : CustomCombo
+        internal class MnkBasicCombo : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MNK_BasicCombo;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MnkBasicCombo;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
@@ -295,9 +296,9 @@ namespace XIVSlothComboPlugin.Combos
             }
         }
 
-        internal class MNK_PerfectBalance : CustomCombo
+        internal class MonkPerfectBalanceFeature : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MNK_PerfectBalance;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MonkPerfectBalanceFeature;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
@@ -310,17 +311,16 @@ namespace XIVSlothComboPlugin.Combos
                 return actionID;
             }
         }
-
-        internal class MNK_ST_SimpleMode : CustomCombo
+        internal class MnkBootshineCombo : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MNK_ST_SimpleMode;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MnkBootshineCombo;
 
             internal static bool inOpener = false;
             internal static bool openerFinished = false;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
-                if (actionID == Bootshine || (actionID == Demolish && IsEnabled(CustomComboPreset.MNK_ST_Simple_Demolish)))
+                if (actionID == Bootshine || (actionID == Demolish && IsEnabled(CustomComboPreset.MnkDemolishComboFeature)))
                 {
                     var inCombat = HasCondition(Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat);
                     var gauge = GetJobGauge<MNKGauge>();
@@ -335,7 +335,7 @@ namespace XIVSlothComboPlugin.Combos
                     var solarNadi = gauge.Nadi == Nadi.SOLAR;
 
                     // Opener for MNK
-                    if (actionID != Demolish && IsEnabled(CustomComboPreset.MNK_ST_Simple_LunarSolarOpener))
+                    if (actionID != Demolish && IsEnabled(CustomComboPreset.MnkLunarSolarOpenerOnMainComboFeature))
                     {
                         // Re-enter opener when Brotherhood is used
                         if (lastComboMove == Brotherhood)
@@ -425,7 +425,7 @@ namespace XIVSlothComboPlugin.Combos
                         {
                             return FormShift;
                         }
-                        if (IsEnabled(CustomComboPreset.MNK_ST_Simple_Thunderclap) && !InMeleeRange() && gauge.Chakra == 5 && HasEffect(Buffs.FormlessFist))
+                        if (IsEnabled(CustomComboPreset.MnkThunderclapOnMainComboFeature) && !InMeleeRange() && gauge.Chakra == 5 && HasEffect(Buffs.FormlessFist))
                         {
                             return Thunderclap;
                         }
@@ -434,11 +434,11 @@ namespace XIVSlothComboPlugin.Combos
                     // Buffs
                     if (inCombat && !inOpener)
                     {
-                        if (actionID != Demolish && IsEnabled(CustomComboPreset.MNK_ST_Simple_CDs))
+                        if (actionID != Demolish && IsEnabled(CustomComboPreset.MnkCDsOnMainComboFeature))
                         {
                             if (canWeave)
                             {
-                                if (IsEnabled(CustomComboPreset.MNK_ST_Simple_CDs_PerfectBalance) && !HasEffect(Buffs.FormlessFist) &&
+                                if (IsEnabled(CustomComboPreset.MnkPerfectBalanceOnMainComboFeature) && !HasEffect(Buffs.FormlessFist) &&
                                     level >= Levels.PerfectBalance && !HasEffect(Buffs.PerfectBalance) && HasEffect(Buffs.DisciplinedFist) &&
                                     OriginalHook(MasterfulBlitz) == MasterfulBlitz)
                                 {
@@ -471,13 +471,13 @@ namespace XIVSlothComboPlugin.Combos
 
                             if (canWeave)
                             {
-                                if (IsEnabled(CustomComboPreset.MNK_ST_Simple_CDs_Brotherhood) && level >= Levels.Brotherhood &&
+                                if (IsEnabled(CustomComboPreset.MnkBrotherhoodOnMainComboFeature) && level >= Levels.Brotherhood &&
                                    !IsOnCooldown(Brotherhood) && IsOnCooldown(RiddleOfFire))
                                 {
                                     return Brotherhood;
                                 }
 
-                                if (IsEnabled(CustomComboPreset.MNK_ST_Simple_CDs_RiddleOfWind) && level >= Levels.RiddleOfWind &&
+                                if (IsEnabled(CustomComboPreset.MnkRiddleOfWindOnMainComboFeature) && level >= Levels.RiddleOfWind &&
                                    !IsOnCooldown(RiddleOfWind) && IsOnCooldown(RiddleOfFire) && IsOnCooldown(Brotherhood))
                                 {
                                     return RiddleOfWind;
@@ -487,9 +487,9 @@ namespace XIVSlothComboPlugin.Combos
 
                         if (canWeave)
                         {
-                            if (IsEnabled(CustomComboPreset.MNK_ST_Simple_Meditation) && level >= Levels.Meditation  && gauge.Chakra == 5 && (HasEffect(Buffs.DisciplinedFist) || level < Levels.TwinSnakes))
+                            if (IsEnabled(CustomComboPreset.MnkMeditationOnMainComboFeature) && level >= Levels.Meditation  && gauge.Chakra == 5 && (HasEffect(Buffs.DisciplinedFist) || level < Levels.TwinSnakes))
                             {
-                                if (level < Levels.RiddleOfFire || !IsEnabled(CustomComboPreset.MNK_ST_Simple_CDs) || (GetCooldownRemainingTime(RiddleOfFire) >= 1.5 && IsOnCooldown(RiddleOfFire) && lastComboMove != RiddleOfFire))
+                                if (level < Levels.RiddleOfFire || !IsEnabled(CustomComboPreset.MnkCDsOnMainComboFeature) || (GetCooldownRemainingTime(RiddleOfFire) >= 1.5 && IsOnCooldown(RiddleOfFire) && lastComboMove != RiddleOfFire))
                                 {
                                     return OriginalHook(Meditation);
                                 }
@@ -498,7 +498,7 @@ namespace XIVSlothComboPlugin.Combos
                     }
 
                     // Masterful Blitz
-                    if (IsEnabled(CustomComboPreset.MNK_ST_Simple_MasterfulBlitz) && level >= Levels.MasterfulBlitz && !HasEffect(Buffs.PerfectBalance) && OriginalHook(MasterfulBlitz) != MasterfulBlitz)
+                    if (IsEnabled(CustomComboPreset.MonkMasterfulBlitzOnMainCombo) && level >= Levels.MasterfulBlitz && !HasEffect(Buffs.PerfectBalance) && OriginalHook(MasterfulBlitz) != MasterfulBlitz)
                     {
                         return OriginalHook(MasterfulBlitz);
                     }
@@ -551,7 +551,7 @@ namespace XIVSlothComboPlugin.Combos
                     }
                     if (level >= Levels.TrueStrike && HasEffect(Buffs.RaptorForm))
                     {
-                        if (level >= Levels.TwinSnakes && (!HasEffect(Buffs.DisciplinedFist) || twinsnakeDuration <= PluginConfiguration.GetCustomIntValue(Config.MNK_DisciplinedFist_Apply)))
+                        if (level >= Levels.TwinSnakes && (!HasEffect(Buffs.DisciplinedFist) || twinsnakeDuration <= Service.Configuration.GetCustomIntValue(Config.MnkDisciplinedFistApply)))
                         {
                             return TwinSnakes;
                         }
@@ -559,7 +559,7 @@ namespace XIVSlothComboPlugin.Combos
                     }
                     if (level >= Levels.SnapPunch && HasEffect(Buffs.CoerlForm))
                     {
-                        if (level >= Levels.Demolish && HasEffect(Buffs.DisciplinedFist) && (!TargetHasEffect(Debuffs.Demolish) || demolishDuration <= PluginConfiguration.GetCustomIntValue(Config.MNK_Demolish_Apply)))
+                        if (level >= Levels.Demolish && HasEffect(Buffs.DisciplinedFist) && (!TargetHasEffect(Debuffs.Demolish) || demolishDuration <= Service.Configuration.GetCustomIntValue(Config.MnkDemolishApply)))
                         {
                             return Demolish;
                         }
@@ -569,10 +569,9 @@ namespace XIVSlothComboPlugin.Combos
                 return actionID;
             }
         }
-
-        internal class MNK_PerfectBalance_Plus : CustomCombo
+        internal class MnkPerfectBalancePlus : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MNK_PerfectBalance_Plus;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MnkPerfectBalancePlus;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
@@ -614,10 +613,9 @@ namespace XIVSlothComboPlugin.Combos
                 return actionID;
             }
         }
-
-        internal class MNK_Riddle_Brotherhood : CustomCombo
+        internal class MnkRiddleOfFireBrotherhoodFeature : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MNK_Riddle_Brotherhood;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MnkRiddleOfFireBrotherhoodFeature;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
@@ -638,10 +636,9 @@ namespace XIVSlothComboPlugin.Combos
                 return actionID;
             }
         }
-
-        internal class MNK_HowlingFistMeditation : CustomCombo
+        internal class MonkHowlingFistMeditationFeature : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MNK_HowlingFistMeditation;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MonkHowlingFistMeditationFeature;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {

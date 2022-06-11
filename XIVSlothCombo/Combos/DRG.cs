@@ -589,7 +589,7 @@ namespace XIVSlothComboPlugin.Combos
                             if (gauge.IsLOTDActive is true && level >= Levels.Stardiver && HasEffect(Buffs.PowerSurge) && IsOffCooldown(Stardiver) && CanWeave(actionID, 1.3))
                                 return Stardiver;
 
-                            if (HasEffect(Buffs.BattleLitany) && gauge.IsLOTDActive is true && level >= Levels.SpineshatterDive && HasEffect(Buffs.PowerSurge) && GetRemainingCharges(SpineshatterDive) > 0 && canWeave)
+                            if (HasEffect(Buffs.BattleLitany) && gauge.IsLOTDActive is true && level >= Levels.SpineshatterDive && HasEffect(Buffs.PowerSurge) && GetRemainingCharges(SpineshatterDive) == 2 && canWeave)
                                 return SpineshatterDive;
                         }
                     }
@@ -692,10 +692,10 @@ namespace XIVSlothComboPlugin.Combos
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
+                var canWeave = CanWeave(actionID);
+                var gauge = GetJobGauge<DRGGauge>();
                 if (actionID is CoerthanTorment)
                 {
-                    var canWeave = CanWeave(actionID);
-                    var gauge = GetJobGauge<DRGGauge>();
                     // Piercing Talon Uptime Option
                     if (IsEnabled(CustomComboPreset.DRG_AoE_Simple_RangedUptime) && level >= Levels.PiercingTalon && !InMeleeRange())
                         return PiercingTalon;
@@ -782,7 +782,7 @@ namespace XIVSlothComboPlugin.Combos
                             if (gauge.IsLOTDActive is true && level >= Levels.Stardiver && IsOffCooldown(Stardiver) && CanWeave(actionID, 1.5))
                                 return Stardiver;
 
-                            if (level >= Levels.SpineshatterDive && GetRemainingCharges(SpineshatterDive) > 0)
+                            if (level >= Levels.SpineshatterDive && GetRemainingCharges(SpineshatterDive) > 0 && canWeave)
                                 return SpineshatterDive;
 
                         }

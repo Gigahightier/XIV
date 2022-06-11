@@ -264,7 +264,7 @@ namespace XIVSlothComboPlugin.Combos
                 var flow = (HasEffect(Buffs.SilkenFlow) || HasEffect(Buffs.FlourishingFlow));
                 var symmetry = (HasEffect(Buffs.SilkenSymmetry) || HasEffect(Buffs.FlourishingSymmetry));
                 var canWeave = CanWeave(actionID);
-                var espritThreshold = PluginConfiguration.GetCustomIntValue(Config.DNCEspritThreshold_ST);
+                var espritThreshold = Service.Configuration.GetCustomIntValue(Config.DNCEspritThreshold_ST);
 
                 // ST Esprit overcap options
                 if (level >= Levels.SaberDance && gauge.Esprit >= espritThreshold && IsEnabled(CustomComboPreset.DNC_ST_EspritOvercap))
@@ -277,7 +277,7 @@ namespace XIVSlothComboPlugin.Combos
                         return FanDance1;
 
                     // ST Fan Dance 3/4 on combo
-                    if (IsEnabled(CustomComboPreset.DNC_ST_FanDance34))
+                    if (IsEnabled(CustomComboPreset.DNC_FanDance34_MainCombo))
                     {
                         if (HasEffect(Buffs.ThreeFoldFanDance) && level >= Levels.FanDance3)
                             return FanDance3;
@@ -318,7 +318,7 @@ namespace XIVSlothComboPlugin.Combos
                 var flow = (HasEffect(Buffs.SilkenFlow) || HasEffect(Buffs.FlourishingFlow));
                 var symmetry = (HasEffect(Buffs.SilkenSymmetry) || HasEffect(Buffs.FlourishingSymmetry));
                 var canWeave = CanWeave(actionID);
-                var espritThreshold = PluginConfiguration.GetCustomIntValue(Config.DNCEspritThreshold_AoE);
+                var espritThreshold = Service.Configuration.GetCustomIntValue(Config.DNCEspritThreshold_AoE);
 
                 // AoE Esprit overcap options
                 if (level >= Levels.SaberDance && gauge.Esprit >= espritThreshold && IsEnabled(CustomComboPreset.DNC_AoE_EspritOvercap))
@@ -331,7 +331,7 @@ namespace XIVSlothComboPlugin.Combos
                         return FanDance2;
 
                     // AoE Fan Dance 3/4 on combo
-                    if (IsEnabled(CustomComboPreset.DNC_AoE_FanDance34))
+                    if (IsEnabled(CustomComboPreset.DNC_FanDance34_MainCombo))
                     {
                         if (HasEffect(Buffs.ThreeFoldFanDance))
                             return FanDance3;
@@ -389,14 +389,14 @@ namespace XIVSlothComboPlugin.Combos
                 var flourishCD = GetCooldown(Flourish);
                 var incombat = HasCondition(Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat);
 
-                if (IsEnabled(CustomComboPreset.DNC_CombinedDances_Devilment) && standardCD.IsCooldown && !devilmentCD.IsCooldown && !gauge.IsDancing)
+                if (IsEnabled(CustomComboPreset.DancerDevilmentOnCombinedDanceFeature) && standardCD.IsCooldown && !devilmentCD.IsCooldown && !gauge.IsDancing)
                 {
                     if (level is >= Levels.Devilment and < Levels.TechnicalStep ||
                         (level >= Levels.TechnicalStep && techstepCD.IsCooldown))
                         return Devilment;
                 }
 
-                if (IsEnabled(CustomComboPreset.DNC_CombinedDances_Flourish) && !gauge.IsDancing && !flourishCD.IsCooldown &&
+                if (IsEnabled(CustomComboPreset.DancerFlourishOnCombinedDanceFeature) && !gauge.IsDancing && !flourishCD.IsCooldown &&
                     incombat && level >= Levels.Flourish && standardCD.IsCooldown)
                     return Flourish;
 
@@ -453,11 +453,11 @@ namespace XIVSlothComboPlugin.Combos
                 var curingWaltzReady = level >= Levels.CuringWaltz && IsOffCooldown(CuringWaltz);
                 var secondWindReady = level >= All.Levels.SecondWind && IsOffCooldown(All.SecondWind);
                 var interruptable = CanInterruptEnemy() && IsOffCooldown(All.HeadGraze) && level >= All.Levels.HeadGraze;
-                var standardStepBurstThreshold = PluginConfiguration.GetCustomIntValue(Config.DNCSimpleSSBurstPercent);
-                var technicalStepBurstThreshold = PluginConfiguration.GetCustomIntValue(Config.DNCSimpleSSBurstPercent);
-                var featherBurstThreshold = PluginConfiguration.GetCustomIntValue(Config.DNCSimpleFeatherBurstPercent);
-                var waltzThreshold = PluginConfiguration.GetCustomIntValue(Config.DNCSimplePanicHealWaltzPercent);
-                var secondWindThreshold = PluginConfiguration.GetCustomIntValue(Config.DNCSimplePanicHealWindPercent);
+                var standardStepBurstThreshold = Service.Configuration.GetCustomIntValue(Config.DNCSimpleSSBurstPercent);
+                var technicalStepBurstThreshold = Service.Configuration.GetCustomIntValue(Config.DNCSimpleSSBurstPercent);
+                var featherBurstThreshold = Service.Configuration.GetCustomIntValue(Config.DNCSimpleFeatherBurstPercent);
+                var waltzThreshold = Service.Configuration.GetCustomIntValue(Config.DNCSimplePanicHealWaltzPercent);
+                var secondWindThreshold = Service.Configuration.GetCustomIntValue(Config.DNCSimplePanicHealWindPercent);
 
                 // Simple ST Standard Steps
                 if (HasEffect(Buffs.StandardStep) && IsEnabled(CustomComboPreset.DNC_ST_Simple_SS))
@@ -595,10 +595,10 @@ namespace XIVSlothComboPlugin.Combos
                     var curingWaltzReady = level >= Levels.CuringWaltz && IsOffCooldown(CuringWaltz);
                     var secondWindReady = level >= All.Levels.SecondWind && IsOffCooldown(All.SecondWind);
                     var interruptable = CanInterruptEnemy() && IsOffCooldown(All.HeadGraze) && level >= All.Levels.HeadGraze;
-                    var standardStepBurstThreshold = PluginConfiguration.GetCustomIntValue(Config.DNCSimpleSSAoEBurstPercent);
-                    var technicalStepBurstThreshold = PluginConfiguration.GetCustomIntValue(Config.DNCSimpleSSAoEBurstPercent);
-                    var waltzThreshold = PluginConfiguration.GetCustomIntValue(Config.DNCSimpleAoEPanicHealWaltzPercent);
-                    var secondWindThreshold = PluginConfiguration.GetCustomIntValue(Config.DNCSimpleAoEPanicHealWindPercent);
+                    var standardStepBurstThreshold = Service.Configuration.GetCustomIntValue(Config.DNCSimpleSSAoEBurstPercent);
+                    var technicalStepBurstThreshold = Service.Configuration.GetCustomIntValue(Config.DNCSimpleSSAoEBurstPercent);
+                    var waltzThreshold = Service.Configuration.GetCustomIntValue(Config.DNCSimpleAoEPanicHealWaltzPercent);
+                    var secondWindThreshold = Service.Configuration.GetCustomIntValue(Config.DNCSimpleAoEPanicHealWindPercent);
 
                     // Simple AoE Standard Step (step function)
                     if (HasEffect(Buffs.StandardStep) && IsEnabled(CustomComboPreset.DNC_AoE_Simple_SS))
