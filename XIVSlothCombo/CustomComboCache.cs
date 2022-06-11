@@ -171,7 +171,5 @@ internal class CustomComboCache : IDisposable
     {
         this.statusCache.Clear();
         this.cooldownCache.Clear();
-            return cooldownGroupCache[actionID] = row!.CooldownGroup;
-        }
     }
 }
