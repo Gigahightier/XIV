@@ -46,11 +46,6 @@ namespace XIVSlothComboPlugin
         [PluginService]
         public static DalamudPluginInterface Interface { get; private set; } = null!;
 
-        /// <summary>
-        /// Gets the Dalamud buddy list.
-        /// </summary>
-        internal static PluginAddressResolver Address { get; set; } = null!;
-
         /// <summary> Gets the Dalamud buddy list. </summary>
         [PluginService]
         public static BuddyList BuddyList { get; private set; } = null!;
@@ -75,9 +70,6 @@ namespace XIVSlothComboPlugin
         /// <summary> Gets the Dalamud condition. </summary>
         [PluginService]
         public static Condition Condition { get; private set; } = null!;
-
-        /// <summary> Gets or sets the plugin configuration. </summary>
-        internal static PluginConfiguration Configuration { get; set; } = null!;
 
         /// <summary> Gets the Dalamud data manager. </summary>
         [PluginService]
