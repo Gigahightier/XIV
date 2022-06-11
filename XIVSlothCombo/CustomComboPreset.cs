@@ -2953,7 +2953,7 @@ namespace XIVSlothComboPlugin
             [SecretCustomCombo]
             [ParentCombo(BRDPvP_BurstMode)]
             [CustomComboInfo("Disengage", "Woops back.", BRDPvP.JobID)]
-            MCHPvP_BurstMode_AltAnalysis = 80021,
+            BRDDisengage = 80021,
         #endregion
 
         #region RED MAGE
