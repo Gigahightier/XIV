@@ -92,60 +92,6 @@ internal class CustomComboCache : IDisposable
 
         return this.statusCache[key] = null;
     }
-        /// <summary> Finds a status on the given object. </summary>
-        /// <param name="statusID"> Status effect ID. </param>
-        /// <param name="obj"> Object to look for effects on. </param>
-        /// <param name="sourceID"> Source object ID. </param>
-        /// <returns> Status object or null. </returns>
-        internal Status? GetStatus(uint statusID, GameObject? obj, uint? sourceID)
-        {
-            var key = (statusID, obj?.ObjectId, sourceID);
-            if (statusCache.TryGetValue(key, out var found))
-                return found;
-
-            if (obj is null)
-                return statusCache[key] = null;
-
-            if (obj is not BattleChara chara)
-                return statusCache[key] = null;
-
-            foreach (var status in chara.StatusList)
-            {
-                if (status.StatusId == statusID && (!sourceID.HasValue || status.SourceID == 0 || status.SourceID == InvalidObjectID || status.SourceID == sourceID))
-                    return statusCache[key] = status;
-            }
-
-            return statusCache[key] = null;
-        }
-
-        /// <summary> Gets the cooldown data for an action. </summary>
-        /// <param name="actionID"> Action ID to check. </param>
-        /// <returns> Cooldown data. </returns>
-        internal unsafe CooldownData GetCooldown(uint actionID)
-        {
-            if (cooldownCache.TryGetValue(actionID, out var found))
-                return found;
-
-            var actionManager = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance();
-            if (actionManager == null)
-                return cooldownCache[actionID] = default;
-
-            var cooldownGroup = GetCooldownGroup(actionID);
-
-            var cooldownPtr = actionManager->GetRecastGroupDetail(cooldownGroup - 1);
-            cooldownPtr->ActionID = actionID;
-
-            return cooldownCache[actionID] = *(CooldownData*)cooldownPtr;
-        }
-
-        /// <summary> Get the maximum number of charges for an action. </summary>
-        /// <param name="actionID"> Action ID to check. </param>
-        /// <returns> Max number of charges at current and max level. </returns>
-        internal unsafe (ushort Current, ushort Max) GetMaxCharges(uint actionID)
-        {
-            var player = Service.ClientState.LocalPlayer;
-            if (player == null)
-                return (0, 0);
 
     /// <summary>
     /// Gets the cooldown data for an action.
@@ -153,40 +99,23 @@ internal class CustomComboCache : IDisposable
     /// <param name="actionID">Action ID to check.</param>
     /// <returns>Cooldown data.</returns>
     
-	public unsafe CooldownData GetCooldown(uint actionID)
+    public unsafe CooldownData GetCooldown(uint actionID)
     {
-		if (this.cooldownCache.TryGetValue(actionID, out CooldownData found))
-			return found;
+	if (this.cooldownCache.TryGetValue(actionID, out CooldownData found))
+	    return found;
 
-		FFXIVClientStructs.FFXIV.Client.Game.ActionManager* actionManager = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance();
-		if (actionManager is null)
-			return this.cooldownCache[actionID] = default;
+	FFXIVClientStructs.FFXIV.Client.Game.ActionManager* actionManager = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance();
+	if (actionManager is null)
+	    return this.cooldownCache[actionID] = default;
 
-		byte cooldownGroup = this.getCooldownGroup(actionID);
+	byte cooldownGroup = this.getCooldownGroup(actionID);
 
-		FFXIVClientStructs.FFXIV.Client.Game.RecastDetail* cooldownPtr = actionManager->GetRecastGroupDetail(cooldownGroup - 1);
-		cooldownPtr->ActionID = actionID;
-            var key = (actionID, job, level);
-            if (chargesCache.TryGetValue(key, out var found))
-                return found;
+	FFXIVClientStructs.FFXIV.Client.Game.RecastDetail* cooldownPtr = actionManager->GetRecastGroupDetail(cooldownGroup - 1);
+	cooldownPtr->ActionID = actionID;
 
-            var cur = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.GetMaxCharges(actionID, 0);
-            var max = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.GetMaxCharges(actionID, 90);
-            return chargesCache[key] = (cur, max);
-        }
-
-        /// <summary> Get the resource cost of an action. </summary>
-        /// <param name="actionID"> Action ID to check. </param>
-        /// <returns> Returns the resource cost of an action. </returns>
-        internal unsafe int GetResourceCost(uint actionID)
-        {
-            var actionManager = FFXIVClientStructs.FFXIV.Client.Game.ActionManager.Instance();
-            if (actionManager == null)
-                return 0;
-
-		CooldownData cd = this.cooldownCache[actionID] = *(CooldownData*)cooldownPtr;
-		return cd;
-	}
+	CooldownData cd = this.cooldownCache[actionID] = *(CooldownData*)cooldownPtr;
+	return cd;
+    }
 
     /// <summary>
     /// Get the maximum number of charges for an action.
@@ -230,12 +159,6 @@ internal class CustomComboCache : IDisposable
     {
         if (this.cooldownGroupCache.TryGetValue(actionID, out byte cooldownGroup))
             return cooldownGroup;
-        /// <summary> Get the cooldown group of an action. </summary>
-        /// <param name="actionID"> Action ID to check. </param>
-        private byte GetCooldownGroup(uint actionID)
-        {
-            if (cooldownGroupCache.TryGetValue(actionID, out var cooldownGroup))
-                return cooldownGroup;
 
 	Lumina.Excel.ExcelSheet<Lumina.Excel.GeneratedSheets.Action> sheet = Service.DataManager.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()!;
         Lumina.Excel.GeneratedSheets.Action row = sheet.GetRow(actionID)!;
@@ -249,13 +172,6 @@ internal class CustomComboCache : IDisposable
         this.statusCache.Clear();
         this.cooldownCache.Clear();
             return cooldownGroupCache[actionID] = row!.CooldownGroup;
-        }
-
-        /// <summary> Triggers when the game framework updates. Clears cooldown and status caches. </summary>
-        private unsafe void Framework_Update(Framework framework)
-        {
-            statusCache.Clear();
-            cooldownCache.Clear();
         }
     }
 }
