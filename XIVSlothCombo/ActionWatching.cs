@@ -9,11 +9,11 @@ namespace XIVSlothComboPlugin
 {
     public static class ActionWatching
     {
-        private static Dictionary<uint, Lumina.Excel.GeneratedSheets.Action>? ActionSheet = Service.DataManager?.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()?
+        public static Dictionary<uint, Lumina.Excel.GeneratedSheets.Action>? ActionSheet = Service.DataManager?.GetExcelSheet<Lumina.Excel.GeneratedSheets.Action>()?
             .Where(i => i.RowId is not 7)
             .ToDictionary(i => i.RowId, i => i);
 
-        private static Dictionary<uint, Lumina.Excel.GeneratedSheets.Status>? StatusSheet = Service.DataManager?.GetExcelSheet<Lumina.Excel.GeneratedSheets.Status>()?
+        public static Dictionary<uint, Lumina.Excel.GeneratedSheets.Status>? StatusSheet = Service.DataManager?.GetExcelSheet<Lumina.Excel.GeneratedSheets.Status>()?
             .ToDictionary(i => i.RowId, i => i);
 
         private delegate void ReceiveActionEffectDelegate(int sourceObjectId, IntPtr sourceActor, IntPtr position, IntPtr effectHeader, IntPtr effectArray, IntPtr effectTrail);
@@ -80,7 +80,6 @@ namespace XIVSlothComboPlugin
         public static void OutputLog()
         {
             Service.ChatGui.Print($"You just used: {GetActionName(LastAction)} x{LastActionUseCount}");
-
         }
         public static void Dispose()
         {
@@ -106,34 +105,42 @@ namespace XIVSlothComboPlugin
             SendActionHook?.Disable();
         }
 
-        public static int GetLevel(uint id)
+        public static int GetLevel(uint id) => ActionSheet.TryGetValue(id, out var action) ? action.ClassJobLevel : 0;
+
+        public static string GetActionName(uint id) => ActionSheet.TryGetValue(id, out var action) ? (string)action.Name : "UNKNOWN ABILITY";
+
+        public static string GetStatusName(uint id) => StatusSheet.TryGetValue(id, out var status) ? (string)status.Name : "Unknown Status";
+
+        public static List<uint> GetStatusesByName(string status)
         {
-            if (ActionSheet.TryGetValue(id, out var action))
+            List<uint> output = new List<uint>();
+            foreach (var item in StatusSheet?.Where(x => x.Value.Name.ToString().Equals(status, StringComparison.CurrentCultureIgnoreCase)))
             {
-                return action.ClassJobLevel;
+                output.Add(item.Key);
             }
 
-            return 0;
+            return output;
         }
 
-        public static string GetActionName(uint id)
+        public static ActionAttackType GetAttackType(uint id)
         {
-            if (ActionSheet.TryGetValue(id, out var action))
-            {
-                return action.Name;
-            }
+            if (!ActionSheet.TryGetValue(id, out var action)) return ActionAttackType.Unknown;
 
-            return "UNKNOWN ABILITY";
+            return action.ActionCategory.Value.Name.RawString switch
+            {
+                "Spell" => ActionAttackType.Spell,
+                "Weaponskill" => ActionAttackType.Weaponskill,
+                "Ability" => ActionAttackType.Ability,
+                _ => ActionAttackType.Unknown
+            };
         }
 
-        public static string GetStatusName(uint id)
+        public enum ActionAttackType
         {
-            if (StatusSheet.TryGetValue(id, out var status))
-            {
-                return status.Name;
-            }
-
-            return "Unknown Status";
+            Ability,
+            Spell,
+            Weaponskill,
+            Unknown
         }
     }
 
@@ -143,25 +150,29 @@ namespace XIVSlothComboPlugin
 
         internal static IntPtr FpUseAction =>
             (IntPtr)ActionManager.fpUseAction;
+
         internal static IntPtr FpUseActionLocation =>
             (IntPtr)ActionManager.fpUseActionLocation;
 
+        internal static IntPtr CheckActionResources =>
+            (IntPtr)ActionManager.fpCheckActionResources;
+
         public static ushort CurrentSeq => actionMgrPtr != IntPtr.Zero
             ? (ushort)Marshal.ReadInt16(actionMgrPtr + 0x110) : (ushort)0;
+
         public static ushort LastRecievedSeq => actionMgrPtr != IntPtr.Zero
             ? (ushort)Marshal.ReadInt16(actionMgrPtr + 0x112) : (ushort)0;
 
         public static bool IsCasting => actionMgrPtr != IntPtr.Zero
             && Marshal.ReadByte(actionMgrPtr + 0x28) != 0;
+
         public static uint CastingActionId => actionMgrPtr != IntPtr.Zero
             ? (uint)Marshal.ReadInt32(actionMgrPtr + 0x24) : 0u;
+
         public static uint CastTargetObjectId => actionMgrPtr != IntPtr.Zero
             ? (uint)Marshal.ReadInt32(actionMgrPtr + 0x38) : 0u;
 
-        static ActionManagerHelper()
-        {
-            actionMgrPtr = (IntPtr)ActionManager.Instance();
-        }
+        static ActionManagerHelper() => actionMgrPtr = (IntPtr)ActionManager.Instance();
     }
 
     [StructLayout(LayoutKind.Explicit)]

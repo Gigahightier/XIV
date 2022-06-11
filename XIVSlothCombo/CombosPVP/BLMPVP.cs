@@ -38,9 +38,9 @@ namespace XIVSlothComboPlugin.Combos
                 DeepFreeze = 3219;
         }
 
-        internal class BurstShotFeaturePVP : CustomCombo
+        internal class BLMPvP_BurstMode : CustomCombo
         {
-            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLMBurstMode;
+            protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLMPvP_BurstMode;
 
             protected override uint Invoke(uint actionID, uint lastComboMove, float comboTime, byte level)
             {
@@ -54,27 +54,23 @@ namespace XIVSlothComboPlugin.Combos
                     if (HasEffect(Buffs.Polyglot))
                         return Foul;
 
-                    if (IsEnabled(CustomComboPreset.BLMAetherialManip) &&
+                    if (IsEnabled(CustomComboPreset.BLMPvP_BurstMode_AetherialManip) &&
                         GetCooldown(AetherialManipulation).RemainingCharges > 0 &&
-                        !InMeleeRange() &&
-                        IsOffCooldown(Burst) &&
-                        canWeave)
+                        !InMeleeRange() && IsOffCooldown(Burst) && canWeave)
                         return AetherialManipulation;
 
                     if (InMeleeRange() &&
                         IsOffCooldown(Burst))
                         return Burst;
 
-
                     if (!TargetHasEffect(Debuffs.AstralWarmth))
                         return OriginalHook(Fire);
 
                     if (FindTargetEffect(Debuffs.AstralWarmth).StackCount < 3 &&
-                        GetRemainingCharges(Paradox) > 0)
+                        IsOffCooldown(Paradox))
                         return Paradox;
 
-
-                    if (IsEnabled(CustomComboPreset.BLMNightWing) &&
+                    if (IsEnabled(CustomComboPreset.BLMPvP_BurstMode_NightWing) &&
                         IsOffCooldown(NightWing))
                         return NightWing;
 
@@ -84,6 +80,7 @@ namespace XIVSlothComboPlugin.Combos
                         return Superflare;
 
                 }
+
                 if (actionID is Blizzard or Blizzard4 or Freeze)
                 {
                     if(HasPVPLimitBreak())
@@ -92,7 +89,7 @@ namespace XIVSlothComboPlugin.Combos
                     if (HasEffect(Buffs.Polyglot))
                         return Foul;
 
-                    if (IsEnabled(CustomComboPreset.BLMAetherialManip) &&
+                    if (IsEnabled(CustomComboPreset.BLMPvP_BurstMode_AetherialManip) &&
                         GetCooldown(AetherialManipulation).RemainingCharges > 0 &&
                         !InMeleeRange() &&
                         IsOffCooldown(Burst) &&
@@ -103,16 +100,14 @@ namespace XIVSlothComboPlugin.Combos
                         IsOffCooldown(Burst))
                         return Burst;
 
-
                     if (!TargetHasEffect(Debuffs.UmbralFreeze))
                         return OriginalHook(Blizzard);
 
                     if (FindTargetEffect(Debuffs.UmbralFreeze).StackCount < 3 &&
-                        GetRemainingCharges(Paradox) > 0)
+                        IsOffCooldown(Paradox))
                         return Paradox;
 
-
-                    if (IsEnabled(CustomComboPreset.BLMNightWing) &&
+                    if (IsEnabled(CustomComboPreset.BLMPvP_BurstMode_NightWing) &&
                         IsOffCooldown(NightWing))
                         return NightWing;
 
@@ -120,7 +115,6 @@ namespace XIVSlothComboPlugin.Combos
                         GetCooldown(Superflare).RemainingCharges > 0 &&
                         !TargetHasEffect(Debuffs.DeepFreeze))
                         return Superflare;
-
                 }
 
                 return actionID;

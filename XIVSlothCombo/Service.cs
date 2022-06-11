@@ -17,9 +17,7 @@ using System.Reflection;
 
 namespace XIVSlothComboPlugin
 {
-    /// <summary>
-    /// Dalamud and plugin services.
-    /// </summary>
+    /// <summary> Dalamud and plugin services. </summary>
     internal class Service
     {
         /// <summary>
@@ -51,18 +49,20 @@ namespace XIVSlothComboPlugin
         /// <summary>
         /// Gets the Dalamud buddy list.
         /// </summary>
+        internal static PluginAddressResolver Address { get; set; } = null!;
+
+        /// <summary> Gets the Dalamud buddy list. </summary>
         [PluginService]
         public static BuddyList BuddyList { get; private set; } = null!;
 
-        /// <summary>
-        /// Gets the Dalamud chat gui.
-        /// </summary>
+        /// <summary> Gets the Dalamud chat gui. </summary>
         [PluginService]
         public static ChatGui ChatGui { get; private set; } = null!;
 
-        /// <summary>
-        /// Gets the Dalamud client state.
-        /// </summary>
+        /// <summary> Facilitates class-based locking. </summary>
+        internal static bool ClassLocked { get; set; } = true;
+
+        /// <summary> Gets the Dalamud client state. </summary>
         [PluginService]
         public static ClientState ClientState { get; private set; } = null!;
 
@@ -72,21 +72,18 @@ namespace XIVSlothComboPlugin
         [PluginService]
         public static CommandManager CommandManager { get; private set; } = null!;
 
-        /// <summary>
-        /// Gets the Dalamud condition.
-        /// </summary>
+        /// <summary> Gets the Dalamud condition. </summary>
         [PluginService]
         public static Condition Condition { get; private set; } = null!;
 
-        /// <summary>
-        /// Gets the Dalamud data manager.
-        /// </summary>
+        /// <summary> Gets or sets the plugin configuration. </summary>
+        internal static PluginConfiguration Configuration { get; set; } = null!;
+
+        /// <summary> Gets the Dalamud data manager. </summary>
         [PluginService]
         public static DataManager DataManager { get; private set; } = null!;
 
-        /// <summary>
-        /// Gets the Dalamud framework manager.
-        /// </summary>
+        /// <summary> Gets the Dalamud framework manager. </summary>
         [PluginService]
         public static Framework Framework { get; private set; } = null!;
 
@@ -96,9 +93,7 @@ namespace XIVSlothComboPlugin
         [PluginService]
         public static JobGauges JobGauges { get; private set; } = null!;
 
-        /// <summary>
-        /// Gets the Dalamud object table.
-        /// </summary>
+        /// <summary> Gets the Dalamud object table. </summary>
         [PluginService]
         public static ObjectTable ObjectTable { get; private set; } = null!;
 
@@ -111,26 +106,23 @@ namespace XIVSlothComboPlugin
         [PluginService]
         public static SigScanner SigScanner { get; private set; } = null!;
 
-        /// <summary>
-        /// Returns the Plugin Folder location
-        /// </summary>
-        public static string? PluginFolder
+        /// <summary> Returns the Plugin Folder location </summary>
+        public static string PluginFolder
         {
             get
             {
                 string codeBase = Assembly.GetExecutingAssembly().Location;
                 UriBuilder uri = new(codeBase);
                 string path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
+                return Path.GetDirectoryName(path)!;
             }
         }
 
-        /// <summary>
-        /// Gets the Dalamud party list.
-        /// </summary>
+        /// <summary> Gets the Dalamud party list. </summary>
         [PluginService]
         public static PartyList PartyList { get; private set; } = null!;
 
+        /// <summary> Facilitates searching for memory signatures. </summary>
         [PluginService]
         public static GameGui GameGui { get; private set; } = null!;
 
