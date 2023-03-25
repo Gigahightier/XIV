@@ -49,14 +49,14 @@ namespace XIVSlothComboPlugin.Combos
                 //if (topTarget is not null && CurrentTarget != topTarget && IsInRange(topTarget, 21))
                     //TargetObject(topTarget);
 
-                if (TargetHasEffectAny(SAMPvP.Buffs.Chiten) && !HasEffect(Buffs.Sprinting))
-                    return OriginalHook(PVPCommon.Sprint);
+                //if (TargetHasEffectAny(1240) && !HasEffect(Buffs.Sprinting))
+                    //return OriginalHook(PVPCommon.Sprint);
 
                 if (actionID is Bootshine or TrueStrike or SnapPunch or DragonKick or TwinSnakes or Demolish or PhantomRush or Enlightenment)
                 {
                     //uint globalAction = PVPCommon.ExecutePVPGlobal.ExecuteGlobal(actionID);
 
-                    if (!TargetHasEffectAnyNoBurstPVP())
+                    if (!TargetHasEffectAny(3054) && !TargetHasEffectAny(29533) && !TargetHasEffectAny(1302) && !TargetHasEffectAny(3210) && !TargetHasEffectAny(3039) && !TargetHasEffectAny(3171) && (!TargetHasEffectAny(3119) && !HasEffectAny(3120)))
                     {
                         //var payloads = new List<Payload>()
                         //{
@@ -76,7 +76,7 @@ namespace XIVSlothComboPlugin.Combos
 
                             if (InMeleeRange())
                             {
-                                if (IsOffCooldown(SixSidedStar) && !TargetHasEffectAny(All.Debuffs.Resilience) && !TargetHasEffectAny(PVPCommon.Debuffs.Stun) &&
+                                if (IsOffCooldown(SixSidedStar) && !TargetHasEffectAny(All.Debuffs.Resilience) && !TargetHasEffectAny(1343) &&
                                     !HasEffect(Buffs.FireResonance))
                                     return OriginalHook(SixSidedStar);
 
@@ -112,7 +112,7 @@ namespace XIVSlothComboPlugin.Combos
                     else
                     {
                         return OriginalHook(Bootshine);
-					}
+		    }
                 }
 
                 return actionID;
